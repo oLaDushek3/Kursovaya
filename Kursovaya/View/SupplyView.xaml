@@ -4,23 +4,58 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Kursovaya.View"
+             xmlns:viewmodel="clr-namespace:Kursovaya.ViewModel"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+
+    <UserControl.DataContext>
+        <viewmodel:SupplyViewModel/>
+    </UserControl.DataContext>
+
     <Grid>
         <TextBlock Text="Поставки"
                    FontSize="60"
                    HorizontalAlignment="Center"
                    VerticalAlignment="Center"
                    Foreground="{StaticResource color2}"/>
-        
-        <ListView Background="Transparent">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Width="50" Header="ID" DisplayMemberBinding="{Binding Supply_id}"/>
-                    <GridViewColumn Width="150" Header="Завод" DisplayMemberBinding="{Binding Factory_id}"/>
-                    <GridViewColumn  Width="150" Header="Дата" DisplayMemberBinding="{Binding Date}"/>
-                </GridView>
-            </ListView.View>
-        </ListView>
+
+        <DataGrid Style="{StaticResource DataGridStyle1}" 
+                  CellStyle="{StaticResource DataGridCellStyle1}" 
+                  ColumnHeaderStyle="{StaticResource DataGridColumnHeaderStyle1}" 
+                  RowStyle="{StaticResource DataGridRowStyle1}"
+                  ItemsSource="{Binding Supplys}">
+
+            <DataGrid.Columns>
+
+                <DataGridCheckBoxColumn CanUserResize="False" Width="auto">
+                    <DataGridCheckBoxColumn.HeaderTemplate>
+                        <DataTemplate>
+                            <CheckBox/>
+                        </DataTemplate>
+                    </DataGridCheckBoxColumn.HeaderTemplate>
+                </DataGridCheckBoxColumn>
+
+                <DataGridTextColumn Header="#" IsReadOnly="True" CanUserResize="False" Width="auto"
+                                    Binding="{Binding Supply_id}"/>
+
+                <DataGridTemplateColumn Header="Memder" IsReadOnly="True" Width="*">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel>
+                                <Border Width="12" Height="25" CornerRadius="50">
+
+                                </Border>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTextColumn Header="Производство" IsReadOnly="True" CanUserResize="False" 
+                                    Binding="{Binding Factory.Address}" Width="*"/>
+                <DataGridTextColumn Header="Дата" IsReadOnly="True" CanUserResize="False" 
+                                    Binding="{Binding Date, StringFormat='d MMMM yyyy', ConverterCulture=ru}" Width="*"/>
+
+            </DataGrid.Columns>
+        </DataGrid>
     </Grid>
 </UserControl>

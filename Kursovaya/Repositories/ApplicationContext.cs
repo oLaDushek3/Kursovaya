@@ -21,7 +21,7 @@ namespace Kursovaya.Repositories
         public virtual DbSet<Shipping> Shipping { get; set; }
         public virtual DbSet<Shipping_Product> Shipping_Product { get; set; }
         public virtual DbSet<Shipping_Product_Place> Shipping_Product_Place { get; set; }
-        public virtual DbSet<Supply> Supply { get; set; }
+        public virtual DbSet<SupplyModel> Supply { get; set; }
         public virtual DbSet<Supply_Product> Supply_Product { get; set; }
         public virtual DbSet<Supply_Product_Place> Supply_Product_Place { get; set; }
         public virtual DbSet<WorkerModel> Worker { get; set; }

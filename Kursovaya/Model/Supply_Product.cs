@@ -21,7 +21,7 @@ namespace Kursovaya.Model
         public int Quantity { get; set; }
 
         public virtual Product Product { get; set; }
-        public virtual Supply Supply { get; set; }
+        public virtual SupplyModel Supply { get; set; }
         public virtual ICollection<Supply_Product_Place> Supply_Product_Place { get; set; }
     }
 }

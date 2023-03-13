@@ -5,7 +5,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Kursovaya"
-        xmlns:view="clr-namespace:Kursovaya.View" xmlns:viewmodel="clr-namespace:Kursovaya.ViewModel"
+        xmlns:view="clr-namespace:Kursovaya.View"
+        xmlns:viewmodel="clr-namespace:Kursovaya.ViewModel"
         mc:Ignorable="d"
         Title="AI Technology (warehouse)" Height="700" Width="1300"
         WindowStartupLocation="CenterScreen"
@@ -119,8 +120,7 @@
                     </RadioButton>
 
                     <RadioButton Style="{StaticResource menuButton}"
-                                 Tag="{StaticResource color3}"
-                                 Command="{Binding ShowHomeViewCommand}">
+                                 Tag="{StaticResource color3}">
 
                         <StackPanel Orientation="Horizontal">
                             <fa:IconImage Icon="box" Style="{StaticResource menuButtonIcon}"/>

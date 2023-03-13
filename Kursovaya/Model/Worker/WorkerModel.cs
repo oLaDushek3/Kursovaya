@@ -13,7 +13,7 @@ namespace Kursovaya.Model.Worker
         public WorkerModel()
         {
             Shipping = new HashSet<Shipping>();
-            Supply = new HashSet<Supply>();
+            Supply = new HashSet<SupplyModel>();
         }
 
         [Key]
@@ -29,6 +29,6 @@ namespace Kursovaya.Model.Worker
         [ForeignKey("Section_id")]
         public virtual Section Section { get; set; }
         public virtual ICollection<Shipping> Shipping { get; set; }
-        public virtual ICollection<Supply> Supply { get; set; }
+        public virtual ICollection<SupplyModel> Supply { get; set; }
     }
 }

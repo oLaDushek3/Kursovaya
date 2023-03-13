@@ -9,9 +9,10 @@ namespace Kursovaya.Model
 {
     public partial class Factory
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Factory()
         {
-            this.Supply = new HashSet<Supply>();
+            this.Supply = new HashSet<SupplyModel>();
         }
 
         [Key]
@@ -19,6 +20,6 @@ namespace Kursovaya.Model
         public string Address { get; set; }
         public string Phone { get; set; }
 
-        public virtual ICollection<Supply> Supply { get; set; }
+        public virtual ICollection<SupplyModel> Supply { get; set; }
     }
 }

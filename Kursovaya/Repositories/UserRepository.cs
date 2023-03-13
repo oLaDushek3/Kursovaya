@@ -1,11 +1,8 @@
 ﻿using Kursovaya.Model.User;
-using Kursovaya.Model.Worker;
-using Microsoft.Identity.Client.Platforms.Features.DesktopOs.Kerberos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Windows.Forms;
 
 namespace Kursovaya.Repositories
 {
@@ -46,9 +43,9 @@ namespace Kursovaya.Repositories
         public UserModel GetByUsername(string username)
         {
             ApplicationContext context = new ApplicationContext();
-            UserModel? _user = context.User.FirstOrDefault(u => u.Login == username);
+            UserModel? user = context.User.FirstOrDefault(u => u.Login == username);
 
-            return _user;
+            return user;
         }
     }
 }

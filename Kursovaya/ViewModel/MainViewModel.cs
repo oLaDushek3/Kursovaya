@@ -1,7 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Threading;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 using FontAwesome.Sharp;
 using Kursovaya.Model.User;
 using Kursovaya.Repositories;
@@ -29,7 +26,6 @@ namespace Kursovaya.ViewModel
                 OnPropertyChanged(nameof(User));
             }
         }
-
         public ViewModelBase CurrentChildView
         {
             get => _currentChildView;
