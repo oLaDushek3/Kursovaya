@@ -5,14 +5,20 @@
     <TargetFramework>net6.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
+    <ApplicationIcon>icon.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
     <None Remove="Images\Background 2.png" />
     <None Remove="Images\Background.png" />
     <None Remove="Images\Key.png" />
+    <None Remove="Images\Logo 2.png" />
     <None Remove="Images\Logo.png" />
     <None Remove="Images\User.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="icon.ico" />
   </ItemGroup>
 
   <ItemGroup>
@@ -26,6 +32,7 @@
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\Key.png" />
+    <Resource Include="Images\Logo 2.png" />
     <Resource Include="Images\Logo.png" />
     <Resource Include="Images\User.png" />
   </ItemGroup>

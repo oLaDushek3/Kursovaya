@@ -1,0 +1,268 @@
+﻿<Window x:Class="Kursovaya.View.MainView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Kursovaya"
+        xmlns:view="clr-namespace:Kursovaya.View" xmlns:viewmodel="clr-namespace:Kursovaya.ViewModel"
+        mc:Ignorable="d"
+        Title="AI Technology (warehouse)" Height="700" Width="1300"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="None"
+        Background="Transparent"
+        AllowsTransparency="True">
+
+    <Window.DataContext>
+        <viewmodel:MainViewModel/>
+    </Window.DataContext>
+
+    <Window.Resources>
+        <DataTemplate DataType="{x:Type viewmodel:HomeViewModel}">
+            <view:HomeView/>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewmodel:SupplyViewModel}">
+            <view:SupplyView/>
+        </DataTemplate>
+    </Window.Resources>
+    
+    <Border CornerRadius="10"
+            BorderThickness="2">
+        
+        <Border.BorderBrush>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                <GradientStop Color="{StaticResource winBorderColor1}" Offset="0"/>
+                <GradientStop Color="{StaticResource winBorderColor2}" Offset="1"/>
+            </LinearGradientBrush>
+        </Border.BorderBrush>
+
+        <Grid>
+            
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="250"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <!--Navigation menu-->
+            <Border CornerRadius="10,0,0,10"
+                    Grid.Column="0">
+                <Border.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,0.7">
+                        <GradientStop Color="{StaticResource secondaryBackColor1}" Offset="0"/>
+                        <GradientStop Color="{StaticResource secondaryBackColor2}" Offset="1"/>
+                    </LinearGradientBrush>
+                </Border.Background>
+
+                <StackPanel>
+                    
+                    <!--Logo-->
+                    <StackPanel Orientation="Horizontal"
+                                Height="45"
+                                Margin="15,25,0,40">
+                        <Image Source="/Images/Logo 2.png" 
+                               RenderOptions.BitmapScalingMode="HighQuality"
+                               Height="35"/>
+                       
+                        <StackPanel>
+                            <TextBlock Text="AI Technology"
+                                   Foreground="{StaticResource titleColor1}"
+                                   FontSize="20"
+                                   FontFamily="Montserrat"
+                                   FontWeight="Medium"
+                                   VerticalAlignment="Center"
+                                   Margin="10,0,0,0"
+                                   TextWrapping="Wrap"/>
+                            <TextBlock Text="(warehouse)"
+                                   Foreground="{StaticResource titleColor1}"
+                                   FontSize="15"
+                                   FontFamily="Montserrat"
+                                   FontWeight="Medium"
+                                   Margin="10,0,0,0"
+                                   TextWrapping="Wrap"/>
+                        </StackPanel>
+
+                    </StackPanel>
+                    
+                    <!--Menu Button-->
+                    <RadioButton Style="{StaticResource menuButton}"
+                                 Tag="{StaticResource color1}"
+                                 Command="{Binding ShowHomeViewCommand}"
+                                 IsChecked="True">
+
+                        <StackPanel Orientation="Horizontal">
+                            <fa:IconImage Icon="Home" Style="{StaticResource menuButtonIcon}"/>
+                            <TextBlock Text="Главная" Style="{StaticResource menuButtonText}"/>
+                        </StackPanel>
+                        
+                    </RadioButton>
+                    
+
+                    <RadioButton Style="{StaticResource menuButton}"
+                                 Tag="{StaticResource color2}"
+                                 Command="{Binding ShowSupplyViewCommand}">
+
+                        <StackPanel Orientation="Horizontal">
+                            <fa:IconImage Icon="Truck" Style="{StaticResource menuButtonIcon}"/>
+                            <TextBlock Text="Поставки" Style="{StaticResource menuButtonText}"/>
+                        </StackPanel>
+
+                    </RadioButton>
+                    
+                    <RadioButton Style="{StaticResource menuButton}"
+                                 Tag="{StaticResource color4}">
+
+                        <StackPanel Orientation="Horizontal">
+                            <fa:IconImage Icon="Industry" Style="{StaticResource menuButtonIcon}"/>
+                            <TextBlock Text="Производства" Style="{StaticResource menuButtonText}"/>
+                        </StackPanel>
+
+                    </RadioButton>
+
+                    <RadioButton Style="{StaticResource menuButton}"
+                                 Tag="{StaticResource color3}"
+                                 Command="{Binding ShowHomeViewCommand}">
+
+                        <StackPanel Orientation="Horizontal">
+                            <fa:IconImage Icon="box" Style="{StaticResource menuButtonIcon}"/>
+                            <TextBlock Text="Заказы" Style="{StaticResource menuButtonText}"/>
+                        </StackPanel>
+
+                    </RadioButton>
+
+                    <RadioButton Style="{StaticResource menuButton}"
+                                 Tag="{StaticResource color5}">
+
+                        <StackPanel Orientation="Horizontal">
+                            <fa:IconImage Icon="UserGroup" Style="{StaticResource menuButtonIcon}"/>
+                            <TextBlock Text="Заказчики" Style="{StaticResource menuButtonText}"/>
+                        </StackPanel>
+
+                    </RadioButton>
+                    
+
+                </StackPanel>
+                
+            </Border>
+
+            <!--Main space-->
+            <Border CornerRadius="0,10,10,0"
+                    Grid.Column="1">
+                <Border.Background>
+                    <LinearGradientBrush StartPoint="1,1" EndPoint="1,0.65">
+                        <GradientStop Color="{StaticResource primaryBackColor1}" Offset="0"/>
+                        <GradientStop Color="{StaticResource primaryBackColor2}" Offset="1"/>
+                    </LinearGradientBrush>
+                </Border.Background>
+
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <!--Control bar-->
+                        <RowDefinition Height="25"/>
+                        <!--Header-->
+                        <RowDefinition Height="35"/>
+                        <!--Content section-->
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+
+                    <!--Control bar-->
+                    <StackPanel x:Name="pnlControlBar"
+                                Grid.Row="0"
+                                Orientation="Horizontal"
+                                FlowDirection="RightToLeft"
+                                Background="Transparent"
+                                Margin="0,0,5,0"
+                                MouseLeftButtonDown="pnlControlBar_MouseLeftButtonDown">
+                        
+                        <Button x:Name="btnClose"
+                            Style="{StaticResource controlButton}"
+                            Tag="{StaticResource color4}"
+                            Click="btnClose_Click"
+                            Grid.Column="2">
+                            <fa:IconImage Icon="Xmark" Style="{StaticResource controlButtonIcon}"
+                                          Width="11"/>
+                        </Button>
+
+                        <Button x:Name="btnMaximize"
+                            Style="{StaticResource controlButton}"
+                            Tag="{StaticResource color6}"
+                            Click="btnMaximize_Click"
+                            Grid.Column="2">
+                            <fa:IconImage Icon="WindowMaximize" Style="{StaticResource controlButtonIcon}"/>
+                        </Button>
+
+                        <Button x:Name="btnMinimize"
+                            Style="{StaticResource controlButton}"
+                            Tag="{StaticResource color8}"
+                            Click="btnMinimize_Click"
+                            Grid.Column="2">
+                            <fa:IconImage Icon="WindowMinimize" Style="{StaticResource controlButtonIcon}"
+                                          IconFont="Solid" Width="13"/>
+                        </Button>
+                        
+                    </StackPanel>
+
+                    <!--Header-->
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel Grid.Column="0"
+                                    Orientation="Horizontal"
+                                    VerticalAlignment="Center">
+
+                            <fa:IconImage Icon="{Binding Icon}"
+                                          Height="20"
+                                          Width="20"
+                                          Foreground="{StaticResource titleColor2}"
+                                          Margin="35,0,10,0"/>
+                            <TextBlock Text="{Binding Caption}"
+                                       Foreground="{StaticResource titleColor2}"
+                                       FontSize="16"
+                                       FontFamily="Montserrat"
+                                       FontWeight="Medium"
+                                       VerticalAlignment="Center"/>
+                        </StackPanel>
+
+                        <StackPanel Grid.Column="1"
+                                    Orientation="Horizontal"
+                                    FlowDirection="RightToLeft"
+                                    VerticalAlignment="Center"
+                                    Margin="0,0,10,0">
+                            <Button Style="{StaticResource iconButton}"
+                                    Tag="{StaticResource color4}">
+                                <fa:IconImage Icon="RightFromBracket" Style="{StaticResource iconButtonIcon}"
+                                              FlowDirection="LeftToRight"/>
+                            </Button>
+
+                            <TextBlock Text="{Binding User.Login}"
+                                       Foreground="{StaticResource titleColor3}"
+                                       FontFamily="Motserrat"
+                                       FontSize="18"
+                                       VerticalAlignment="Center"
+                                       FlowDirection="RightToLeft"/>
+
+
+                        </StackPanel>
+
+                    </Grid>
+
+                    <!--Content section-->
+                    <Grid Grid.Row="2">
+                        <Image Source="/Images/Logo.png" 
+                                   RenderOptions.BitmapScalingMode="HighQuality"
+                                   Opacity="0.25"
+                                   Height="400"/>
+                        <ContentControl Content="{Binding CurrentChildView}"
+                                    Margin="15"/>
+                    </Grid>
+
+                </Grid>
+            
+            </Border>
+
+        </Grid>
+
+    </Border>
+</Window>

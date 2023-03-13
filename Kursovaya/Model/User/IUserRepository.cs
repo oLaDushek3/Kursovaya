@@ -10,6 +10,6 @@ namespace Kursovaya.Model.User
         void Edit(UserModel userModel);
         void Remove(int id);
         IEnumerable<UserModel> GetByAll();
-        //...
+        public UserModel GetByUsername(string username);
     }
 }

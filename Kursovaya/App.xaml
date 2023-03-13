@@ -4,6 +4,11 @@
              xmlns:local="clr-namespace:Kursovaya"
              Startup="ApplicationStart">
     <Application.Resources>
-        <FontFamily x:Key="FontAwesome">/Font/fontawesome-webfont.tt#FontAwesome</FontFamily>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Styles/UIColors.xaml"/>
+                <ResourceDictionary Source="/Styles/ButtonStyles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

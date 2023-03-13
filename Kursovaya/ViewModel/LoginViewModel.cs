@@ -16,7 +16,7 @@ namespace Kursovaya.ViewModel
         private string _errorMessage;
         private bool _isViewVisidible = true;
 
-        private IUserRepository _userRepository;
+        private IUserRepository userRepository;
 
         //Properties
         public string Username { get => _username;
@@ -52,7 +52,7 @@ namespace Kursovaya.ViewModel
             }
         }
 
-        //-> Commands
+        //Commands
         public ICommand LoginCommand { get; }
         public ICommand ShowPasswordCommand { get; }
         public ICommand RecoverPasswordCommand { get; }
@@ -60,40 +60,31 @@ namespace Kursovaya.ViewModel
         //Constructor
         public LoginViewModel()
         {
-            _userRepository = new UserRepository();
+            userRepository = new UserRepository();
             LoginCommand = new ViewModelCommand(ExecuteLoginCommand, CanExecuteLoginCommand);
-            RecoverPasswordCommand = new ViewModelCommand(p => ExecuteRecoverPasswordCommand("", ""));
         }
 
         private bool CanExecuteLoginCommand(object obj)
         {
             bool validData;
-            if(string.IsNullOrWhiteSpace(Username) || Username.Length<3 || 
-                Password == null || Password.Length <3)
+            if (string.IsNullOrWhiteSpace(Username) || Password == null)
                 validData = false;
             else
                 validData = true;
+
             return validData;
         }
 
         private void ExecuteLoginCommand(object obj)
         {
-            var isValidUser = _userRepository.AuthenticateUser(new NetworkCredential(Username, Password));
+            var isValidUser = userRepository.AuthenticateUser(new NetworkCredential(Username, Password));
             if(isValidUser)
             {
-                Thread.CurrentPrincipal = new GenericPrincipal(
-                    new GenericIdentity(Username), null);
+                Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity(Username), null);
                 IsViewVisidible = false;
             }
             else
-            {
                 ErrorMessage = "* Не верный логин или пароль";
-            }
-        }
-
-        private void ExecuteRecoverPasswordCommand(string username, string email)
-        {
-            throw new NotImplementedException();
         }
     }
 }

@@ -23,7 +23,7 @@ namespace Kursovaya.ViewModel
         }
 
         //Events
-        public event EventHandler CanExecuteChanged
+        public event EventHandler? CanExecuteChanged
         {
             add { CommandManager.RequerySuggested += value; }
             remove { CommandManager.RequerySuggested -= value; }
@@ -32,7 +32,7 @@ namespace Kursovaya.ViewModel
         //Methods
         public bool CanExecute(object parameter)
         {
-            return _canExecuteAction == null ? true : _canExecuteAction(parameter);
+            return _canExecuteAction == null || _canExecuteAction(parameter);
         }
 
         public void Execute(object parameter)
