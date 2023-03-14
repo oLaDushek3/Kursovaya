@@ -11,8 +11,8 @@ namespace Kursovaya.Model
     {
         public SupplyModel()
         {
-            this.Supply_Product = new HashSet<Supply_ProductModel>();
-            this.Worker = new HashSet<WorkerModel>();
+            Supply_Product = new List<Supply_ProductModel>();
+            Worker = new List<WorkerModel>();
         }
 
         [Key]
@@ -22,7 +22,7 @@ namespace Kursovaya.Model
 
         [ForeignKey("Factory_id")]
         public virtual FactoryModel Factory { get; set; }
-        public virtual ICollection<Supply_ProductModel> Supply_Product { get; set; }
-        public virtual ICollection<WorkerModel> Worker { get; set; }
+        public virtual List<Supply_ProductModel> Supply_Product { get; set; }
+        public List<WorkerModel> Worker { get; set; }
     }
 }

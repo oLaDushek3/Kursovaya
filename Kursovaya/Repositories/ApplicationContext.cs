@@ -30,6 +30,7 @@ namespace Kursovaya.Repositories
         public virtual DbSet<Supply_Product_PlaceModel> Supply_Product_Place { get; set; }
         public virtual DbSet<WorkerModel> Worker { get; set; }
         public virtual DbSet<UserModel> User { get; set; }
+        public virtual DbSet<SupplyWorkerModel> Supply_Worker { get; set; }
 
         public ApplicationContext()
         {

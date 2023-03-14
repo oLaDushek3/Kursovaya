@@ -13,21 +13,20 @@ namespace Kursovaya.Model.Worker
     {
         public WorkerModel()
         {
-            Shipping = new HashSet<ShippingModel>();
-            Supply = new HashSet<SupplyModel>();
+            Shipping = new List<ShippingModel>();
+            Supply = new List<SupplyModel>();
         }
 
         [Key]
         public int Worker_id { get; set; }
         public string Full_name { get; set; }
-        public int Section_id { get; set; }
         public string Type_of_contract { get; set; }
         public string Type_of_salary { get; set; }
         public int Post_id { get; set; }
 
         [ForeignKey("Post_id")]
         public virtual PostModel Post { get; set; }
-        public virtual ICollection<ShippingModel> Shipping { get; set; }
-        public virtual ICollection<SupplyModel> Supply { get; set; }
+        public virtual List<ShippingModel> Shipping { get; set; }
+        public List<SupplyModel> Supply { get; set; }
     }
 }
