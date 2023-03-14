@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace Kursovaya.Model.Product
 {
-    public partial class Products_groupModel
+    public partial class Product_groupModel
     {
-        public Products_groupModel()
+        public Product_groupModel()
         {
             Product_type = new HashSet<Product_typeModel>();
         }

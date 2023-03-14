@@ -20,6 +20,6 @@ namespace Kursovaya.Model.Product
         public int Products_group_Id { get; set; }
 
         public virtual ICollection<ProductModel> Product { get; set; }
-        public virtual Products_groupModel Products_group { get; set; }
+        public virtual Product_groupModel Products_group { get; set; }
     }
 }

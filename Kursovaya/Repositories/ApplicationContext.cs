@@ -19,7 +19,7 @@ namespace Kursovaya.Repositories
         public virtual DbSet<PostModel> Post { get; set; }
         public virtual DbSet<ProductModel> Product { get; set; }
         public virtual DbSet<Product_typeModel> Product_type { get; set; }
-        public virtual DbSet<Products_groupModel> Products_group { get; set; }
+        public virtual DbSet<Product_groupModel> Products_group { get; set; }
         public virtual DbSet<Section> Section { get; set; }
         public virtual DbSet<ShippingModel> Shipping { get; set; }
         public virtual DbSet<Shipping_ProductModel> Shipping_Product { get; set; }

@@ -1,4 +1,5 @@
-﻿using Kursovaya.Model.Worker;
+﻿using Kursovaya.Model.Buyer;
+using Kursovaya.Model.Worker;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -22,7 +23,7 @@ namespace Kursovaya.Model.Shipping
         public DateTime Date { get; set; }
         public decimal Amount { get; set; }
 
-        public virtual Buyer Buyer { get; set; }
+        public virtual BuyerModel Buyer { get; set; }
         public virtual ICollection<Shipping_ProductModel> Shipping_Product { get; set; }
         public virtual ICollection<WorkerModel> Worker { get; set; }
     }

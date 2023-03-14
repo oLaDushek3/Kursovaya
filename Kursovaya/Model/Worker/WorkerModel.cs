@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Kursovaya.Model.Shipping;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -12,7 +13,7 @@ namespace Kursovaya.Model.Worker
     {
         public WorkerModel()
         {
-            Shipping = new HashSet<Shipping>();
+            Shipping = new HashSet<ShippingModel>();
             Supply = new HashSet<SupplyModel>();
         }
 
@@ -28,7 +29,7 @@ namespace Kursovaya.Model.Worker
         public virtual PostModel Post { get; set; }
         [ForeignKey("Section_id")]
         public virtual Section Section { get; set; }
-        public virtual ICollection<Shipping> Shipping { get; set; }
+        public virtual ICollection<ShippingModel> Shipping { get; set; }
         public virtual ICollection<SupplyModel> Supply { get; set; }
     }
 }

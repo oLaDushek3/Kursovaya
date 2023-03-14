@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Kursovaya.Model.Shipping;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -11,7 +12,7 @@ namespace Kursovaya.Model.Buyer
     {
         public BuyerModel()
         {
-            Shipping = new HashSet<Shipping>();
+            Shipping = new HashSet<ShippingModel>();
         }
 
         [Key]
@@ -21,6 +22,6 @@ namespace Kursovaya.Model.Buyer
 
         public virtual IndividualModel Individual { get; set; }
         public virtual Legal_entityModel Legal_entity { get; set; }
-        public virtual ICollection<Shipping> Shipping { get; set; }
+        public virtual ICollection<ShippingModel> Shipping { get; set; }
     }
 }
