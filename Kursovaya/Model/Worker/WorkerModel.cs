@@ -27,8 +27,6 @@ namespace Kursovaya.Model.Worker
 
         [ForeignKey("Post_id")]
         public virtual PostModel Post { get; set; }
-        [ForeignKey("Section_id")]
-        public virtual Section Section { get; set; }
         public virtual ICollection<ShippingModel> Shipping { get; set; }
         public virtual ICollection<SupplyModel> Supply { get; set; }
     }

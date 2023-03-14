@@ -3,6 +3,7 @@ using Kursovaya.Model.Buyer;
 using Kursovaya.Model.Place;
 using Kursovaya.Model.Product;
 using Kursovaya.Model.Shipping;
+using Kursovaya.Model.Supply;
 using Kursovaya.Model.User;
 using Kursovaya.Model.Worker;
 using Microsoft.EntityFrameworkCore;
@@ -21,7 +22,6 @@ namespace Kursovaya.Repositories
         public virtual DbSet<ProductModel> Product { get; set; }
         public virtual DbSet<Product_typeModel> Product_type { get; set; }
         public virtual DbSet<Product_groupModel> Products_group { get; set; }
-        public virtual DbSet<Section> Section { get; set; }
         public virtual DbSet<ShippingModel> Shipping { get; set; }
         public virtual DbSet<Shipping_ProductModel> Shipping_Product { get; set; }
         public virtual DbSet<Shipping_Product_PlaceModel> Shipping_Product_Place { get; set; }

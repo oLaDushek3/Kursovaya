@@ -1,5 +1,4 @@
 ﻿using Kursovaya.Model;
-using Kursovaya.Model.Shipping;
 using Kursovaya.Model.Supply;
 using System;
 using System.Collections.Generic;

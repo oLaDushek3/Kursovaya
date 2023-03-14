@@ -19,11 +19,9 @@ namespace Kursovaya.Model.Place
 
         [Key]
         public int Place_id { get; set; }
-        public int Section_id { get; set; }
+        public int Place { get; set; }
 
 
-        [ForeignKey("Section_id")]
-        public virtual Section Section { get; set; }
         public virtual ICollection<Shipping_Product_PlaceModel> Shipping_Product_Place { get; set; }
         public virtual ICollection<Supply_Product_PlaceModel> Supply_Product_Place { get; set; }
     }

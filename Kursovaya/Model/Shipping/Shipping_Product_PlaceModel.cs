@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Kursovaya.Model.Place;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -14,7 +15,7 @@ namespace Kursovaya.Model.Shipping
         public int Place_id { get; set; }
         public int Quantity { get; set; }
 
-        public virtual Place Place { get; set; }
+        public virtual PlaceModel Place { get; set; }
         public virtual Shipping_ProductModel Shipping_Product { get; set; }
     }
 }

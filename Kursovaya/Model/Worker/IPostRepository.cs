@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Kursovaya.Model.Worker
 {
-    public interface IPostWorkerRepository
+    public interface IPostRepository
     {
         void Add(PostModel postModel);
         void Edit(PostModel postModel);

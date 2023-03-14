@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Kursovaya.Model.Shipping
+namespace Kursovaya.Model.Supply
 {
     public partial class FactoryModel
     {
