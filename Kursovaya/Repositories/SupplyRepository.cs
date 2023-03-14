@@ -1,8 +1,11 @@
 ﻿using Kursovaya.Model;
+using Kursovaya.Model.Product;
 using Kursovaya.Model.Supply;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Forms;
 
 namespace Kursovaya.Repositories
 {
@@ -27,7 +30,9 @@ namespace Kursovaya.Repositories
         {
             ApplicationContext context = new ApplicationContext();
             List<FactoryModel> factorys = context.Factory.ToList();
+            List<ProductModel> products = context.Product.ToList();
             List<SupplyModel> supplys = context.Supply.ToList();
+            MessageBox.Show(supplys[0].Factory.Address);
 
             return supplys;
         }

@@ -1,12 +1,9 @@
-﻿using Kursovaya.Model.Shipping;
+﻿using Kursovaya.Model.Supply;
 using Kursovaya.Model.Worker;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Kursovaya.Model
 {
@@ -21,13 +18,11 @@ namespace Kursovaya.Model
         [Key]
         public int Supply_id { get; set; }
         public int Factory_id { get; set; }
-        public System.DateTime Date { get; set; }
+        public DateTime Date { get; set; }
 
         [ForeignKey("Factory_id")]
         public virtual FactoryModel Factory { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Supply_ProductModel> Supply_Product { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<WorkerModel> Worker { get; set; }
     }
 }
