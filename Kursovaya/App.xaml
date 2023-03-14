@@ -11,8 +11,5 @@
                 <ResourceDictionary Source="/Styles/DataGridStyles.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
-
     </Application.Resources>
-    
-    
 </Application>

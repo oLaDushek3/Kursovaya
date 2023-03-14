@@ -7,14 +7,14 @@ using System.Text;
 using System.Threading.Tasks;
 using Kursovaya.Model.Shipping;
 
-namespace Kursovaya.Model
+namespace Kursovaya.Model.Place
 {
-    public partial class Place
+    public partial class PlaceModel
     {
-        public Place()
+        public PlaceModel()
         {
-            this.Shipping_Product_Place = new HashSet<Shipping_Product_PlaceModel>();
-            this.Supply_Product_Place = new HashSet<Supply_Product_PlaceModel>();
+            Shipping_Product_Place = new HashSet<Shipping_Product_PlaceModel>();
+            Supply_Product_Place = new HashSet<Supply_Product_PlaceModel>();
         }
 
         [Key]

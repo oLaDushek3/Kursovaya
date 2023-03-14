@@ -1,5 +1,6 @@
 ﻿using Kursovaya.Model;
 using Kursovaya.Model.Buyer;
+using Kursovaya.Model.Place;
 using Kursovaya.Model.Product;
 using Kursovaya.Model.Shipping;
 using Kursovaya.Model.User;
@@ -12,10 +13,10 @@ namespace Kursovaya.Repositories
     {
         public virtual DbSet<BuyerModel> Buyer { get; set; }
         public virtual DbSet<Buyer_addressModel> Buyer_address { get; set; }
-        public virtual DbSet<Factory> Factory { get; set; }
+        public virtual DbSet<FactoryModel> Factory { get; set; }
         public virtual DbSet<IndividualModel> Individual { get; set; }
         public virtual DbSet<Legal_entityModel> Legal_entity { get; set; }
-        public virtual DbSet<Place> Place { get; set; }
+        public virtual DbSet<PlaceModel> Place { get; set; }
         public virtual DbSet<PostModel> Post { get; set; }
         public virtual DbSet<ProductModel> Product { get; set; }
         public virtual DbSet<Product_typeModel> Product_type { get; set; }

@@ -1,4 +1,5 @@
-﻿using Kursovaya.Model.Worker;
+﻿using Kursovaya.Model.Shipping;
+using Kursovaya.Model.Worker;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -23,7 +24,7 @@ namespace Kursovaya.Model
         public System.DateTime Date { get; set; }
 
         [ForeignKey("Factory_id")]
-        public virtual Factory Factory { get; set; }
+        public virtual FactoryModel Factory { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Supply_ProductModel> Supply_Product { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

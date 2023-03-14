@@ -5,14 +5,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Kursovaya.Model
+namespace Kursovaya.Model.Shipping
 {
-    public partial class Factory
+    public partial class FactoryModel
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Factory()
+        public FactoryModel()
         {
-            this.Supply = new HashSet<SupplyModel>();
+            Supply = new HashSet<SupplyModel>();
         }
 
         [Key]

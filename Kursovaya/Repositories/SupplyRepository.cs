@@ -1,4 +1,5 @@
 ﻿using Kursovaya.Model;
+using Kursovaya.Model.Shipping;
 using Kursovaya.Model.Supply;
 using System;
 using System.Collections.Generic;
@@ -26,7 +27,7 @@ namespace Kursovaya.Repositories
         public List<SupplyModel> GetByAll()
         {
             ApplicationContext context = new ApplicationContext();
-            List<Factory> factorys = context.Factory.ToList();
+            List<FactoryModel> factorys = context.Factory.ToList();
             List<SupplyModel> supplys = context.Supply.ToList();
 
             return supplys;

@@ -19,8 +19,8 @@ namespace Kursovaya
                     var mainView = new MainView();
                     mainView.Show();
                     loginView.Close();
+               }
+            };
         }
-    };
-}
     }
 }

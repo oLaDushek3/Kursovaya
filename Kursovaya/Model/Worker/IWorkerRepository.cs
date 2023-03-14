@@ -8,13 +8,11 @@ using System.Threading.Tasks;
 
 namespace Kursovaya.Model.Worker
 {
-    internal interface IWorkerRepository
+    public interface IWorkerRepository
     {
         void Add(WorkerModel workerModel);
         void Edit(WorkerModel workerModel);
         void Remove(int id);
         IEnumerable<WorkerModel> GetByAll();
-        //...
-
     }
 }
