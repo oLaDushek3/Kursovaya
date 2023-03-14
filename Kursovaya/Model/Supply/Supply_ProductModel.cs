@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace Kursovaya.Model
 {
-    public partial class Supply_Product
+    public partial class Supply_ProductModel
     {
-        public Supply_Product()
+        public Supply_ProductModel()
         {
-            this.Supply_Product_Place = new HashSet<Supply_Product_Place>();
+            this.Supply_Product_Place = new HashSet<Supply_Product_PlaceModel>();
         }
 
         [Key]
@@ -22,6 +22,6 @@ namespace Kursovaya.Model
 
         public virtual Product Product { get; set; }
         public virtual SupplyModel Supply { get; set; }
-        public virtual ICollection<Supply_Product_Place> Supply_Product_Place { get; set; }
+        public virtual ICollection<Supply_Product_PlaceModel> Supply_Product_Place { get; set; }
     }
 }

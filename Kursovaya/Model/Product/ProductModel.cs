@@ -4,15 +4,16 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Kursovaya.Model.Shipping;
 
-namespace Kursovaya.Model
+namespace Kursovaya.Model.Product
 {
-    public partial class Product
+    public partial class ProductModel
     {
-        public Product()
+        public ProductModel()
         {
-            this.Shipping_Product = new HashSet<Shipping_Product>();
-            this.Supply_Product = new HashSet<Supply_Product>();
+            Shipping_Product = new HashSet<Shipping_ProductModel>();
+            Supply_Product = new HashSet<Supply_ProductModel>();
         }
 
         [Key]
@@ -24,8 +25,8 @@ namespace Kursovaya.Model
         public int Quantity { get; set; }
         public decimal Price_per_unit { get; set; }
 
-        public virtual Product_type Product_type { get; set; }
-        public virtual ICollection<Shipping_Product> Shipping_Product { get; set; }
-        public virtual ICollection<Supply_Product> Supply_Product { get; set; }
+        public virtual Product_typeModel Product_type { get; set; }
+        public virtual ICollection<Shipping_ProductModel> Shipping_Product { get; set; }
+        public virtual ICollection<Supply_ProductModel> Supply_Product { get; set; }
     }
 }

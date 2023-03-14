@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Kursovaya.Model.Shipping;
 
 namespace Kursovaya.Model
 {
@@ -12,8 +13,8 @@ namespace Kursovaya.Model
     {
         public Place()
         {
-            this.Shipping_Product_Place = new HashSet<Shipping_Product_Place>();
-            this.Supply_Product_Place = new HashSet<Supply_Product_Place>();
+            this.Shipping_Product_Place = new HashSet<Shipping_Product_PlaceModel>();
+            this.Supply_Product_Place = new HashSet<Supply_Product_PlaceModel>();
         }
 
         [Key]
@@ -23,7 +24,7 @@ namespace Kursovaya.Model
 
         [ForeignKey("Section_id")]
         public virtual Section Section { get; set; }
-        public virtual ICollection<Shipping_Product_Place> Shipping_Product_Place { get; set; }
-        public virtual ICollection<Supply_Product_Place> Supply_Product_Place { get; set; }
+        public virtual ICollection<Shipping_Product_PlaceModel> Shipping_Product_Place { get; set; }
+        public virtual ICollection<Supply_Product_PlaceModel> Supply_Product_Place { get; set; }
     }
 }

@@ -1,4 +1,7 @@
 ﻿using Kursovaya.Model;
+using Kursovaya.Model.Buyer;
+using Kursovaya.Model.Product;
+using Kursovaya.Model.Shipping;
 using Kursovaya.Model.User;
 using Kursovaya.Model.Worker;
 using Microsoft.EntityFrameworkCore;
@@ -7,23 +10,23 @@ namespace Kursovaya.Repositories
 {
     public class ApplicationContext : DbContext
     {
-        public virtual DbSet<Buyer> Buyer { get; set; }
-        public virtual DbSet<Buyer_address> Buyer_address { get; set; }
+        public virtual DbSet<BuyerModel> Buyer { get; set; }
+        public virtual DbSet<Buyer_addressModel> Buyer_address { get; set; }
         public virtual DbSet<Factory> Factory { get; set; }
-        public virtual DbSet<Individual> Individual { get; set; }
-        public virtual DbSet<Legal_entity> Legal_entity { get; set; }
+        public virtual DbSet<IndividualModel> Individual { get; set; }
+        public virtual DbSet<Legal_entityModel> Legal_entity { get; set; }
         public virtual DbSet<Place> Place { get; set; }
-        public virtual DbSet<Post> Post { get; set; }
-        public virtual DbSet<Product> Product { get; set; }
-        public virtual DbSet<Product_type> Product_type { get; set; }
-        public virtual DbSet<Products_group> Products_group { get; set; }
+        public virtual DbSet<PostModel> Post { get; set; }
+        public virtual DbSet<ProductModel> Product { get; set; }
+        public virtual DbSet<Product_typeModel> Product_type { get; set; }
+        public virtual DbSet<Products_groupModel> Products_group { get; set; }
         public virtual DbSet<Section> Section { get; set; }
-        public virtual DbSet<Shipping> Shipping { get; set; }
-        public virtual DbSet<Shipping_Product> Shipping_Product { get; set; }
-        public virtual DbSet<Shipping_Product_Place> Shipping_Product_Place { get; set; }
+        public virtual DbSet<ShippingModel> Shipping { get; set; }
+        public virtual DbSet<Shipping_ProductModel> Shipping_Product { get; set; }
+        public virtual DbSet<Shipping_Product_PlaceModel> Shipping_Product_Place { get; set; }
         public virtual DbSet<SupplyModel> Supply { get; set; }
-        public virtual DbSet<Supply_Product> Supply_Product { get; set; }
-        public virtual DbSet<Supply_Product_Place> Supply_Product_Place { get; set; }
+        public virtual DbSet<Supply_ProductModel> Supply_Product { get; set; }
+        public virtual DbSet<Supply_Product_PlaceModel> Supply_Product_Place { get; set; }
         public virtual DbSet<WorkerModel> Worker { get; set; }
         public virtual DbSet<UserModel> User { get; set; }
 

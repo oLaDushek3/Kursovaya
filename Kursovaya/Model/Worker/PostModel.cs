@@ -1,5 +1,4 @@
-﻿using Kursovaya.Model.Worker;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -7,13 +6,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Kursovaya.Model
+namespace Kursovaya.Model.Worker
 {
-    public partial class Post
+    public partial class PostModel
     {
-        public Post()
+        public PostModel()
         {
-            this.Worker = new HashSet<WorkerModel>();
+            Worker = new HashSet<WorkerModel>();
         }
 
         [Key]

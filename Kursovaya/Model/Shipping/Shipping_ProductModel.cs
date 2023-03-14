@@ -5,13 +5,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Kursovaya.Model
+namespace Kursovaya.Model.Shipping
 {
-    public partial class Shipping_Product
+    public partial class Shipping_ProductModel
     {
-        public Shipping_Product()
+        public Shipping_ProductModel()
         {
-            this.Shipping_Product_Place = new HashSet<Shipping_Product_Place>();
+            Shipping_Product_Place = new HashSet<Shipping_Product_PlaceModel>();
         }
 
         [Key]
@@ -21,7 +21,7 @@ namespace Kursovaya.Model
         public int Quantity { get; set; }
 
         public virtual Product Product { get; set; }
-        public virtual Shipping Shipping { get; set; }
-        public virtual ICollection<Shipping_Product_Place> Shipping_Product_Place { get; set; }
+        public virtual ShippingModel Shipping { get; set; }
+        public virtual ICollection<Shipping_Product_PlaceModel> Shipping_Product_Place { get; set; }
     }
 }

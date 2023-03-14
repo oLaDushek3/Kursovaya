@@ -5,16 +5,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Kursovaya.Model
+namespace Kursovaya.Model.Shipping
 {
-    public partial class Supply_Product_Place
+    public partial class Shipping_Product_PlaceModel
     {
         [Key]
-        public int Supply_Product_id { get; set; }
+        public int Shipping_Product_id { get; set; }
         public int Place_id { get; set; }
         public int Quantity { get; set; }
 
         public virtual Place Place { get; set; }
-        public virtual Supply_Product Supply_Product { get; set; }
+        public virtual Shipping_ProductModel Shipping_Product { get; set; }
     }
 }

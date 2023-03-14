@@ -13,7 +13,7 @@ namespace Kursovaya.Model
     {
         public SupplyModel()
         {
-            this.Supply_Product = new HashSet<Supply_Product>();
+            this.Supply_Product = new HashSet<Supply_ProductModel>();
             this.Worker = new HashSet<WorkerModel>();
         }
 
@@ -25,7 +25,7 @@ namespace Kursovaya.Model
         [ForeignKey("Factory_id")]
         public virtual Factory Factory { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Supply_Product> Supply_Product { get; set; }
+        public virtual ICollection<Supply_ProductModel> Supply_Product { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<WorkerModel> Worker { get; set; }
     }

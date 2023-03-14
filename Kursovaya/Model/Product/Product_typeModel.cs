@@ -5,13 +5,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Kursovaya.Model
+namespace Kursovaya.Model.Product
 {
-    public partial class Product_type
+    public partial class Product_typeModel
     {
-        public Product_type()
+        public Product_typeModel()
         {
-            this.Product = new HashSet<Product>();
+            Product = new HashSet<ProductModel>();
         }
 
         [Key]
@@ -19,7 +19,7 @@ namespace Kursovaya.Model
         public string Title { get; set; }
         public int Products_group_Id { get; set; }
 
-        public virtual ICollection<Product> Product { get; set; }
-        public virtual Products_group Products_group { get; set; }
+        public virtual ICollection<ProductModel> Product { get; set; }
+        public virtual Products_groupModel Products_group { get; set; }
     }
 }

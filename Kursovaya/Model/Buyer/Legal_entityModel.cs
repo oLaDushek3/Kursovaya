@@ -5,14 +5,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Kursovaya.Model
+namespace Kursovaya.Model.Buyer
 {
-    public partial class Legal_entity
+    public partial class Legal_entityModel
     {
-        public Legal_entity()
+        public Legal_entityModel()
         {
-            this.Buyer = new HashSet<Buyer>();
-            this.Buyer_address = new HashSet<Buyer_address>();
+            Buyer = new HashSet<BuyerModel>();
+            Buyer_address = new HashSet<Buyer_addressModel>();
         }
 
         [Key]
@@ -26,7 +26,7 @@ namespace Kursovaya.Model
         public string TIN { get; set; }
         public string Phone_number { get; set; }
 
-        public virtual ICollection<Buyer> Buyer { get; set; }
-        public virtual ICollection<Buyer_address> Buyer_address { get; set; }
+        public virtual ICollection<BuyerModel> Buyer { get; set; }
+        public virtual ICollection<Buyer_addressModel> Buyer_address { get; set; }
     }
 }
