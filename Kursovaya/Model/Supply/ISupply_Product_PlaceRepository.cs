@@ -1,18 +1,12 @@
-﻿using Kursovaya.Model.Worker;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace Kursovaya.Model.Supply
 {
     public interface ISupply_Product_PlaceRepository
     {
-        void Add(Supply_Product_PlaceModel supply_Product_PlaceModel);
-        void Edit(Supply_Product_PlaceModel supply_Product_PlaceModel);
+        void Add(SupplyProductPlaceModel supplyProductPlaceModel);
+        void Edit(SupplyProductPlaceModel supplyProductPlaceModel);
         void Remove(int id);
-        IEnumerable<Supply_Product_PlaceModel> GetByAll();
+        IEnumerable<SupplyProductPlaceModel> GetByAll();
     }
 }

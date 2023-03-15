@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace Kursovaya.Model.Product
 {
     internal interface IProduct_typeRepository
     {
-        void Add(Product_typeModel product_typeModel);
-        void Edit(Product_typeModel product_typeModel);
+        void Add(ProductTypeModel productTypeModel);
+        void Edit(ProductTypeModel productTypeModel);
         void Remove(int id);
-        IEnumerable<Product_typeModel> GetByAll();
+        IEnumerable<ProductTypeModel> GetByAll();
     }
 }

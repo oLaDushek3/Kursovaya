@@ -1,26 +1,22 @@
-﻿using Kursovaya.Model;
-using Kursovaya.Model.Supply;
+﻿using Kursovaya.Model.Supply;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Kursovaya.Repositories
 {
     public class Supply_Product_PlaceRepository : ApplicationContext, ISupply_Product_PlaceRepository
     {
-        public void Add(Supply_Product_PlaceModel supply_Product_PlaceModel)
+        public void Add(SupplyProductPlaceModel supplyProductPlaceModel)
         {
             throw new NotImplementedException();
         }
 
-        public void Edit(Supply_Product_PlaceModel supply_Product_PlaceModel)
+        public void Edit(SupplyProductPlaceModel supplyProductPlaceModel)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Supply_Product_PlaceModel> GetByAll()
+        public IEnumerable<SupplyProductPlaceModel> GetByAll()
         {
             throw new NotImplementedException();
         }

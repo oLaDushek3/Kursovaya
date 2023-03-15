@@ -1,10 +1,6 @@
-﻿using Kursovaya.Model.Shipping;
-using Kursovaya.Model.Supply;
+﻿using Kursovaya.Model.Factory;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Kursovaya.Repositories
 {

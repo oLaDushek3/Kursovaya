@@ -1,7 +1,4 @@
-﻿using Kursovaya.Model;
-using Kursovaya.Model.Product;
-using Kursovaya.Model.Supply;
-using Kursovaya.Model.Worker;
+﻿using Kursovaya.Model.Supply;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -30,15 +27,19 @@ namespace Kursovaya.Repositories
         public List<SupplyModel> GetByAll()
         {
             ApplicationContext context = new ApplicationContext();
-            //List<FactoryModel> factorys = context.Factory.ToList();
-            //List<ProductModel> products = context.Product.ToList();
-            List<SupplyWorkerModel> supplyWorkers = context.Supply_Worker.ToList();
-            List <WorkerModel> workers = context.Worker.ToList();
-            List<SupplyModel> supplys = context.Supply.ToList();
+            List<SupplyModel>? supplies = context.Supplies.
+                Include(s => s.Factory).
 
-            MessageBox.Show(supplys[0].Factory.Address);
+                Include(s => s.SupplyProducts).
+                    ThenInclude(s => s.SupplyProductPlaces).
+                        ThenInclude(s => s.Place).
 
-            return supplys;
+                Include(s => s.SupplyProducts).
+                    ThenInclude(s => s.Product).
+
+                Include(s => s.Workers).ToList();
+
+            return supplies;
         }
 
     }

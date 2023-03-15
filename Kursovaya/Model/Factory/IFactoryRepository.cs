@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Kursovaya.Model.Supply;
+﻿using System.Collections.Generic;
 
-namespace Kursovaya.Model.Shipping
+namespace Kursovaya.Model.Factory
 {
     public interface IFactoryRepository
     {

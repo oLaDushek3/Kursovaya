@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace Kursovaya.Model.Buyer
 {
     internal interface ILegal_entityRepository
     {
-        void Add(Legal_entityModel legal_entityModel);
-        void Edit(Legal_entityModel legal_entityModel);
+        void Add(LegalEntityModel legalEntityModel);
+        void Edit(LegalEntityModel legalEntityModel);
         void Remove(int id);
-        IEnumerable<Legal_entityModel> GetByAll();
+        IEnumerable<LegalEntityModel> GetByAll();
     }
 }

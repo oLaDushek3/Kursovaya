@@ -13,7 +13,7 @@ namespace Kursovaya.Repositories
             bool validUser;
             using (ApplicationContext context = new ApplicationContext())
             {
-                UserModel? user = context.User.FirstOrDefault(u => u.Login == credential.UserName && u.Password == credential.Password);
+                UserModel? user = context.Users.FirstOrDefault(u => u.Login == credential.UserName && u.Password == credential.Password);
                 validUser = user == null? false : true;
 
                 return validUser;
@@ -40,10 +40,10 @@ namespace Kursovaya.Repositories
             throw new NotImplementedException();
         }
 
-        public UserModel GetByUsername(string username)
+        UserModel IUserRepository.GetByUsername(string username)
         {
             ApplicationContext context = new ApplicationContext();
-            UserModel? user = context.User.FirstOrDefault(u => u.Login == username);
+            UserModel? user = context.Users.FirstOrDefault(u => u.Login == username);
 
             return user;
         }

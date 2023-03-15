@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace Kursovaya.Model.Shipping
 {
     public interface IShipping_ProductRepository
     {
-        void Add(Shipping_ProductModel shipping_ProductModel);
-        void Edit(Shipping_ProductModel shipping_ProductModel);
+        void Add(ShippingProductModel shippingProductModel);
+        void Edit(ShippingProductModel shippingProductModel);
         void Remove(int id);
-        IEnumerable<Shipping_ProductModel> GetByAll();
+        IEnumerable<ShippingProductModel> GetByAll();
     }
 }

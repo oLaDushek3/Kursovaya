@@ -1,24 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
-namespace Kursovaya.Model.Worker
+namespace Kursovaya.Model.Worker;
+
+public partial class PostModel
 {
-    public partial class PostModel
-    {
-        public PostModel()
-        {
-            Worker = new HashSet<WorkerModel>();
-        }
+    public int PostId { get; set; }
 
-        [Key]
-        public int Post_id { get; set; }
-        public string Title { get; set; }
+    public string Title { get; set; } = null!;
 
-        public virtual ICollection<WorkerModel> Worker { get; set; }
-    }
+    public virtual ICollection<WorkerModel> Workers { get; } = new List<WorkerModel>();
 }

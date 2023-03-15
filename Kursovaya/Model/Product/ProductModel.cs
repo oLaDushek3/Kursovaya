@@ -1,33 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Kursovaya.Model.Shipping;
+using Kursovaya.Model.Supply;
 
-namespace Kursovaya.Model.Product
+namespace Kursovaya.Model.Product;
+
+public partial class ProductModel
 {
-    public partial class ProductModel
-    {
-        public ProductModel()
-        {
-            Shipping_Product = new HashSet<Shipping_ProductModel>();
-            Supply_Product = new HashSet<Supply_ProductModel>();
-        }
+    public int ProductId { get; set; }
 
-        [Key]
-        public int Product_id { get; set; }
-        public string Title { get; set; }
-        public string Characteristic { get; set; }
-        public int Product_type_id { get; set; }
-        public int Quantity { get; set; }
-        public decimal Price_per_unit { get; set; }
+    public string Title { get; set; } = null!;
 
-        [ForeignKey("Product_type_id")]
-        public virtual Product_typeModel Product_type { get; set; }
-        public virtual ICollection<Shipping_ProductModel> Shipping_Product { get; set; }
-        public virtual ICollection<Supply_ProductModel> Supply_Product { get; set; }
-    }
+    public string Characteristic { get; set; } = null!;
+
+    public int ProductTypeId { get; set; }
+
+    public int Quantity { get; set; }
+
+    public decimal PricePerUnit { get; set; }
+
+    public virtual ProductTypeModel ProductNavigation { get; set; } = null!;
+
+    public virtual ICollection<ShippingProductModel> ShippingProducts { get; } = new List<ShippingProductModel>();
+
+    public virtual ICollection<SupplyProductModel> SupplyProducts { get; } = new List<SupplyProductModel>();
 }

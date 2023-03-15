@@ -1,25 +1,22 @@
 ﻿using Kursovaya.Model.Buyer;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Kursovaya.Repositories
 {
     public class Legal_entityRepository : ApplicationContext, ILegal_entityRepository
     {
-        public void Add(Legal_entityModel legal_entityModel)
+        public void Add(LegalEntityModel legal_entityModel)
         {
             throw new NotImplementedException();
         }
 
-        public void Edit(Legal_entityModel legal_entityModel)
+        public void Edit(LegalEntityModel legal_entityModel)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Legal_entityModel> GetByAll()
+        public IEnumerable<LegalEntityModel> GetByAll()
         {
             throw new NotImplementedException();
         }

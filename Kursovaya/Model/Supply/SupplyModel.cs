@@ -1,28 +1,21 @@
-﻿using Kursovaya.Model.Supply;
-using Kursovaya.Model.Worker;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+using Kursovaya.Model.Factory;
+using Kursovaya.Model.Worker;
 
-namespace Kursovaya.Model
+namespace Kursovaya.Model.Supply;
+
+public partial class SupplyModel
 {
-    public partial class SupplyModel
-    {
-        public SupplyModel()
-        {
-            Supply_Product = new List<Supply_ProductModel>();
-            Worker = new List<WorkerModel>();
-        }
+    public int SupplyId { get; set; }
 
-        [Key]
-        public int Supply_id { get; set; }
-        public int Factory_id { get; set; }
-        public DateTime Date { get; set; }
+    public int FactoryId { get; set; }
 
-        [ForeignKey("Factory_id")]
-        public virtual FactoryModel Factory { get; set; }
-        public virtual List<Supply_ProductModel> Supply_Product { get; set; }
-        public List<WorkerModel> Worker { get; set; }
-    }
+    public DateTime Date { get; set; }
+
+    public virtual FactoryModel Factory { get; set; } = null!;
+
+    public virtual ICollection<SupplyProductModel> SupplyProducts { get; } = new List<SupplyProductModel>();
+
+    public virtual ICollection<WorkerModel> Workers { get; } = new List<WorkerModel>();
 }

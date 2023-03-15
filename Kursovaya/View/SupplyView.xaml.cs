@@ -23,6 +23,7 @@ namespace Kursovaya.View
         public SupplyView()
         {
             InitializeComponent();
+            
         }
     }
 }

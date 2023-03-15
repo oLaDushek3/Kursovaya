@@ -9,7 +9,7 @@ namespace Kursovaya.ViewModel
     {
         //Fields
         private ISupplyRepository _supplyRepository;
-        private List<SupplyModel> _supplys;
+        private List<SupplyModel>? _supplys;
 
         //Properties
         public List<SupplyModel> Supplys
