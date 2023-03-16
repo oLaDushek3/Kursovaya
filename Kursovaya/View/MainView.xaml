@@ -26,6 +26,10 @@
         <DataTemplate DataType="{x:Type viewmodel:SupplyViewModel}">
             <view:SupplyView/>
         </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewmodel:FactoryViewModel}">
+            <view:SupplyView/>
+        </DataTemplate>
     </Window.Resources>
     
     <Border CornerRadius="10"

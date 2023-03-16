@@ -60,6 +60,7 @@ namespace Kursovaya.ViewModel
         //Commands
         public ICommand ShowHomeViewCommand { get; }
         public ICommand ShowSupplyViewCommand { get; }
+        public ICommand ShowFactoryViewCommand { get; }
 
         public MainViewModel()
         {
@@ -69,6 +70,7 @@ namespace Kursovaya.ViewModel
             //Initialize command
             ShowHomeViewCommand = new ViewModelCommand(ExecuteShowHomeViewCommand);
             ShowSupplyViewCommand = new ViewModelCommand(ExecuteShowSupplyViewCommand);
+            ShowFactoryViewCommand = new ViewModelCommand(ExecuteShowFactoryViewCommand);
 
             //Default view
             ExecuteShowHomeViewCommand(null);
@@ -89,6 +91,14 @@ namespace Kursovaya.ViewModel
             CurrentChildView = new SupplyViewModel();
             Caption = "Поставки";
             Icon = IconChar.Truck;
+
+        }
+
+        private void ExecuteShowFactoryViewCommand(object? obj)
+        {
+            CurrentChildView = new FactoryViewModel();
+            Caption = "Производства";
+            Icon = IconChar.Industry;
 
         }
 

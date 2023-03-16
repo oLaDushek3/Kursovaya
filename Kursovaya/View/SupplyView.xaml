@@ -54,19 +54,33 @@
                 <DataGridTemplateColumn Header="Работники" SortMemberPath="Supplys">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <TextBox Text="{Binding Workers, Mode=OneWay}"/>
-                            <!--<ComboBox ItemsSource="{Binding Workers}">
+                            <ComboBox ItemsSource="{Binding Workers}">
                                 <ComboBox.ItemTemplate>
                                     <DataTemplate>
                                         <TextBlock Text="{Binding FullName}"/>
                                     </DataTemplate>
                                 </ComboBox.ItemTemplate>
-                            </ComboBox>-->
+                            </ComboBox>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
                
             </DataGrid.Columns>
+
+            <!--<DataGrid.RowDetailsTemplate>
+                <DataTemplate>
+                    <ListBox>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <UniformGrid Columns="2">
+                                    <TextBlock Text="{Binding Place}"/>
+                                    <TextBlock/>
+                                </UniformGrid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </DataTemplate>
+            </DataGrid.RowDetailsTemplate>-->
         </DataGrid>
     
     </Grid>
