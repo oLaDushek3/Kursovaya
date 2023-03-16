@@ -50,6 +50,21 @@
                                     Binding="{Binding Factory.Address}" Width="*"/>
                 <DataGridTextColumn Header="Дата" IsReadOnly="True" CanUserResize="False" 
                                     Binding="{Binding Date, StringFormat='d MMMM yyyy', ConverterCulture=ru}" Width="*"/>
+
+                <DataGridTemplateColumn Header="Работники" SortMemberPath="Supplys">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBox Text="{Binding Workers, Mode=OneWay}"/>
+                            <!--<ComboBox ItemsSource="{Binding Workers}">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding FullName}"/>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>-->
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
                
             </DataGrid.Columns>
         </DataGrid>
