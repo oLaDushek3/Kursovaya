@@ -74,8 +74,10 @@
                         Margin="2">
 
                     <StackPanel Margin="5">
+                        <Button Height="20"
+                                Command="{Binding ShowDeleteViewCommand}"/>
 
-                        <TextBlock Text="{Binding SelectedSupply.SupplyId, StringFormat = Поставка № {0}}"
+                        <TextBlock Text="{Binding SelectedSupply.SupplyId,StringFormat = Поставка № {0}}"
                                    Foreground="{StaticResource titleColor1}"
                                    FontFamily="Motserrat"
                                    FontSize="18"
@@ -140,9 +142,9 @@
                                                  Background="Transparent"
                                                  BorderThickness="1 0 0 0"
                                                  BorderBrush="LightGray"
-                                                 IsReadOnly="True"
+                                                 IsReadOnly="False"
                                                  FontFamily="Montserrat"
-                                                 Text="{Binding FullName}"
+                                                 Text="{Binding FullName, Mode=TwoWay}"
                                                  VerticalAlignment="Center"/>
 
                                         <TextBox Grid.Column="1" 

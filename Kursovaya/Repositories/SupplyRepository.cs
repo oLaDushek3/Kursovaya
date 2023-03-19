@@ -16,7 +16,20 @@ namespace Kursovaya.Repositories
 
         public void Edit(SupplyModel supplyModel)
         {
-            throw new NotImplementedException();
+            ApplicationContext context = new ApplicationContext();
+            SupplyModel? supply = context.Supplies.
+                Include(s => s.Factory).
+
+                Include(s => s.SupplyProducts).
+                    ThenInclude(s => s.SupplyProductPlaces).
+                        ThenInclude(s => s.Place).
+
+                Include(s => s.SupplyProducts).
+                    ThenInclude(s => s.Product).
+
+                Include(s => s.Workers).
+                    ThenInclude(s => s.Post).
+                FirstOrDefault(s => s.SupplyId == 3);
         }
 
         public void Remove(int id)

@@ -15,7 +15,7 @@ public partial class SupplyModel
 
     public virtual FactoryModel Factory { get; set; } = null!;
 
-    public virtual ICollection<SupplyProductModel> SupplyProducts { get; } = new List<SupplyProductModel>();
+    public virtual List<SupplyProductModel> SupplyProducts { get; } = new List<SupplyProductModel>();
 
-    public virtual ICollection<WorkerModel> Workers { get; } = new List<WorkerModel>();
+    public List<WorkerModel> Workers { get; set; } = new List<WorkerModel>();
 }
