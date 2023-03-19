@@ -27,8 +27,16 @@
             <view:SupplyView/>
         </DataTemplate>
 
+        <DataTemplate DataType="{x:Type viewmodel:AddSupplyViewModel}">
+            <view:AddSupplyView/>
+        </DataTemplate>
+        
+        <DataTemplate DataType="{x:Type viewmodel:EditSupplyViewModel}">
+            <view:EditSupplyView/>
+        </DataTemplate>
+
         <DataTemplate DataType="{x:Type viewmodel:FactoryViewModel}">
-            <view:SupplyView/>
+            <view:FactoryView/>
         </DataTemplate>
     </Window.Resources>
     
@@ -114,7 +122,8 @@
                     </RadioButton>
                     
                     <RadioButton Style="{StaticResource menuButton}"
-                                 Tag="{StaticResource color4}">
+                                 Tag="{StaticResource color4}"
+                                 Command="{Binding ShowFactoryViewCommand}">
 
                         <StackPanel Orientation="Horizontal">
                             <fa:IconImage Icon="Industry" Style="{StaticResource menuButtonIcon}"/>
@@ -226,7 +235,48 @@
                                        FontSize="16"
                                        FontFamily="Montserrat"
                                        FontWeight="Medium"
-                                       VerticalAlignment="Center"/>
+                                       VerticalAlignment="Center" Cursor=""/>
+
+                            <Button Margin="10 0 0 0" Style="{StaticResource iconButton}"
+                                    Tag="{StaticResource color1}" Cursor="Hand"
+                                    Visibility="{Binding Visibility}"
+                                    Command="{Binding ShowEditViewCommand}">
+                                <Button.Content>
+                                    <fa:IconImage Icon="Pencil"
+                                                  Style="{StaticResource iconButtonIcon}"/>
+                                </Button.Content>
+                            </Button>
+
+                            <Button Style="{StaticResource iconButton}"
+                                    Tag="{StaticResource color9}" Cursor="Hand"
+                                    Visibility="{Binding Visibility}"
+                                    Command="{Binding ShowAddViewCommand}">
+                                <Button.Content>
+                                    <fa:IconImage Icon="plus"
+                                                  Style="{StaticResource iconButtonIcon}" Cursor=""/>
+                                </Button.Content>
+                            </Button>
+                            
+                            <Button Style="{StaticResource iconButton}"
+                                    Tag="{StaticResource color4}" Cursor="Hand"
+                                    Visibility="{Binding Visibility}" 
+                                    Command="{Binding ShowDeleteViewCommand}">
+                                <Button.Content>
+                                    <fa:IconImage Icon="Trash"
+                                                  Style="{StaticResource iconButtonIcon}" Cursor=""/>
+                                </Button.Content>
+                            </Button>
+
+                            <Button Margin="10 0 0 0" Style="{StaticResource iconButton}"
+                                    Tag="{StaticResource color6}" Cursor="Hand"
+                                    Visibility="{Binding BackVisibility}"
+                                    Command="{Binding GoBackCommand}">
+                                <Button.Content>
+                                    <fa:IconImage Icon="ArrowLeft"
+                                                  Style="{StaticResource iconButtonIcon}"/>
+                                </Button.Content>
+                            </Button>
+
                         </StackPanel>
 
                         <StackPanel Grid.Column="1"
@@ -234,9 +284,11 @@
                                     FlowDirection="RightToLeft"
                                     VerticalAlignment="Center"
                                     Margin="0,0,10,0">
+                            
                             <Button Style="{StaticResource iconButton}"
                                     Tag="{StaticResource color4}">
-                                <fa:IconImage Icon="RightFromBracket" Style="{StaticResource iconButtonIcon}"
+                                <fa:IconImage Icon="RightFromBracket" 
+                                              Style="{StaticResource iconButtonIcon}"
                                               FlowDirection="LeftToRight"/>
                             </Button>
 
@@ -255,11 +307,11 @@
                     <!--Content section-->
                     <Grid Grid.Row="2">
                         <Image Source="/Images/Logo.png" 
-                                   RenderOptions.BitmapScalingMode="HighQuality"
-                                   Opacity="0.25"
-                                   Height="400"/>
+                               RenderOptions.BitmapScalingMode="HighQuality"
+                               Opacity="0.25"
+                               Height="400"/>
                         <ContentControl Content="{Binding CurrentChildView}"
-                                    Margin="15"/>
+                                        Margin="15"/>
                     </Grid>
 
                 </Grid>

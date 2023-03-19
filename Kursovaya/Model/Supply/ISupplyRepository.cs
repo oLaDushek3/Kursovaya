@@ -8,5 +8,6 @@ namespace Kursovaya.Model.Supply
         void Edit(SupplyModel supplyModel);
         void Remove(int id);
         List<SupplyModel> GetByAll();
+        SupplyModel GetById(int id);
     }
 }

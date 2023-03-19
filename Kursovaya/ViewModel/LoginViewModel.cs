@@ -61,11 +61,6 @@ namespace Kursovaya.ViewModel
         {
             userRepository = new UserRepository();
             LoginCommand = new ViewModelCommand(ExecuteLoginCommand, CanExecuteLoginCommand);
-
-            //ApplicationContext context = new ApplicationContext();
-            //List<Factory> factorys = context.Factory.ToList();
-            //List<SupplyModel> supplys = context.Supply.ToList();
-            //MessageBox.Show(supplys[1].Factory.Address);
         }
 
         private bool CanExecuteLoginCommand(object obj)

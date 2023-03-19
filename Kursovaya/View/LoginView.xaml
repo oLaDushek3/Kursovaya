@@ -144,8 +144,7 @@
 
                         <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
 
-                            <TextBox x:Name="txtUser"
-                                     Text="{Binding Username, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                            <TextBox Text="{Binding Username, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                      FontSize="13"
                                      FontWeight="Medium"
                                      FontFamily="Montserrat"
@@ -192,8 +191,7 @@
                                Margin="0,10,0,0"
                                TextWrapping="Wrap"/>
 
-                    <Button x:Name="btnLogin"
-                            Command="{Binding LoginCommand}"
+                    <Button Command="{Binding LoginCommand}"
                             BorderThickness="0"
                             Content="Войти"
                             Foreground="White"

@@ -1,5 +1,7 @@
 ﻿using Kursovaya.View;
+using Kursovaya.ViewModel;
 using System.Windows;
+using System.Windows.Markup;
 
 namespace Kursovaya
 {
@@ -21,6 +23,7 @@ namespace Kursovaya
             //        loginView.Close();
             //    }
             //};
+           
         }
     }
 }

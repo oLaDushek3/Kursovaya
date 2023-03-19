@@ -125,7 +125,7 @@
         <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="Foreground" Value="WhiteSmoke"/>
-        <Setter Property="Margin" Value="15 0 15 10"/>
+        <Setter Property="Margin" Value="15 5 0 5"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type DataGridColumnHeader}">
@@ -144,6 +144,7 @@
         <Setter Property="Background" Value="#F2F2F2"/>
         <Setter Property="Margin" Value="0 4 0 0"/>
         <Setter Property="Height" Value="35"/>
+        <Setter Property="FontSize" Value="13"/>
         <Setter Property="SnapsToDevicePixels" Value="true"/>
         <Setter Property="Validation.ErrorTemplate" Value="{x:Null}"/>
         <Setter Property="ValidationErrorTemplate">
@@ -191,7 +192,7 @@
                     <Condition Property="IsSelected" Value="True"/>
                     <Condition Property="Selector.IsSelectionActive" Value="False"/>
                 </MultiTrigger.Conditions>
-                <Setter Property="Background" Value="#dfdfdf"/>
+                <Setter Property="Background" Value="#623ed0"/>
             </MultiTrigger>
         </Style.Triggers>
     </Style>

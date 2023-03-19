@@ -37,10 +37,31 @@ namespace Kursovaya.Repositories
                 Include(s => s.SupplyProducts).
                     ThenInclude(s => s.Product).
 
-                Include(s => s.Workers).ToList();
+                Include(s => s.Workers).
+                    ThenInclude(s => s.Post).ToList();
+                
 
             return supplies;
         }
 
+        public SupplyModel GetById(int id)
+        {
+            ApplicationContext context = new ApplicationContext();
+            SupplyModel? supply = context.Supplies.
+                Include(s => s.Factory).
+
+                Include(s => s.SupplyProducts).
+                    ThenInclude(s => s.SupplyProductPlaces).
+                        ThenInclude(s => s.Place).
+
+                Include(s => s.SupplyProducts).
+                    ThenInclude(s => s.Product).
+
+                Include(s => s.Workers).
+                    ThenInclude(s => s.Post).
+                FirstOrDefault(s => s.SupplyId == id);
+
+            return supply;
+        }
     }
 }
