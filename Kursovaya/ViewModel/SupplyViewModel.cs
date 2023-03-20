@@ -1,27 +1,25 @@
-﻿using FontAwesome.Sharp;
-using Kursovaya.Model;
-using Kursovaya.Model.Supply;
+﻿using Kursovaya.Model.Supply;
 using Kursovaya.Model.Worker;
 using Kursovaya.Repositories;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Linq;
 using System.Windows;
-using System.Windows.Data;
 using System.Windows.Input;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 
 namespace Kursovaya.ViewModel
 {
     public class SupplyViewModel : ViewModelBase
     {
+
+        ApplicationContext context = new ApplicationContext();
         //Fields
         private ISupplyRepository _supplyRepository;
         private List<SupplyModel>? _supplys;
         private SupplyModel? _selectedSupply;
-        private List<WorkerModel> _workerModel;
+        private List<WorkerModel> _addWorker;
+        private WorkerModel? _selectedAddWorker;
 
         //Properties
         public List<SupplyModel> Supplys
@@ -40,60 +38,85 @@ namespace Kursovaya.ViewModel
             {
                 _selectedSupply = value;
                 OnPropertyChanged(nameof(SelectedSupply));
+
+                updateSelectedWorkers();
+                OnPropertyChanged(nameof(SelectedSupplyWorkers));
             }
         }
-
         public ObservableCollection<WorkerModel> SelectedSupplyWorkers
         {
-            get => new ObservableCollection<WorkerModel>(_selectedSupply.Workers);
+            get
+            {
+                updateSelectedWorkers();
+                return new ObservableCollection<WorkerModel>(_selectedSupply.Workers);
+            }
             set
             {
                 _selectedSupply.Workers = new List<WorkerModel>(value);
                 OnPropertyChanged(nameof(SelectedSupply));
             }
         }
-
-        public List<WorkerModel>? WorkerModel
+        public ObservableCollection<WorkerModel>? AddWorker
         {
-            get => _workerModel;
+            get => new ObservableCollection<WorkerModel>(_addWorker);
             set
             {
-                _workerModel = value;
-                OnPropertyChanged(nameof(WorkerModel));
+                _addWorker = new List<WorkerModel>(value);
+                OnPropertyChanged(nameof(AddWorker));
+            }
+        }
+        public WorkerModel? SelectedAddWorker
+        {
+            get
+            {
+                return _selectedAddWorker;
+            }
+            set
+            {
+                if (value != null)
+                    editSupply(value);
+
+                _selectedAddWorker = value;
+                OnPropertyChanged(nameof(SelectedAddWorker));
             }
         }
 
         //Constructor
         public SupplyViewModel()
         {
-            ApplicationContext context = new ApplicationContext();
             _supplyRepository = new SupplyRepository();
             Supplys = _supplyRepository.GetByAll();
             ShowDeleteViewCommand = new ViewModelCommand(ExecuteShowHomeViewCommand);
-            SelectedSupply = _supplyRepository.GetById(3);
-
-            WorkerModel = context.Workers.Include(w => w.Post).ToList();
+            SelectedSupply = _supplyRepository.GetById(Supplys[0].SupplyId);
         }
 
-        public void editSupply()
+        public void editSupply(WorkerModel workerModel)
         {
-            //ApplicationContext context = new ApplicationContext();
-
-            //WorkerModel workerModel = context.Workers.Where(w => w.WorkerId == 3).FirstOrDefault();
-
-            //SupplyModel supplyModel = context.Supplies.Where(s => s.SupplyId == SelectedSupply.SupplyId).FirstOrDefault();
-
-            //supplyModel.Workers.Add(workerModel);
-            //context.SaveChanges();
-            _supplys[0].Workers.Add(WorkerModel[0]);
+            _supplys[Supplys.IndexOf(SelectedSupply)].Workers.Add(workerModel);
+            updateSelectedWorkers();
             OnPropertyChanged(nameof(SelectedSupplyWorkers));
+
+
+            //_supplys[1].Workers.Add(AddWorker[0]);
+            //OnPropertyChanged(nameof(SelectedSupplyWorkers));
+
+           SupplyModel supplyModel = context.Supplies.Where(s => s.SupplyId == SelectedSupply.SupplyId).FirstOrDefault();
+
+            supplyModel.Workers.Add(workerModel);
+            context.SaveChanges();
+
+        }
+
+        public void updateSelectedWorkers()
+        {
+            _addWorker = context.Workers.Where(w => !_selectedSupply.Workers.Select(w => w.WorkerId).Contains(w.WorkerId)).Include(w => w.Post).ToList();
+            OnPropertyChanged(nameof(AddWorker));
         }
 
         public ICommand ShowDeleteViewCommand { get; }
         private void ExecuteShowHomeViewCommand(object? obj)
         {
-            editSupply();
-            
+            //editSupply();
         }
     }
 }

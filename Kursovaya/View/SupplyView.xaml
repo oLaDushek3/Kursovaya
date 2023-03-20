@@ -34,7 +34,8 @@
                           ItemsSource="{Binding Supplys}"
                           Grid.Column="0"
                           Margin="5"
-                          SelectedItem="{Binding Path=SelectedSupply, Mode=TwoWay}">
+                          SelectedItem="{Binding Path=SelectedSupply, Mode=TwoWay}"
+                          SelectedIndex="0">
                     <DataGrid.RowStyle>
                         <Style TargetType="{x:Type DataGridRow}" BasedOn="{StaticResource DataGridRowStyle1}">
                         </Style>
@@ -120,7 +121,7 @@
                         <!--Header-->
                         <TextBlock Text="Работники:"
                                    Foreground="{StaticResource titleColor1}"
-                                   FontFamily="Motserrat"
+                                   FontFamily="Montserrat"
                                    FontSize="18"
                                    VerticalAlignment="Center"
                                    Margin="3"
@@ -161,9 +162,56 @@
 
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>
-                            <ComboBox ItemsSource="{Binding WorkerModel}"
+                            <ListBox ItemsSource="{Binding SelectedSupplyWorkers, Mode=TwoWay}"
+                                     Background="Transparent"
+                                     BorderThickness="0"
+                                     Height="55"
+                                     ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                                <ListBox.ItemContainerStyle>
+                                    <Style TargetType="ListBoxItem">
+                                        <Setter Property="ContextMenu">
+                                            <Setter.Value>
+                                                <ContextMenu>
+                                                    <MenuItem Header="Удалить"/>
+                                                </ContextMenu>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </ListBox.ItemContainerStyle>
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <UniformGrid Columns="2">
+
+                                            <Border BorderThickness="1 0 0 0"
+                                                    BorderBrush="LightGray">
+                                                <TextBlock Grid.Column="0" 
+                                                           Foreground="{StaticResource titleColor1}"
+                                                           Background="Transparent"
+                                                           FontFamily="Montserrat"
+                                                           Text="{Binding FullName}"
+                                                           VerticalAlignment="Center"/>
+                                            </Border>
+
+                                            <TextBlock Grid.Column="1" 
+                                                       Foreground="{StaticResource titleColor1}"
+                                                       Background="Transparent"
+                                                       FontFamily="Montserrat"
+                                                       Text="{Binding Post.Title}"
+                                                       VerticalAlignment="Center"/>
+                                        </UniformGrid>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                                <ListBox.ContextMenu>
+                                    <ContextMenu>
+                                        <MenuItem Header="Menu item 1" />
+                                        <MenuItem Header="Menu item 2" />
+                                        <MenuItem Header="Menu item 3" />
+                                    </ContextMenu>
+                                </ListBox.ContextMenu>
+                            </ListBox>
+                            <ComboBox ItemsSource="{Binding AddWorker}"
                                       Background="Transparent"
-                                      >
+                                      SelectedItem="{Binding SelectedAddWorker}">
                                 <ComboBox.ItemTemplate>
                                     <DataTemplate>
                                         <Grid Margin="0 0 0 5">
@@ -188,6 +236,7 @@
                                     </DataTemplate>
                                 </ComboBox.ItemTemplate>
                             </ComboBox>
+
                         </StackPanel>
                     </Grid>
                 </Border>
