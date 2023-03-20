@@ -20,4 +20,5 @@ public partial class SupplyModel
     public virtual List<SupplyProductModel> SupplyProducts { get; } = new List<SupplyProductModel>();
 
     public List<WorkerModel> Workers { get; set; } = new List<WorkerModel>();
+   
 }

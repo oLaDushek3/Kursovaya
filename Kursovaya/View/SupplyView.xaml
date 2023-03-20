@@ -128,7 +128,7 @@
 
                         <!--List-->
                         <StackPanel Grid.Row="1">
-                            <ItemsControl ItemsSource="{Binding SelectedSupply.Workers, Mode=TwoWay}">
+                            <ItemsControl ItemsSource="{Binding SelectedSupplyWorkers, Mode=TwoWay}">
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
                                         <Grid Margin="0 0 0 5">

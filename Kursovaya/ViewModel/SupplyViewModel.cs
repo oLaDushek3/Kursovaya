@@ -24,7 +24,7 @@ namespace Kursovaya.ViewModel
         private List<WorkerModel> _workerModel;
 
         //Properties
-        public List<SupplyModel>? Supplys
+        public List<SupplyModel> Supplys
         {
             get => _supplys;
             set
@@ -42,6 +42,17 @@ namespace Kursovaya.ViewModel
                 OnPropertyChanged(nameof(SelectedSupply));
             }
         }
+
+        public ObservableCollection<WorkerModel> SelectedSupplyWorkers
+        {
+            get => new ObservableCollection<WorkerModel>(_selectedSupply.Workers);
+            set
+            {
+                _selectedSupply.Workers = new List<WorkerModel>(value);
+                OnPropertyChanged(nameof(SelectedSupply));
+            }
+        }
+
         public List<WorkerModel>? WorkerModel
         {
             get => _workerModel;
@@ -74,13 +85,15 @@ namespace Kursovaya.ViewModel
 
             //supplyModel.Workers.Add(workerModel);
             //context.SaveChanges();
-            Supplys[0].Workers.Add(WorkerModel[0]);
+            _supplys[0].Workers.Add(WorkerModel[0]);
+            OnPropertyChanged(nameof(SelectedSupplyWorkers));
         }
 
         public ICommand ShowDeleteViewCommand { get; }
         private void ExecuteShowHomeViewCommand(object? obj)
         {
             editSupply();
+            
         }
     }
 }
