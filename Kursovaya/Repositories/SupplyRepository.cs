@@ -39,10 +39,11 @@ namespace Kursovaya.Repositories
             throw new NotImplementedException();
         }
 
-        public ObservableCollection<SupplyModel> GetByAll()
+        public List<SupplyModel> GetByAll()
+
         {
             ApplicationContext context = new ApplicationContext();
-            ObservableCollection<SupplyModel>? supplies = (ObservableCollection<SupplyModel>?)context.Supplies.
+            List<SupplyModel> supplies = context.Supplies.
                 Include(s => s.Factory).
 
                 Include(s => s.SupplyProducts).
@@ -53,7 +54,7 @@ namespace Kursovaya.Repositories
                     ThenInclude(s => s.Product).
 
                 Include(s => s.Workers).
-                    ThenInclude(s => s.Post);
+                    ThenInclude(s => s.Post).ToList();
                 
 
             return supplies;

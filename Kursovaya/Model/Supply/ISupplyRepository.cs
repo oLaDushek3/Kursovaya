@@ -8,7 +8,7 @@ namespace Kursovaya.Model.Supply
         void Add(SupplyModel supplyModel);
         void Edit(SupplyModel supplyModel);
         void Remove(int id);
-        ObservableCollection<SupplyModel> GetByAll();
+        List<SupplyModel> GetByAll();
         SupplyModel GetById(int id);
     }
 }

@@ -8,6 +8,6 @@ namespace Kursovaya.Model.Worker
         void Add(WorkerModel workerModel);
         void Edit(WorkerModel workerModel);
         void Remove(int id);
-        ObservableCollection<WorkerModel> GetByAll();
+        List<WorkerModel> GetByAll();
     }
 }

@@ -19,7 +19,7 @@ public partial class WorkerModel
 
     public virtual PostModel Post { get; set; } = null!;
 
-    public virtual ObservableCollection<ShippingModel> Shippings { get; } = new ObservableCollection<ShippingModel>();
+    public virtual List<ShippingModel> Shippings { get; } = new List<ShippingModel>();
 
-    public virtual ObservableCollection<SupplyModel> Supplies { get; } = new ObservableCollection<SupplyModel>();
+    public virtual List<SupplyModel> Supplies { get; set;  } = new List<SupplyModel>();
 }

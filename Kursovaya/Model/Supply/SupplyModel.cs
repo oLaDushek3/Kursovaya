@@ -17,7 +17,7 @@ public partial class SupplyModel
 
     public virtual FactoryModel Factory { get; set; } = null!;
 
-    public virtual ObservableCollection<SupplyProductModel> SupplyProducts { get; } = new ObservableCollection<SupplyProductModel>();
+    public virtual List<SupplyProductModel> SupplyProducts { get; } = new List<SupplyProductModel>();
 
-    public ObservableCollection<WorkerModel> Workers { get; set; } = new ObservableCollection<WorkerModel>();
+    public List<WorkerModel> Workers { get; set; } = new List<WorkerModel>();
 }

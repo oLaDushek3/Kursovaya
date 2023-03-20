@@ -19,12 +19,12 @@ namespace Kursovaya.ViewModel
     {
         //Fields
         private ISupplyRepository _supplyRepository;
-        private ObservableCollection<SupplyModel>? _supplys;
+        private List<SupplyModel>? _supplys;
         private SupplyModel? _selectedSupply;
-        private ObservableCollection<WorkerModel> _workerModel;
+        private List<WorkerModel> _workerModel;
 
         //Properties
-        public ObservableCollection<SupplyModel>? Supplys
+        public List<SupplyModel>? Supplys
         {
             get => _supplys;
             set
@@ -42,7 +42,7 @@ namespace Kursovaya.ViewModel
                 OnPropertyChanged(nameof(SelectedSupply));
             }
         }
-        public ObservableCollection<WorkerModel>? WorkerModel
+        public List<WorkerModel>? WorkerModel
         {
             get => _workerModel;
             set
@@ -61,7 +61,7 @@ namespace Kursovaya.ViewModel
             ShowDeleteViewCommand = new ViewModelCommand(ExecuteShowHomeViewCommand);
             SelectedSupply = _supplyRepository.GetById(3);
 
-            WorkerModel = (ObservableCollection<WorkerModel>?)context.Workers.Include(w => w.Post);
+            WorkerModel = context.Workers.Include(w => w.Post).ToList();
         }
 
         public void editSupply()

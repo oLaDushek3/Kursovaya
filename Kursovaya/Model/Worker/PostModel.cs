@@ -9,5 +9,5 @@ public partial class PostModel
 
     public string Title { get; set; } = null!;
 
-    public virtual ObservableCollection<WorkerModel> Workers { get; } = new ObservableCollection<WorkerModel>();
+    public virtual List<WorkerModel> Workers { get; } = new List<WorkerModel>();
 }

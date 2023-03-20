@@ -18,5 +18,5 @@ public partial class SupplyProductModel
 
     public virtual SupplyModel Supply { get; set; } = null!;
 
-    public virtual ObservableCollection<SupplyProductPlaceModel> SupplyProductPlaces { get; } = new ObservableCollection<SupplyProductPlaceModel>();
+    public virtual List<SupplyProductPlaceModel> SupplyProductPlaces { get; } = new List<SupplyProductPlaceModel>();
 }

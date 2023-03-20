@@ -17,7 +17,7 @@ namespace Kursovaya.Repositories
             throw new NotImplementedException();
         }
 
-        public ObservableCollection<PostModel> GetByAll()
+        public List<PostModel> GetByAll()
         {
             throw new NotImplementedException();
         }
