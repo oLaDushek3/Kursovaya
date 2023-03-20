@@ -127,27 +127,27 @@
                                    Grid.Row="0"/>
 
                         <!--List-->
-                        <ItemsControl ItemsSource="{Binding SelectedSupply.Workers}"
-                                      Grid.Row="1">
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate>
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="50*"/>
-                                            <ColumnDefinition Width="70*"/>
-                                        </Grid.ColumnDefinitions>
-                                        
-                                        <TextBox Grid.Column="0" 
+                        <StackPanel Grid.Row="1">
+                            <ItemsControl ItemsSource="{Binding SelectedSupply.Workers, Mode=TwoWay}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid Margin="0 0 0 5">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="50*"/>
+                                                <ColumnDefinition Width="70*"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <TextBox Grid.Column="0" 
                                                  Foreground="{StaticResource titleColor1}"
                                                  Background="Transparent"
                                                  BorderThickness="1 0 0 0"
                                                  BorderBrush="LightGray"
                                                  IsReadOnly="False"
                                                  FontFamily="Montserrat"
-                                                 Text="{Binding FullName, Mode=TwoWay}"
+                                                 Text="{Binding FullName}"
                                                  VerticalAlignment="Center"/>
 
-                                        <TextBox Grid.Column="1" 
+                                            <TextBox Grid.Column="1" 
                                                  Foreground="{StaticResource titleColor1}"
                                                  Background="Transparent"
                                                  BorderThickness="0"
@@ -156,12 +156,39 @@
                                                  Text="{Binding Post.Title}"
                                                  VerticalAlignment="Center"/>
 
-                                    </Grid>
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
-                        
+                                        </Grid>
+                                    </DataTemplate>
 
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                            <ComboBox ItemsSource="{Binding WorkerModel}"
+                                      Background="Transparent"
+                                      >
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid Margin="0 0 0 5">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="50*"/>
+                                                <ColumnDefinition Width="70*"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <TextBlock Grid.Column="0"
+                                                 Background="Transparent"
+                                                 FontFamily="Montserrat"
+                                                 Text="{Binding FullName}"
+                                                 VerticalAlignment="Center"/>
+
+                                            <TextBlock Margin="50 0 0 0" Grid.Column="1" 
+                                                 Background="Transparent"
+                                                 FontFamily="Montserrat"
+                                                 Text="{Binding Post.Title}"
+                                                 VerticalAlignment="Center"/>
+
+                                        </Grid>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                        </StackPanel>
                     </Grid>
                 </Border>
             </DockPanel>

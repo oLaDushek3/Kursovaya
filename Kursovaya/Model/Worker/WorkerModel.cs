@@ -1,6 +1,7 @@
 ﻿using Kursovaya.Model.Shipping;
 using Kursovaya.Model.Supply;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace Kursovaya.Model.Worker;
 
@@ -18,7 +19,7 @@ public partial class WorkerModel
 
     public virtual PostModel Post { get; set; } = null!;
 
-    public virtual ICollection<ShippingModel> Shippings { get; } = new List<ShippingModel>();
+    public virtual ObservableCollection<ShippingModel> Shippings { get; } = new ObservableCollection<ShippingModel>();
 
-    public virtual ICollection<SupplyModel> Supplies { get; } = new List<SupplyModel>();
+    public virtual ObservableCollection<SupplyModel> Supplies { get; } = new ObservableCollection<SupplyModel>();
 }

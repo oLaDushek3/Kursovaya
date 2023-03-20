@@ -1,6 +1,7 @@
 ﻿using Kursovaya.Model.Worker;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace Kursovaya.Repositories
 {
@@ -16,7 +17,7 @@ namespace Kursovaya.Repositories
             throw new NotImplementedException();
         }
 
-        public IEnumerable<WorkerModel> GetByAll()
+        public ObservableCollection<WorkerModel> GetByAll()
         {
             throw new NotImplementedException();
         }

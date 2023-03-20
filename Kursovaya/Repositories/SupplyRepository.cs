@@ -1,7 +1,9 @@
 ﻿using Kursovaya.Model.Supply;
+using Kursovaya.Model.Worker;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -37,10 +39,10 @@ namespace Kursovaya.Repositories
             throw new NotImplementedException();
         }
 
-        public List<SupplyModel> GetByAll()
+        public ObservableCollection<SupplyModel> GetByAll()
         {
             ApplicationContext context = new ApplicationContext();
-            List<SupplyModel>? supplies = context.Supplies.
+            ObservableCollection<SupplyModel>? supplies = (ObservableCollection<SupplyModel>?)context.Supplies.
                 Include(s => s.Factory).
 
                 Include(s => s.SupplyProducts).
@@ -51,7 +53,7 @@ namespace Kursovaya.Repositories
                     ThenInclude(s => s.Product).
 
                 Include(s => s.Workers).
-                    ThenInclude(s => s.Post).ToList();
+                    ThenInclude(s => s.Post);
                 
 
             return supplies;

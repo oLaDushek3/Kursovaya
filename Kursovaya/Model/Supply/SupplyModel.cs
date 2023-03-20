@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using Kursovaya.Model.Factory;
 using Kursovaya.Model.Worker;
+using Microsoft.EntityFrameworkCore;
 
 namespace Kursovaya.Model.Supply;
 
@@ -15,7 +17,7 @@ public partial class SupplyModel
 
     public virtual FactoryModel Factory { get; set; } = null!;
 
-    public virtual List<SupplyProductModel> SupplyProducts { get; } = new List<SupplyProductModel>();
+    public virtual ObservableCollection<SupplyProductModel> SupplyProducts { get; } = new ObservableCollection<SupplyProductModel>();
 
-    public List<WorkerModel> Workers { get; set; } = new List<WorkerModel>();
+    public ObservableCollection<WorkerModel> Workers { get; set; } = new ObservableCollection<WorkerModel>();
 }

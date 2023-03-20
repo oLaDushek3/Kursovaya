@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using Kursovaya.Model.Product;
 
 namespace Kursovaya.Model.Supply;
@@ -17,5 +18,5 @@ public partial class SupplyProductModel
 
     public virtual SupplyModel Supply { get; set; } = null!;
 
-    public virtual ICollection<SupplyProductPlaceModel> SupplyProductPlaces { get; } = new List<SupplyProductPlaceModel>();
+    public virtual ObservableCollection<SupplyProductPlaceModel> SupplyProductPlaces { get; } = new ObservableCollection<SupplyProductPlaceModel>();
 }

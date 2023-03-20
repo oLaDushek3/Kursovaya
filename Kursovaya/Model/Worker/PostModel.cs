@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace Kursovaya.Model.Worker;
 
@@ -8,5 +9,5 @@ public partial class PostModel
 
     public string Title { get; set; } = null!;
 
-    public virtual ICollection<WorkerModel> Workers { get; } = new List<WorkerModel>();
+    public virtual ObservableCollection<WorkerModel> Workers { get; } = new ObservableCollection<WorkerModel>();
 }

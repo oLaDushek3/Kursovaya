@@ -1,11 +1,15 @@
 ﻿using FontAwesome.Sharp;
 using Kursovaya.Model;
 using Kursovaya.Model.Supply;
+using Kursovaya.Model.Worker;
 using Kursovaya.Repositories;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows;
+using System.Windows.Data;
 using System.Windows.Input;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 
@@ -15,11 +19,12 @@ namespace Kursovaya.ViewModel
     {
         //Fields
         private ISupplyRepository _supplyRepository;
-        private List<SupplyModel>? _supplys;
+        private ObservableCollection<SupplyModel>? _supplys;
         private SupplyModel? _selectedSupply;
+        private ObservableCollection<WorkerModel> _workerModel;
 
         //Properties
-        public List<SupplyModel>? Supplys
+        public ObservableCollection<SupplyModel>? Supplys
         {
             get => _supplys;
             set
@@ -28,7 +33,6 @@ namespace Kursovaya.ViewModel
                 OnPropertyChanged(nameof(Supplys));
             }
         }
-
         public SupplyModel? SelectedSupply
         {
             get => _selectedSupply;
@@ -38,36 +42,39 @@ namespace Kursovaya.ViewModel
                 OnPropertyChanged(nameof(SelectedSupply));
             }
         }
+        public ObservableCollection<WorkerModel>? WorkerModel
+        {
+            get => _workerModel;
+            set
+            {
+                _workerModel = value;
+                OnPropertyChanged(nameof(WorkerModel));
+            }
+        }
 
         //Constructor
         public SupplyViewModel()
         {
+            ApplicationContext context = new ApplicationContext();
             _supplyRepository = new SupplyRepository();
             Supplys = _supplyRepository.GetByAll();
             ShowDeleteViewCommand = new ViewModelCommand(ExecuteShowHomeViewCommand);
+            SelectedSupply = _supplyRepository.GetById(3);
+
+            WorkerModel = (ObservableCollection<WorkerModel>?)context.Workers.Include(w => w.Post);
         }
 
         public void editSupply()
         {
-            ApplicationContext context = new ApplicationContext();
+            //ApplicationContext context = new ApplicationContext();
 
-            var supply = context.Supplies.Include(s => s.Factory).
-                Include(s => s.SupplyProducts).
-                    ThenInclude(s => s.SupplyProductPlaces).
-                        ThenInclude(s => s.Place).
+            //WorkerModel workerModel = context.Workers.Where(w => w.WorkerId == 3).FirstOrDefault();
 
-                Include(s => s.SupplyProducts).
-                    ThenInclude(s => s.Product).
+            //SupplyModel supplyModel = context.Supplies.Where(s => s.SupplyId == SelectedSupply.SupplyId).FirstOrDefault();
 
-                Include(s => s.Workers).
-                    ThenInclude(s => s.Post).Where(s => s.SupplyId == 3).FirstOrDefault();
-
-            if (supply != null)
-            {
-                //supply = SelectedSupply;
-                //context.SaveChanges();
-                context.Entry(supply).CurrentValues.SetValues(SelectedSupply);
-            };
+            //supplyModel.Workers.Add(workerModel);
+            //context.SaveChanges();
+            Supplys[0].Workers.Add(WorkerModel[0]);
         }
 
         public ICommand ShowDeleteViewCommand { get; }

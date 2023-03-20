@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace Kursovaya.Model.Worker
 {
@@ -7,6 +8,6 @@ namespace Kursovaya.Model.Worker
         void Add(WorkerModel workerModel);
         void Edit(WorkerModel workerModel);
         void Remove(int id);
-        IEnumerable<WorkerModel> GetByAll();
+        ObservableCollection<WorkerModel> GetByAll();
     }
 }
