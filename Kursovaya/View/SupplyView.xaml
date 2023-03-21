@@ -119,13 +119,30 @@
                         </Grid.RowDefinitions>
 
                         <!--Header-->
-                        <TextBlock Text="Работники:"
+                        <Grid Grid.Row="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Работники"
                                    Foreground="{StaticResource titleColor1}"
                                    FontFamily="Montserrat"
                                    FontSize="18"
                                    VerticalAlignment="Center"
                                    Margin="3"
-                                   Grid.Row="0"/>
+                                   Grid.Column="0"/>
+                            
+                            <Button Grid.Column="1" HorizontalAlignment="Right"
+                                    Style="{StaticResource iconButton}"
+                                    Tag="{StaticResource color9}" Cursor="Hand"
+                                    Command="{Binding DeleteWorkerCommand}">
+                                    <Button.Content>
+                                        <fa:IconImage Icon="Trash"
+                                                      Style="{StaticResource iconButtonIcon}" Cursor=""/>
+                                    </Button.Content>
+                            </Button>
+                        </Grid>
+                        
 
                         <!--List-->
                         <StackPanel Grid.Row="1">
@@ -166,6 +183,7 @@
                                      Background="Transparent"
                                      BorderThickness="0"
                                      Height="55"
+                                     SelectedItem="{Binding SelectedDeleteWoreker}"
                                      ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                                 <ListBox.ItemContainerStyle>
                                     <Style TargetType="ListBoxItem">
@@ -256,7 +274,7 @@
                             <!--List-->
                             <RowDefinition/>
                         </Grid.RowDefinitions>
-                        <TextBlock Text="Продукция:"
+                        <TextBlock Text="Продукция"
                                    Foreground="{StaticResource titleColor1}"
                                    FontFamily="Motserrat"
                                    FontSize="18"

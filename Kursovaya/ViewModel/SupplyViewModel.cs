@@ -20,6 +20,7 @@ namespace Kursovaya.ViewModel
         private SupplyModel? _selectedSupply;
         private List<WorkerModel> _addWorker;
         private WorkerModel? _selectedAddWorker;
+        private WorkerModel _selectedDeleteWoreker;
 
         //Properties
         public List<SupplyModel> Supplys
@@ -80,6 +81,15 @@ namespace Kursovaya.ViewModel
                 OnPropertyChanged(nameof(SelectedAddWorker));
             }
         }
+        public WorkerModel? SelectedDeleteWoreker
+        {
+            get => _selectedDeleteWoreker;
+            set
+            {
+                _selectedDeleteWoreker = value;
+                OnPropertyChanged(nameof(SelectedDeleteWoreker));
+            }
+        }
 
         //Constructor
         public SupplyViewModel()
@@ -87,6 +97,7 @@ namespace Kursovaya.ViewModel
             _supplyRepository = new SupplyRepository();
             Supplys = _supplyRepository.GetByAll();
             ShowDeleteViewCommand = new ViewModelCommand(ExecuteShowHomeViewCommand);
+            DeleteWorkerCommand = new ViewModelCommand(ExecuteDeleteWorkerCommand);
             SelectedSupply = _supplyRepository.GetById(Supplys[0].SupplyId);
         }
 
@@ -96,21 +107,32 @@ namespace Kursovaya.ViewModel
             updateSelectedWorkers();
             OnPropertyChanged(nameof(SelectedSupplyWorkers));
 
-
-            //_supplys[1].Workers.Add(AddWorker[0]);
-            //OnPropertyChanged(nameof(SelectedSupplyWorkers));
-
-           SupplyModel supplyModel = context.Supplies.Where(s => s.SupplyId == SelectedSupply.SupplyId).FirstOrDefault();
+            SupplyModel supplyModel = context.Supplies.Where(s => s.SupplyId == SelectedSupply.SupplyId).FirstOrDefault();
 
             supplyModel.Workers.Add(workerModel);
             context.SaveChanges();
-
         }
 
         public void updateSelectedWorkers()
         {
             _addWorker = context.Workers.Where(w => !_selectedSupply.Workers.Select(w => w.WorkerId).Contains(w.WorkerId)).Include(w => w.Post).ToList();
             OnPropertyChanged(nameof(AddWorker));
+        }
+
+        public ICommand DeleteWorkerCommand { get; }
+        private void ExecuteDeleteWorkerCommand (object? obj)
+        {
+            SupplyModel? supplyModel = context.Supplies.Where(s => s.SupplyId == SelectedSupply.SupplyId).
+                Include(s => s.Workers).FirstOrDefault();
+
+            WorkerModel workerModel = context.Workers.Where(w => w.WorkerId == SelectedDeleteWoreker.WorkerId).FirstOrDefault();
+
+            supplyModel.Workers.Remove(workerModel);
+            context.SaveChanges();
+
+            _supplys[Supplys.IndexOf(SelectedSupply)].Workers.Remove(SelectedDeleteWoreker);
+            updateSelectedWorkers();
+            OnPropertyChanged(nameof(SelectedSupplyWorkers));
         }
 
         public ICommand ShowDeleteViewCommand { get; }

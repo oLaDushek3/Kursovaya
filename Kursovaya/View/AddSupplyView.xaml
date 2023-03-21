@@ -81,7 +81,7 @@
                             </Grid.RowDefinitions>
 
                             <!--Header-->
-                            <TextBlock Text="Работники:"
+                            <TextBlock Text="Работники"
                                    Foreground="{StaticResource titleColor1}"
                                    FontFamily="Motserrat"
                                    FontSize="18"
@@ -200,7 +200,7 @@
                                 <!--List-->
                                 <RowDefinition/>
                             </Grid.RowDefinitions>
-                            <TextBlock Text="Продукция:"
+                            <TextBlock Text="Продукция"
                                    Foreground="{StaticResource titleColor1}"
                                    FontFamily="Motserrat"
                                    FontSize="18"
