@@ -96,7 +96,6 @@ namespace Kursovaya.ViewModel
         {
             _supplyRepository = new SupplyRepository();
             Supplys = _supplyRepository.GetByAll();
-            ShowDeleteViewCommand = new ViewModelCommand(ExecuteShowHomeViewCommand);
             DeleteWorkerCommand = new ViewModelCommand(ExecuteDeleteWorkerCommand);
             SelectedSupply = _supplyRepository.GetById(Supplys[0].SupplyId);
         }
@@ -122,10 +121,10 @@ namespace Kursovaya.ViewModel
         public ICommand DeleteWorkerCommand { get; }
         private void ExecuteDeleteWorkerCommand (object? obj)
         {
+            WorkerModel workerModel = context.Workers.Where(w => w.WorkerId == SelectedDeleteWoreker.WorkerId).FirstOrDefault();
+
             SupplyModel? supplyModel = context.Supplies.Where(s => s.SupplyId == SelectedSupply.SupplyId).
                 Include(s => s.Workers).FirstOrDefault();
-
-            WorkerModel workerModel = context.Workers.Where(w => w.WorkerId == SelectedDeleteWoreker.WorkerId).FirstOrDefault();
 
             supplyModel.Workers.Remove(workerModel);
             context.SaveChanges();
@@ -133,12 +132,6 @@ namespace Kursovaya.ViewModel
             _supplys[Supplys.IndexOf(SelectedSupply)].Workers.Remove(SelectedDeleteWoreker);
             updateSelectedWorkers();
             OnPropertyChanged(nameof(SelectedSupplyWorkers));
-        }
-
-        public ICommand ShowDeleteViewCommand { get; }
-        private void ExecuteShowHomeViewCommand(object? obj)
-        {
-            //editSupply();
         }
     }
 }

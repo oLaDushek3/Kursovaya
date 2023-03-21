@@ -75,8 +75,6 @@
                         Margin="2">
 
                     <StackPanel Margin="5">
-                        <Button Height="20"
-                                Command="{Binding ShowDeleteViewCommand}"/>
 
                         <TextBlock Text="{Binding SelectedSupply.SupplyId,StringFormat = Поставка № {0}}"
                                    Foreground="{StaticResource titleColor1}"
