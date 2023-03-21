@@ -172,7 +172,7 @@
                         <!--Control bar-->
                         <RowDefinition Height="25"/>
                         <!--Header-->
-                        <RowDefinition Height="35"/>
+                        <RowDefinition Height="30"/>
                         <!--Content section-->
                         <RowDefinition/>
                     </Grid.RowDefinitions>
@@ -235,7 +235,7 @@
                                        FontSize="16"
                                        FontFamily="Montserrat"
                                        FontWeight="Medium"
-                                       VerticalAlignment="Center" Cursor=""/>
+                                       VerticalAlignment="Center"/>
 
                             <Button Margin="10 0 0 0" Style="{StaticResource iconButton}"
                                     Tag="{StaticResource color1}" Cursor="Hand"
@@ -311,7 +311,7 @@
                                Opacity="0.25"
                                Height="400"/>
                         <ContentControl Content="{Binding CurrentChildView}"
-                                        Margin="15"/>
+                                        Margin="15 15 15 15"/>
                     </Grid>
 
                 </Grid>

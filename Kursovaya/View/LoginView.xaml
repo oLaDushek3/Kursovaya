@@ -103,8 +103,6 @@
                         <ColumnDefinition Width="4"/>
                     </Grid.ColumnDefinitions>
 
-                    
-
                 </Grid>
 
                 <StackPanel Width="250"

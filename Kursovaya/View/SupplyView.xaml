@@ -13,6 +13,12 @@
         <viewmodel:SupplyViewModel/>
     </UserControl.DataContext>
 
+    <UserControl.Resources>
+        <DataTemplate DataType="{x:Type viewmodel:SupplyViewModel}">
+            <local:AddSupplyView/>
+        </DataTemplate>
+    </UserControl.Resources>
+
     <Grid>
         <Grid.ColumnDefinitions>
             <!--All supplys-->
@@ -20,9 +26,87 @@
             <!--Selected  supply-->
             <ColumnDefinition  Width="35*"/>
         </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <!--Header-->
+            <RowDefinition Height="6*"/>
+            <!--Base info-->
+            <RowDefinition Height="25*"/>
+            <!--Workers info-->
+            <RowDefinition Height="30*"/>
+            <!--Products info-->
+            <RowDefinition Height="45*"/>
+        </Grid.RowDefinitions>
+
+        <!--Header-->
+        <DockPanel Grid.Column="0" Grid.Row="0">
+            <Border BorderThickness="1" 
+                    BorderBrush="{StaticResource color2}" 
+                    CornerRadius="10"
+                    Margin="2">
+                <StackPanel Orientation="Horizontal">
+                    <Button Margin="10 0 0 0" Style="{StaticResource iconButton}"
+                            Tag="{StaticResource color1}" Cursor="Hand"
+                            Visibility="{Binding Visibility}"
+                            Command="{Binding ShowAddSupplyCommand}">
+                        <Button.Content>
+                            <fa:IconImage Icon="Pencil"
+                                          Style="{StaticResource iconButtonIcon}"/>
+                        </Button.Content>
+                    </Button>
+
+                    <Button Style="{StaticResource iconButton}"
+                            Tag="{StaticResource color9}" Cursor="Hand"
+                            Visibility="{Binding Visibility}"
+                            Command="{Binding ShowDeleteViewCommand}">
+                        <Button.Content>
+                            <fa:IconImage Icon="plus"
+                                          Style="{StaticResource iconButtonIcon}"/>
+                        </Button.Content>
+                    </Button>
+
+                    <Button Style="{StaticResource iconButton}"
+                            Tag="{StaticResource color4}" Cursor="Hand"
+                            Visibility="{Binding Visibility}" 
+                            Command="{Binding ShowDeleteViewCommand}">
+                        <Button.Content>
+                            <fa:IconImage Icon="Trash"
+                                          Style="{StaticResource iconButtonIcon}"/>
+                        </Button.Content>
+                    </Button>
+
+                    <Button Margin="10 0 0 0" Style="{StaticResource iconButton}"
+                            Tag="{StaticResource color6}" Cursor="Hand"
+                            Visibility="{Binding BackVisibility}"
+                            Command="{Binding GoBackCommand}">
+                        <Button.Content>
+                            <fa:IconImage Icon="ArrowLeft"
+                                          Style="{StaticResource iconButtonIcon}"/>
+                        </Button.Content>
+                    </Button>
+                </StackPanel>
+            </Border>
+        </DockPanel>
+
+        <DockPanel Grid.Column="1" Grid.Row="0"
+                   IsEnabled="{Binding IsEnabled}">
+            <Border BorderThickness="1" 
+                    BorderBrush="{StaticResource color2}" 
+                    CornerRadius="10"
+                    Margin="2">
+                <TextBlock Text="Подробности"
+                           Foreground="{StaticResource titleColor2}"
+                           FontSize="18"
+                           FontFamily="Montserrat"
+                           FontWeight="Medium"
+                           VerticalAlignment="Center"
+                           Margin="10 0 0 0"/>
+            </Border>
+        </DockPanel>
 
         <!--All supplys-->
-        <DockPanel Grid.Column="0">
+        <DockPanel Grid.Column="0" Grid.Row="1" Grid.RowSpan="3"
+                   IsEnabled="{Binding IsEnabled}"
+                   x:Name="myDockPanel">
             <Border BorderThickness="1" 
                     BorderBrush="{StaticResource color2}" 
                     CornerRadius="10"
@@ -57,33 +141,23 @@
         </DockPanel>
 
         <!--Selected  supply-->
-        <Grid Grid.Column="1">
-            <Grid.RowDefinitions>
-                <!--Base info-->
-                <RowDefinition Height="25*"/>
-                <!--Workers info-->
-                <RowDefinition Height="30*"/>
-                <!--Products info-->
-                <RowDefinition Height="45*"/>
-            </Grid.RowDefinitions>
-
-            <!--Base info-->
-            <DockPanel Grid.Row="0">
-                <Border BorderThickness="1" 
+        <!--Base info-->
+        <DockPanel Grid.Column="1" Grid.Row="1">
+            <Border BorderThickness="1" 
                         BorderBrush="{StaticResource color2}" 
                         CornerRadius="10"
                         Margin="2">
 
-                    <StackPanel Margin="5">
+                <StackPanel Margin="5">
 
-                        <TextBlock Text="{Binding SelectedSupply.SupplyId,StringFormat = Поставка № {0}}"
+                    <TextBlock Text="{Binding SelectedSupply.SupplyId,StringFormat = Поставка № {0}}"
                                    Foreground="{StaticResource titleColor1}"
                                    FontFamily="Motserrat"
                                    FontSize="18"
                                    VerticalAlignment="Center"
                                    Margin="2"/>
 
-                        <TextBlock Text="{Binding SelectedSupply.Factory.Address, StringFormat = Производствао: {0}}"
+                    <TextBlock Text="{Binding SelectedSupply.Factory.Address, StringFormat = Производствао: {0}}"
                                    Foreground="{StaticResource titleColor1}"
                                    FontFamily="Motserrat"
                                    FontSize="15"
@@ -91,69 +165,59 @@
                                    Margin="2"
                                    TextWrapping="Wrap"/>
 
-                        <TextBlock Text="{Binding SelectedSupply.Date, StringFormat = Дата: {0}}"
+                    <TextBlock Text="{Binding SelectedSupply.Date, StringFormat = Дата: {0}}"
                                    Foreground="{StaticResource titleColor1}"
                                    FontFamily="Motserrat"
                                    FontSize="15"
                                    VerticalAlignment="Center"
                                    Margin="2"/>
-                    </StackPanel>
-                </Border>
-            </DockPanel>
+                </StackPanel>
+            </Border>
+        </DockPanel>
 
-            <!--Workers info-->
-            <DockPanel Grid.Row="1">
-                <Border BorderThickness="1" 
+        <!--Workers info-->
+        <DockPanel Grid.Column="1" Grid.Row="2">
+            <Border BorderThickness="1" 
                         BorderBrush="{StaticResource color2}" 
                         CornerRadius="10"
                         Margin="2">
 
-                    <Grid Margin="5">
-                        <Grid.RowDefinitions>
-                            <!--Header-->
-                            <RowDefinition Height="25"/>
-                            <!--List-->
-                            <RowDefinition/>
-                        </Grid.RowDefinitions>
-
+                <Grid Margin="5">
+                    <Grid.RowDefinitions>
                         <!--Header-->
-                        <Grid Grid.Row="0">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition/>
-                                <ColumnDefinition/>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Text="Работники"
+                        <RowDefinition Height="25"/>
+                        <!--List-->
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+
+                    <!--Header-->
+                    <Grid Grid.Row="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Работники"
                                    Foreground="{StaticResource titleColor1}"
                                    FontFamily="Montserrat"
                                    FontSize="18"
                                    VerticalAlignment="Center"
                                    Margin="3"
                                    Grid.Column="0"/>
-                            
-                            <Button Grid.Column="1" HorizontalAlignment="Right"
-                                    Style="{StaticResource iconButton}"
-                                    Tag="{StaticResource color9}" Cursor="Hand"
-                                    Command="{Binding DeleteWorkerCommand}">
-                                    <Button.Content>
-                                        <fa:IconImage Icon="Trash"
-                                                      Style="{StaticResource iconButtonIcon}" Cursor=""/>
-                                    </Button.Content>
-                            </Button>
-                        </Grid>
-                        
+                    </Grid>
 
-                        <!--List-->
-                        <StackPanel Grid.Row="1">
-                            <ItemsControl ItemsSource="{Binding SelectedSupplyWorkers, Mode=TwoWay}">
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <Grid Margin="0 0 0 5">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="50*"/>
-                                                <ColumnDefinition Width="70*"/>
-                                            </Grid.ColumnDefinitions>
 
-                                            <TextBox Grid.Column="0" 
+                    <!--List-->
+                    <StackPanel Grid.Row="1">
+                        <ItemsControl ItemsSource="{Binding SelectedSupplyWorkers, Mode=TwoWay}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid Margin="0 0 0 5">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="50*"/>
+                                            <ColumnDefinition Width="70*"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <TextBox Grid.Column="0" 
                                                  Foreground="{StaticResource titleColor1}"
                                                  Background="Transparent"
                                                  BorderThickness="1 0 0 0"
@@ -163,7 +227,7 @@
                                                  Text="{Binding FullName}"
                                                  VerticalAlignment="Center"/>
 
-                                            <TextBox Grid.Column="1" 
+                                        <TextBox Grid.Column="1" 
                                                  Foreground="{StaticResource titleColor1}"
                                                  Background="Transparent"
                                                  BorderThickness="0"
@@ -172,107 +236,31 @@
                                                  Text="{Binding Post.Title}"
                                                  VerticalAlignment="Center"/>
 
-                                        </Grid>
-                                    </DataTemplate>
+                                    </Grid>
+                                </DataTemplate>
 
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
-                            <ListBox ItemsSource="{Binding SelectedSupplyWorkers, Mode=TwoWay}"
-                                     Background="Transparent"
-                                     BorderThickness="0"
-                                     Height="55"
-                                     SelectedItem="{Binding SelectedDeleteWoreker}"
-                                     ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-                                <ListBox.ItemContainerStyle>
-                                    <Style TargetType="ListBoxItem">
-                                        <Setter Property="ContextMenu">
-                                            <Setter.Value>
-                                                <ContextMenu>
-                                                    <MenuItem Header="Удалить"/>
-                                                </ContextMenu>
-                                            </Setter.Value>
-                                        </Setter>
-                                    </Style>
-                                </ListBox.ItemContainerStyle>
-                                <ListBox.ItemTemplate>
-                                    <DataTemplate>
-                                        <UniformGrid Columns="2">
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </DockPanel>
 
-                                            <Border BorderThickness="1 0 0 0"
-                                                    BorderBrush="LightGray">
-                                                <TextBlock Grid.Column="0" 
-                                                           Foreground="{StaticResource titleColor1}"
-                                                           Background="Transparent"
-                                                           FontFamily="Montserrat"
-                                                           Text="{Binding FullName}"
-                                                           VerticalAlignment="Center"/>
-                                            </Border>
-
-                                            <TextBlock Grid.Column="1" 
-                                                       Foreground="{StaticResource titleColor1}"
-                                                       Background="Transparent"
-                                                       FontFamily="Montserrat"
-                                                       Text="{Binding Post.Title}"
-                                                       VerticalAlignment="Center"/>
-                                        </UniformGrid>
-                                    </DataTemplate>
-                                </ListBox.ItemTemplate>
-                                <ListBox.ContextMenu>
-                                    <ContextMenu>
-                                        <MenuItem Header="Menu item 1" />
-                                        <MenuItem Header="Menu item 2" />
-                                        <MenuItem Header="Menu item 3" />
-                                    </ContextMenu>
-                                </ListBox.ContextMenu>
-                            </ListBox>
-                            <ComboBox ItemsSource="{Binding AddWorker}"
-                                      Background="Transparent"
-                                      SelectedItem="{Binding SelectedAddWorker}">
-                                <ComboBox.ItemTemplate>
-                                    <DataTemplate>
-                                        <Grid Margin="0 0 0 5">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="50*"/>
-                                                <ColumnDefinition Width="70*"/>
-                                            </Grid.ColumnDefinitions>
-
-                                            <TextBlock Grid.Column="0"
-                                                 Background="Transparent"
-                                                 FontFamily="Montserrat"
-                                                 Text="{Binding FullName}"
-                                                 VerticalAlignment="Center"/>
-
-                                            <TextBlock Margin="50 0 0 0" Grid.Column="1" 
-                                                 Background="Transparent"
-                                                 FontFamily="Montserrat"
-                                                 Text="{Binding Post.Title}"
-                                                 VerticalAlignment="Center"/>
-
-                                        </Grid>
-                                    </DataTemplate>
-                                </ComboBox.ItemTemplate>
-                            </ComboBox>
-
-                        </StackPanel>
-                    </Grid>
-                </Border>
-            </DockPanel>
-
-            <!--Products info-->
-            <DockPanel Grid.Row="2">
-                <Border BorderThickness="1"
+        <!--Products info-->
+        <DockPanel Grid.Column="1" Grid.Row="3">
+            <Border BorderThickness="1"
                         BorderBrush="{StaticResource color2}"
                         CornerRadius="10"
                         Margin="2">
 
-                    <Grid Margin="5">
-                        <Grid.RowDefinitions>
-                            <!--Header-->
-                            <RowDefinition Height="25"/>
-                            <!--List-->
-                            <RowDefinition/>
-                        </Grid.RowDefinitions>
-                        <TextBlock Text="Продукция"
+                <Grid Margin="5">
+                    <Grid.RowDefinitions>
+                        <!--Header-->
+                        <RowDefinition Height="25"/>
+                        <!--List-->
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="Продукция"
                                    Foreground="{StaticResource titleColor1}"
                                    FontFamily="Motserrat"
                                    FontSize="18"
@@ -280,103 +268,126 @@
                                    Margin="3"
                                    Grid.Row="0"/>
 
-                        <ScrollViewer Style="{StaticResource FavsScrollViewer}" 
-                                      Grid.Row="1">
+                    <ScrollViewer Style="{StaticResource FavsScrollViewer}" 
+                                  Grid.Row="1">
+                        <ItemsControl ItemsSource="{Binding SelectedSupply.SupplyProducts}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Expander x:Name="myExpander">
+                                        <Expander.HeaderTemplate>
+                                            <DataTemplate>
+                                                <UniformGrid DataContext="{Binding RelativeSource={RelativeSource AncestorType=Expander, Mode=FindAncestor}, Path=DataContext}"
+                                                             Columns="2" 
+                                                             Width="{Binding ActualWidth, ElementName=myExpander}">
 
-                            <ItemsControl ItemsSource="{Binding SelectedSupply.SupplyProducts}">
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <Expander x:Name="myExpander">
-                                            <Expander.HeaderTemplate>
+                                                    <TextBox Text="{Binding Product.Title}" 
+                                                             Background="Transparent" 
+                                                             BorderThickness="0 0 0 0.5"
+                                                             BorderBrush="LightGray"
+                                                             Foreground="{StaticResource titleColor1}"
+                                                             Width="auto"
+                                                             Grid.Column="0"
+                                                             IsReadOnly="True"/>
+
+                                                    <TextBox Text="{Binding Quantity, StringFormat=Всего: {0}шт}" 
+                                                             Background="Transparent" 
+                                                             BorderThickness="0 0 0 0.5"
+                                                             BorderBrush="LightGray"
+                                                             Foreground="{StaticResource titleColor1}"
+                                                             Grid.Column="1"
+                                                             IsReadOnly="True"/>
+
+                                                </UniformGrid>
+                                            </DataTemplate>
+                                        </Expander.HeaderTemplate>
+
+                                        <ItemsControl ItemsSource="{Binding SupplyProductPlaces}"
+                                                      Margin="20 0 0 0">
+                                            <ItemsControl.ItemTemplate>
                                                 <DataTemplate>
-                                                    <UniformGrid DataContext="{Binding RelativeSource={RelativeSource AncestorType=Expander, Mode=FindAncestor}, Path=DataContext}"
-                                                                 Columns="2" 
-                                                                 Width="{Binding ActualWidth, ElementName=myExpander}">
-                                                        
-                                                        <TextBox Text="{Binding Product.Title}" 
-                                                                 Background="Transparent" 
-                                                                 BorderThickness="0 0 0 0.5"
-                                                                 BorderBrush="LightGray"
-                                                                 Foreground="{StaticResource titleColor1}"
-                                                                 Width="auto"
-                                                                 Grid.Column="0"
-                                                                 IsReadOnly="True"/>
 
-                                                        <TextBox Text="{Binding Quantity, StringFormat=Всего: {0}шт}" 
-                                                                 Background="Transparent" 
-                                                                 BorderThickness="0 0 0 0.5"
-                                                                 BorderBrush="LightGray"
-                                                                 Foreground="{StaticResource titleColor1}"
-                                                                 Grid.Column="1"
-                                                                 IsReadOnly="True"/>
+                                                    <TextBox Grid.Column="0"
+                                                             Margin="4"
+                                                             Background="Transparent"
+                                                             BorderThickness="1 0 0 0"
+                                                             BorderBrush="LightGray"
+                                                             IsReadOnly="True"
+                                                             FontFamily="Montserrat"
+                                                             Foreground="{StaticResource titleColor1}"
+                                                             VerticalAlignment="Center">
+                                                        <TextBox.Text>
+                                                            <MultiBinding StringFormat="Место: {0} - {1}шт">
+                                                                <Binding Path="Place.Place1" />
+                                                                <Binding Path="Quantity" />
+                                                            </MultiBinding>
+                                                        </TextBox.Text>
+                                                    </TextBox>
 
-                                                    </UniformGrid>
                                                 </DataTemplate>
-                                            </Expander.HeaderTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
 
-                                            <ItemsControl ItemsSource="{Binding SupplyProductPlaces}"
-                                                          Margin="20 0 0 0">
-                                                <ItemsControl.ItemTemplate>
-                                                    <DataTemplate>
-                                                        
-                                                        <TextBox Grid.Column="0"                                                                     
-                                                                     Margin="4"
-                                                                     Background="Transparent"
-                                                                     BorderThickness="1 0 0 0"
-                                                                     BorderBrush="LightGray"
-                                                                     IsReadOnly="True"
-                                                                     FontFamily="Montserrat"
-                                                                     Foreground="{StaticResource titleColor1}"
-                                                                     VerticalAlignment="Center">
-                                                                <TextBox.Text>
-                                                                    <MultiBinding StringFormat="Место: {0} - {1}шт">
-                                                                        <Binding Path="Place.Place1" />
-                                                                        <Binding Path="Quantity" />
-                                                                    </MultiBinding>
-                                                                </TextBox.Text>
-                                                            </TextBox>
+                                    </Expander>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
 
-                                                    </DataTemplate>
-                                                </ItemsControl.ItemTemplate>
-                                            </ItemsControl>
-                                            
-                                        </Expander>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
-                            
-                        </ScrollViewer>
+                    </ScrollViewer>
+                </Grid>
+            </Border>
+        </DockPanel>
 
-                        <Grid Margin="0 0 0 5">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="50*"/>
-                                <ColumnDefinition Width="50*"/>
-                            </Grid.ColumnDefinitions>
+        <DockPanel x:Name="WidthDockPanel"
+                   Grid.Column="1" 
+                   Grid.RowSpan="4" 
+                   Margin="0 0 -15 0">
+            <ContentControl HorizontalAlignment="Right"
+                            Width="{Binding ActualWidth, ElementName=WidthDockPanel}"
+                            Content="{Binding CurrentChildView}">
 
-                            <ComboBox ItemsSource="{Binding AllProduct}"
-                                       Background="Transparent" 
-                                      Grid.Column="0">
-                                <ComboBox.ItemTemplate>
-                                    <DataTemplate>
-                                        <TextBlock Background="Transparent"
-                                                   FontFamily="Montserrat"
-                                                   Text="{Binding FullName}"
-                                                   VerticalAlignment="Center"/>
-                                    </DataTemplate>
-                                </ComboBox.ItemTemplate>
-                            </ComboBox>
+                <ContentControl.Effect>
+                    <DropShadowEffect BlurRadius="15" Direction="-90"
+                                      RenderingBias="Quality" ShadowDepth="2"/>
+                </ContentControl.Effect>
 
-                            <TextBox>
-                                
-                            </TextBox>
-                        </Grid>
-                        
+                <ContentControl.Style>
+                    <Style TargetType="ContentControl">
+                        <Style.Triggers>
 
-                    </Grid>
-                </Border>
-            </DockPanel>
+                            <DataTrigger Binding="{Binding AnimationAction}" Value="True">
+                                <DataTrigger.EnterActions>
+                                    <BeginStoryboard Name="FadeIn">
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetProperty="Width"
+                                                             From="0"
+                                                             Duration="0:00:0.4"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </DataTrigger.EnterActions>
+                                <DataTrigger.ExitActions>
+                                    <RemoveStoryboard BeginStoryboardName="FadeIn" />
+                                </DataTrigger.ExitActions>
+                            </DataTrigger>
 
-        </Grid>
+                            <DataTrigger Binding="{Binding ReverseAnimationAction}" Value="True">
+                                <DataTrigger.EnterActions>
+                                    <BeginStoryboard Name="FadeOut">
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetProperty="Width"
+                                                             To="0"
+                                                             Duration="0:00:0.4"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </DataTrigger.EnterActions>
+                                <DataTrigger.ExitActions>
+                                    <RemoveStoryboard BeginStoryboardName="FadeOut" />
+                                </DataTrigger.ExitActions>
+                            </DataTrigger>
 
+                        </Style.Triggers>
+                    </Style>
+                </ContentControl.Style>
+            </ContentControl>
+        </DockPanel>
     </Grid>
 </UserControl>
