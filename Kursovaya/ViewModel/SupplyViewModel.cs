@@ -118,7 +118,10 @@ namespace Kursovaya.ViewModel
             OnPropertyChanged(nameof(AddWorker));
         }
 
+        //Commands
         public ICommand DeleteWorkerCommand { get; }
+
+        //Commands execution
         private void ExecuteDeleteWorkerCommand (object? obj)
         {
             WorkerModel workerModel = context.Workers.Where(w => w.WorkerId == SelectedDeleteWoreker.WorkerId).FirstOrDefault();
