@@ -1,4 +1,5 @@
-﻿using Kursovaya.Model.Supply;
+﻿using Kursovaya.Model.Product;
+using Kursovaya.Model.Supply;
 using Kursovaya.Model.Worker;
 using Kursovaya.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -12,15 +13,18 @@ namespace Kursovaya.ViewModel
 {
     public class SupplyViewModel : ViewModelBase
     {
-
         ApplicationContext context = new ApplicationContext();
+
         //Fields
         private ISupplyRepository _supplyRepository;
-        private List<SupplyModel>? _supplys;
+        private List<SupplyModel> _supplys;
         private SupplyModel? _selectedSupply;
+
         private List<WorkerModel> _addWorker;
         private WorkerModel? _selectedAddWorker;
-        private WorkerModel _selectedDeleteWoreker;
+        private WorkerModel? _selectedDeleteWoreker;
+
+        private List<ProductModel> _allProduct;
 
         //Properties
         public List<SupplyModel> Supplys
@@ -44,6 +48,7 @@ namespace Kursovaya.ViewModel
                 OnPropertyChanged(nameof(SelectedSupplyWorkers));
             }
         }
+
         public ObservableCollection<WorkerModel> SelectedSupplyWorkers
         {
             get
@@ -91,6 +96,16 @@ namespace Kursovaya.ViewModel
             }
         }
 
+        public ObservableCollection<ProductModel> AllProduct
+        {
+            get => new ObservableCollection<ProductModel>(_allProduct);
+            set
+            {
+                _allProduct = new List<ProductModel>(value);
+                OnPropertyChanged(nameof(AllProduct));
+            }
+        }
+
         //Constructor
         public SupplyViewModel()
         {
@@ -98,6 +113,8 @@ namespace Kursovaya.ViewModel
             Supplys = _supplyRepository.GetByAll();
             DeleteWorkerCommand = new ViewModelCommand(ExecuteDeleteWorkerCommand);
             SelectedSupply = _supplyRepository.GetById(Supplys[0].SupplyId);
+
+            _allProduct = context.Products.ToList();
         }
 
         public void editSupply(WorkerModel workerModel)
