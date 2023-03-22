@@ -148,8 +148,6 @@ namespace Kursovaya.ViewModel
             Visibility = Visibility.Visible;
             BackVisibility = Visibility.Collapsed;
 
-            _currentAddView = new AddSupplyViewModel();
-            _currentEditView = new EditSupplyViewModel();
             GoBackCommand = new ViewModelCommand(ExecuteShowSupplyViewCommand);
 
         }

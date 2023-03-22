@@ -7,6 +7,6 @@ namespace Kursovaya.Model.Product
         void Add(ProductModel productModel);
         void Edit(ProductModel productModel);
         void Remove(int id);
-        IEnumerable<ProductModel> GetByAll();
+        List<ProductModel> GetByAll();
     }
 }

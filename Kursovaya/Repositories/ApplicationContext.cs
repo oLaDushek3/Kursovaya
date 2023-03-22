@@ -253,7 +253,7 @@ public partial class ApplicationContext : DbContext
                 .IsUnicode(false)
                 .IsFixedLength();
 
-            entity.HasOne(d => d.ProductNavigation).WithMany(p => p.Products)
+            entity.HasOne(d => d.ProductType).WithMany(p => p.Products)
                 .HasForeignKey(d => new { d.ProductTypeId })
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__Product__1CA7377D");

@@ -7,6 +7,6 @@ namespace Kursovaya.Model.Place
         void aAdd(PlaceModel placeModel);
         void Edit(PlaceModel placeModel);
         void Remove(int id);
-        IEnumerable<PlaceModel> GetByAll();
+        List<PlaceModel> GetByAll();
     }
 }

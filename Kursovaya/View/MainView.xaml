@@ -27,14 +27,6 @@
             <view:SupplyView/>
         </DataTemplate>
 
-        <DataTemplate DataType="{x:Type viewmodel:AddSupplyViewModel}">
-            <view:AddSupplyView/>
-        </DataTemplate>
-        
-        <DataTemplate DataType="{x:Type viewmodel:EditSupplyViewModel}">
-            <view:EditSupplyView/>
-        </DataTemplate>
-
         <DataTemplate DataType="{x:Type viewmodel:FactoryViewModel}">
             <view:FactoryView/>
         </DataTemplate>

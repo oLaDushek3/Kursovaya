@@ -14,8 +14,8 @@
     </UserControl.DataContext>
 
     <UserControl.Resources>
-        <DataTemplate DataType="{x:Type viewmodel:SupplyViewModel}">
-            <local:AddSupplyView/>
+        <DataTemplate DataType="{x:Type viewmodel:EditSupplyViewModel}">
+            <local:EditSupplyView/>
         </DataTemplate>
     </UserControl.Resources>
 
@@ -208,7 +208,7 @@
 
                     <!--List-->
                     <StackPanel Grid.Row="1">
-                        <ItemsControl ItemsSource="{Binding SelectedSupplyWorkers, Mode=TwoWay}">
+                        <ItemsControl ItemsSource="{Binding SelectedSupply.Workers, Mode=TwoWay}">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <Grid Margin="0 0 0 5">
@@ -344,7 +344,7 @@
             <ContentControl HorizontalAlignment="Right"
                             Width="{Binding ActualWidth, ElementName=WidthDockPanel}"
                             Content="{Binding CurrentChildView}">
-
+                
                 <ContentControl.Effect>
                     <DropShadowEffect BlurRadius="15" Direction="-90"
                                       RenderingBias="Quality" ShadowDepth="2"/>
@@ -360,7 +360,7 @@
                                         <Storyboard>
                                             <DoubleAnimation Storyboard.TargetProperty="Width"
                                                              From="0"
-                                                             Duration="0:00:0.4"/>
+                                                             Duration="0:0:0.4"/>
                                         </Storyboard>
                                     </BeginStoryboard>
                                 </DataTrigger.EnterActions>
@@ -375,7 +375,7 @@
                                         <Storyboard>
                                             <DoubleAnimation Storyboard.TargetProperty="Width"
                                                              To="0"
-                                                             Duration="0:00:0.4"/>
+                                                             Duration="0:0:0.4"/>
                                         </Storyboard>
                                     </BeginStoryboard>
                                 </DataTrigger.EnterActions>

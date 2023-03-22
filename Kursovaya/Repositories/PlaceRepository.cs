@@ -1,6 +1,7 @@
 ﻿using Kursovaya.Model.Place;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Kursovaya.Repositories
 {
@@ -16,14 +17,17 @@ namespace Kursovaya.Repositories
             throw new NotImplementedException();
         }
 
-        public IEnumerable<PlaceModel> GetByAll()
+        public void Remove(int id)
         {
             throw new NotImplementedException();
         }
 
-        public void Remove(int id)
+
+        public List<PlaceModel> GetByAll()
         {
-            throw new NotImplementedException();
+            ApplicationContext context = new ApplicationContext();
+            List<PlaceModel> places = context.Places.ToList();
+            return places;
         }
     }
 }

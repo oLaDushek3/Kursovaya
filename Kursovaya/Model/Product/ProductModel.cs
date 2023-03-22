@@ -18,7 +18,7 @@ public partial class ProductModel
 
     public decimal PricePerUnit { get; set; }
 
-    public virtual ProductTypeModel ProductNavigation { get; set; } = null!;
+    public virtual ProductTypeModel ProductType { get; set; }
 
     public virtual ICollection<ShippingProductModel> ShippingProducts { get; } = new List<ShippingProductModel>();
 
