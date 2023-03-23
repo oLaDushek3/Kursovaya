@@ -125,9 +125,20 @@ namespace Kursovaya.ViewModel
         #endregion Properties
 
         //Commands
+        public ICommand SaveCommand { get; }
 
         //Commands execution
-        
+        public void ExrecutesaveCommand(object? obj)
+        {
+            //context.Supplies.AsNoTracking().FirstOrDefault(s => s.SupplyId == SelectedSupply.SupplyId).St
+            context.Entry(SelectedSupply).State = EntityState.Modified;
+
+            //saveSupplise.Workers = SelectedSupply.Workers;
+            //SupplyModel SaveSupply = context.Supplies.Where(s => s.SupplyId == SelectedSupply.SupplyId).First();
+            //SaveSupply.Workers = SelectedSupply.Workers;
+            //context.SaveChanges();
+            //context.Supplies.Update(SelectedSupply);
+        }
 
         //Methods
         public void UpdateSelectedWorkers()
@@ -161,6 +172,8 @@ namespace Kursovaya.ViewModel
 
             _placeRepository = new PlaceRepository();
             AllPlaces =  _placeRepository.GetByAll();
+
+            SaveCommand = new ViewModelCommand(ExrecutesaveCommand);
         }
     }
 }

@@ -54,7 +54,7 @@
                             <Button Grid.Column="1" HorizontalAlignment="Right"
                                     Style="{StaticResource iconButton}"
                                     Tag="{StaticResource color9}" Cursor="Hand"
-                                    Command="{Binding ShowDeleteViewCommand}"
+                                    Command="{Binding SaveCommand}"
                                     Margin="0 0 10 0">
                                 <Button.Content>
                                     <fa:IconImage Icon="Check"
