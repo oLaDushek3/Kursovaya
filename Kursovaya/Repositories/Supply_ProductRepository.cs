@@ -1,6 +1,8 @@
 ﻿using Kursovaya.Model.Supply;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Kursovaya.Repositories
 {
@@ -16,14 +18,24 @@ namespace Kursovaya.Repositories
             throw new NotImplementedException();
         }
 
-        public IEnumerable<SupplyProductModel> GetByAll()
+        public void Remove(int id)
+        {
+            throw new NotImplementedException();
+        }
+        public List<SupplyProductModel> GetByAll(ApplicationContext context)
         {
             throw new NotImplementedException();
         }
 
-        public void Remove(int id)
+        public SupplyProductModel GetById(int id, ApplicationContext context)
         {
-            throw new NotImplementedException();
+            SupplyProductModel? supplyProduct = context.SupplyProducts.
+                Include(s => s.SupplyProductPlaces).
+                    ThenInclude(s => s.Place).
+
+                FirstOrDefault(s => s.SupplyProductId == id);
+
+            return supplyProduct;
         }
     }
 }

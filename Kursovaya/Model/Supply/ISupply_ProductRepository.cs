@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Kursovaya.Repositories;
+using System.Collections.Generic;
 
 namespace Kursovaya.Model.Supply
 {
@@ -7,6 +8,7 @@ namespace Kursovaya.Model.Supply
         void Add(SupplyProductModel supplyProductModel);
         void Edit(SupplyProductModel supplyProductModel);
         void Remove(int id);
-        IEnumerable<SupplyProductModel> GetByAll();
+        List<SupplyProductModel> GetByAll(ApplicationContext contex);
+        SupplyProductModel GetById(int id, ApplicationContext contex);
     }
 }

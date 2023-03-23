@@ -20,7 +20,7 @@ public partial class ProductModel
 
     public virtual ProductTypeModel ProductType { get; set; }
 
-    public virtual ICollection<ShippingProductModel> ShippingProducts { get; } = new List<ShippingProductModel>();
+    public virtual List<ShippingProductModel> ShippingProducts { get; } = new List<ShippingProductModel>();
 
-    public virtual ICollection<SupplyProductModel> SupplyProducts { get; } = new List<SupplyProductModel>();
+    public virtual List<SupplyProductModel> SupplyProducts { get; } = new List<SupplyProductModel>();
 }
