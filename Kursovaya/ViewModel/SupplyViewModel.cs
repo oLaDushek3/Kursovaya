@@ -137,7 +137,7 @@ namespace Kursovaya.ViewModel
             _supplyRepository = new SupplyRepository();
             Supplys = _supplyRepository.GetByAll();
 
-            SelectedSupply = _supplyRepository.GetById(Supplys[0].SupplyId);
+            SelectedSupply = _supplyRepository.GetById(Supplys[0].SupplyId, context);
             IsEnabled = true;
             BackVisibility = Visibility.Collapsed;
         }

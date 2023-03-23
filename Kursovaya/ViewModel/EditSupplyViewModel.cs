@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Configuration;
 using System.Linq;
 using System.Threading;
 using System.Windows;
@@ -25,6 +26,7 @@ namespace Kursovaya.ViewModel
         private SupplyModel? _editableSelectedSupply;
 
         //Worker fields
+        private IWorkerRepository _workerRepository;
         private List<WorkerModel> _allWorkers;
         private List<WorkerModel> _availableWorker;
         private WorkerModel? _selectedForAdditionWorker;
@@ -126,18 +128,33 @@ namespace Kursovaya.ViewModel
 
         //Commands
         public ICommand SaveCommand { get; }
+        List<WorkerModel> Workers;
 
         //Commands execution
         public void ExrecutesaveCommand(object? obj)
         {
-            //context.Supplies.AsNoTracking().FirstOrDefault(s => s.SupplyId == SelectedSupply.SupplyId).St
-            context.Entry(SelectedSupply).State = EntityState.Modified;
+            _supplyRepository = new SupplyRepository();
+            _workerRepository = new WorkerRepository();
 
-            //saveSupplise.Workers = SelectedSupply.Workers;
-            //SupplyModel SaveSupply = context.Supplies.Where(s => s.SupplyId == SelectedSupply.SupplyId).First();
-            //SaveSupply.Workers = SelectedSupply.Workers;
-            //context.SaveChanges();
-            //context.Supplies.Update(SelectedSupply);
+            SupplyModel? supplyModel = _supplyRepository.GetById(SelectedSupply.SupplyId, context);
+
+            if (SelectedSupply.Workers != null)
+            {
+                supplyModel.Workers.Clear();
+
+                WorkerModel? workerModel = null;
+
+                foreach (WorkerModel addWorker in SelectedSupply.Workers)
+                {
+                    workerModel = _workerRepository.GetById(addWorker.WorkerId, context);
+
+                    supplyModel.Workers.Add(workerModel);
+                };
+            }
+            else
+                supplyModel.Workers.Clear();
+
+            context.SaveChanges();
         }
 
         //Methods

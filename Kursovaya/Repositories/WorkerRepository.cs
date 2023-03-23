@@ -1,7 +1,10 @@
-﻿using Kursovaya.Model.Worker;
+﻿using Kursovaya.Model.Supply;
+using Kursovaya.Model.Worker;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace Kursovaya.Repositories
 {
@@ -25,6 +28,13 @@ namespace Kursovaya.Repositories
         public void Remove(int id)
         {
             throw new NotImplementedException();
+        }
+        public WorkerModel GetById(int id, ApplicationContext context)
+        {
+            WorkerModel? worker = context.Workers.
+                Include(w => w.Post).FirstOrDefault(w => w.WorkerId == id);
+
+            return worker;
         }
     }
 }

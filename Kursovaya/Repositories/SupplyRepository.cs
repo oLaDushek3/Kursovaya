@@ -27,7 +27,6 @@ namespace Kursovaya.Repositories
         }
 
         public List<SupplyModel> GetByAll()
-
         {
             ApplicationContext context = new ApplicationContext();
             List<SupplyModel> supplies = context.Supplies.
@@ -47,9 +46,8 @@ namespace Kursovaya.Repositories
             return supplies;
         }
 
-        public SupplyModel GetById(int id)
+        public SupplyModel GetById(int id, ApplicationContext context)
         {
-            ApplicationContext context = new ApplicationContext();
             SupplyModel? supply = context.Supplies.
                 Include(s => s.Factory).
 

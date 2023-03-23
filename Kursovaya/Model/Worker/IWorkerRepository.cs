@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Kursovaya.Repositories;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
 namespace Kursovaya.Model.Worker
@@ -9,5 +10,6 @@ namespace Kursovaya.Model.Worker
         void Edit(WorkerModel workerModel);
         void Remove(int id);
         List<WorkerModel> GetByAll();
+        WorkerModel GetById(int id, ApplicationContext context);
     }
 }
