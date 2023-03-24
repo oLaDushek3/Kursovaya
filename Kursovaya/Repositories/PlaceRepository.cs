@@ -23,9 +23,8 @@ namespace Kursovaya.Repositories
         }
 
 
-        public List<PlaceModel> GetByAll()
+        public List<PlaceModel> GetByAll(ApplicationContext context)
         {
-            ApplicationContext context = new ApplicationContext();
             List<PlaceModel> places = context.Places.ToList();
             return places;
         }

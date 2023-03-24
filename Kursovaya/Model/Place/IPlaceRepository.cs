@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Kursovaya.Repositories;
+using System.Collections.Generic;
 
 namespace Kursovaya.Model.Place
 {
@@ -7,6 +8,6 @@ namespace Kursovaya.Model.Place
         void aAdd(PlaceModel placeModel);
         void Edit(PlaceModel placeModel);
         void Remove(int id);
-        List<PlaceModel> GetByAll();
+        List<PlaceModel> GetByAll(ApplicationContext context);
     }
 }

@@ -24,9 +24,8 @@ namespace Kursovaya.Repositories
             throw new NotImplementedException();
         }
 
-        public List<ProductModel> GetByAll()
+        public List<ProductModel> GetByAll(ApplicationContext context)
         {
-            ApplicationContext context = new ApplicationContext();
             List<ProductModel>? products = context.Products.
                 Include(p => p.ProductType).
                     ThenInclude(t => t.ProductsGroup).ToList();

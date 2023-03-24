@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using Kursovaya.Repositories;
+using System.Collections.Generic;
+using System.Windows;
 
 namespace Kursovaya.Model.Product
 {
@@ -7,6 +9,6 @@ namespace Kursovaya.Model.Product
         void Add(ProductModel productModel);
         void Edit(ProductModel productModel);
         void Remove(int id);
-        List<ProductModel> GetByAll();
+        List<ProductModel> GetByAll(ApplicationContext context);
     }
 }
