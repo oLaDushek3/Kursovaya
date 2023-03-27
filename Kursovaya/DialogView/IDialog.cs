@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace Kursovaya.DialogView
 {
-    public interface IDialogShow
+    internal interface IDialog
     {
-        void CreateNewWindow();
+        void ClickYes();
+        void ClickNo();
     }
 }

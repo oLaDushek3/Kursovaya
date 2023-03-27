@@ -57,6 +57,5 @@ namespace Kursovaya
             context.Supplies.Remove(supplyModel);
             context.SaveChanges();
         }
-
     }
 }

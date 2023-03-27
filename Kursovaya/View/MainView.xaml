@@ -6,6 +6,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Kursovaya"
         xmlns:view="clr-namespace:Kursovaya.View"
+        xmlns:dialogview="clr-namespace:Kursovaya.DialogView"
         xmlns:viewmodel="clr-namespace:Kursovaya.ViewModel"
         mc:Ignorable="d"
         Title="AI Technology (warehouse)" Height="700" Width="1300"
@@ -19,6 +20,10 @@
     </Window.DataContext>
 
     <Window.Resources>
+        <DataTemplate DataType="{x:Type dialogview:DialogViewModel}">
+            <dialogview:DialogView/>
+        </DataTemplate>
+        
         <DataTemplate DataType="{x:Type viewmodel:HomeViewModel}">
             <view:HomeView/>
         </DataTemplate>
@@ -31,7 +36,7 @@
             <view:FactoryView/>
         </DataTemplate>
     </Window.Resources>
-    
+
     <Border CornerRadius="10"
             BorderThickness="2">
         
@@ -43,14 +48,26 @@
         </Border.BorderBrush>
 
         <Grid>
-            
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="250"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
+
             <!--Navigation menu-->
             <Border CornerRadius="10,0,0,10"
-                    Grid.Column="0">
+                    Grid.Column="0"
+                    IsEnabled="{Binding MainEnable}">
+
+                <Border.Style>
+                    <Style TargetType="Border">
+                        <Setter Property="Effect">
+                            <Setter.Value>
+                                <BlurEffect Radius="{Binding BlurEffectRadius}"/>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Border.Style>
+
                 <Border.Background>
                     <LinearGradientBrush StartPoint="0,0" EndPoint="1,0.7">
                         <GradientStop Color="{StaticResource secondaryBackColor1}" Offset="0"/>
@@ -59,7 +76,7 @@
                 </Border.Background>
 
                 <StackPanel>
-                    
+
                     <!--Logo-->
                     <StackPanel Orientation="Horizontal"
                                 Height="45"
@@ -67,7 +84,7 @@
                         <Image Source="/Images/Logo 2.png" 
                                RenderOptions.BitmapScalingMode="HighQuality"
                                Height="35"/>
-                       
+
                         <StackPanel>
                             <TextBlock Text="AI Technology"
                                    Foreground="{StaticResource titleColor1}"
@@ -87,7 +104,7 @@
                         </StackPanel>
 
                     </StackPanel>
-                    
+
                     <!--Menu Button-->
                     <RadioButton Style="{StaticResource menuButton}"
                                  Tag="{StaticResource color1}"
@@ -98,9 +115,9 @@
                             <fa:IconImage Icon="Home" Style="{StaticResource menuButtonIcon}"/>
                             <TextBlock Text="Главная" Style="{StaticResource menuButtonText}"/>
                         </StackPanel>
-                        
+
                     </RadioButton>
-                    
+
 
                     <RadioButton Style="{StaticResource menuButton}"
                                  Tag="{StaticResource color2}"
@@ -112,7 +129,7 @@
                         </StackPanel>
 
                     </RadioButton>
-                    
+
                     <RadioButton Style="{StaticResource menuButton}"
                                  Tag="{StaticResource color4}"
                                  Command="{Binding ShowFactoryViewCommand}">
@@ -143,15 +160,27 @@
                         </StackPanel>
 
                     </RadioButton>
-                    
+
 
                 </StackPanel>
-                
+
             </Border>
 
             <!--Main space-->
             <Border CornerRadius="0,10,10,0"
-                    Grid.Column="1">
+                    Grid.Column="1"
+                    IsEnabled="{Binding MainEnable}">
+
+                <Border.Style>
+                    <Style TargetType="Border">
+                        <Setter Property="Effect">
+                            <Setter.Value>
+                                <BlurEffect Radius="{Binding BlurEffectRadius}"/>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Border.Style>
+
                 <Border.Background>
                     <LinearGradientBrush StartPoint="1,1" EndPoint="1,0.65">
                         <GradientStop Color="{StaticResource primaryBackColor1}" Offset="0"/>
@@ -177,7 +206,7 @@
                                 Background="Transparent"
                                 Margin="0,0,5,0"
                                 MouseLeftButtonDown="pnlControlBar_MouseLeftButtonDown">
-                        
+
                         <Button x:Name="btnClose"
                             Style="{StaticResource controlButton}"
                             Tag="{StaticResource color4}"
@@ -203,7 +232,7 @@
                             <fa:IconImage Icon="WindowMinimize" Style="{StaticResource controlButtonIcon}"
                                           IconFont="Solid" Width="13"/>
                         </Button>
-                        
+
                     </StackPanel>
 
                     <!--Header-->
@@ -248,7 +277,7 @@
                                                   Style="{StaticResource iconButtonIcon}" Cursor=""/>
                                 </Button.Content>
                             </Button>
-                            
+
                             <Button Style="{StaticResource iconButton}"
                                     Tag="{StaticResource color4}" Cursor="Hand"
                                     Visibility="{Binding Visibility}" 
@@ -276,7 +305,7 @@
                                     FlowDirection="RightToLeft"
                                     VerticalAlignment="Center"
                                     Margin="0,0,10,0">
-                            
+
                             <Button Style="{StaticResource iconButton}"
                                     Tag="{StaticResource color4}">
                                 <fa:IconImage Icon="RightFromBracket" 
@@ -307,10 +336,16 @@
                     </Grid>
 
                 </Grid>
-            
+
             </Border>
 
+            <!--Dimming effect-->
+            <Rectangle Fill="Black" Grid.ColumnSpan="2" Opacity="0.2" RadiusX="9" RadiusY="9" Visibility="{Binding DimmingEffectEnable}"/>
+
+            <ContentControl Content="{Binding DialogView}"
+                            Grid.ColumnSpan="2"/>
         </Grid>
+
 
     </Border>
 </Window>

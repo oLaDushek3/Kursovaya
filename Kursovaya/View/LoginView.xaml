@@ -34,6 +34,7 @@
                         RenderOptions.EdgeMode="Aliased"
                         RenderOptions.BitmapScalingMode="HighQuality"/>
         </Border.Background>
+        
         <Border CornerRadius="10"
                 BorderThickness="2"
                 Opacity="0.85">
@@ -182,7 +183,7 @@
                     </Border>
 
                     <TextBlock Text="{Binding ErrorMessage}"
-                               Foreground="#D7596D"
+                               Foreground="{StaticResource errorTextColor}"
                                FontSize="12"
                                FontWeight="Medium"
                                FontFamily="Montserrat"

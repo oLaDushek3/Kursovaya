@@ -1,4 +1,5 @@
-﻿using Kursovaya.Model.Place;
+﻿using Kursovaya.Model.Factory;
+using Kursovaya.Model.Place;
 using Kursovaya.Model.Product;
 using Kursovaya.Model.Supply;
 using Kursovaya.Model.Worker;
@@ -18,12 +19,19 @@ namespace Kursovaya.ViewModel
     public class EditSupplyViewModel : ViewModelBase
     {
         ApplicationContext context = new ApplicationContext();
+        public SupplyViewModel SupplyViewModel { get; set; }
 
         #region Fields
+        private string _errorMessage;
         //Supply fields
         private ISupplyRepository _supplyRepository = new SupplyRepository();
         private SupplyModel _selectedSupply;
         private SupplyModel? _editableSelectedSupply;
+
+        //Factory fields
+        private IFactoryRepository factoryRepository = new FactoryRepository();
+        private List<FactoryModel> _allFactory;
+        private FactoryModel _selectedFactory;
 
         //Worker fields
         private IWorkerRepository _workerRepository = new WorkerRepository();
@@ -39,21 +47,33 @@ namespace Kursovaya.ViewModel
         private List<SupplyProductModel> _selectedSupplyProducts;
         private List<ProductModel> _allProducts;
         private SupplyProductModel _selectedSupplyProduct;
+        private ProductModel _selectedAddProduct;
         private int _quantityAddProduct;
 
         private IPlaceRepository _placeRepository = new PlaceRepository();
         private List<PlaceModel> _allPlaces;
-
         private List<SupplyProductPlaceModel> _selectedPlaces;
-        private ProductModel _selectedAddProduct;
         private PlaceModel _selectedAddPlace;
         private int _quantityAddPlace;
+        private SupplyProductPlaceModel _selectedPlace;
+
+        private List<SupplyProductModel> AddSupplyProduct = new List<SupplyProductModel>();
+        private List<int> DeleteSupplyProduct = new List<int>();
+        private List<SupplyProductModel> EditSupplyProduct = new List<SupplyProductModel>();
 
 
         #endregion Fields
 
         #region Properties
-
+        public string ErrorMessage
+        {
+            get => _errorMessage;
+            set
+            {
+                _errorMessage = value;
+                OnPropertyChanged(nameof(ErrorMessage));
+            }
+        }
         //Supply properties
         public SupplyModel SelectedSupply
         {
@@ -71,6 +91,26 @@ namespace Kursovaya.ViewModel
             {
                 _editableSelectedSupply = value;
                 OnPropertyChanged(nameof(EditableSelectedSupply));
+            }
+        }
+
+        //Factory properties
+        public List<FactoryModel> AllFactory
+        {
+            get => _allFactory;
+            set
+            {
+                _allFactory = value;
+                OnPropertyChanged(nameof(AllFactory));
+            }
+        }
+        public FactoryModel SelectedFactory
+        {
+            get => _selectedFactory;
+            set
+            {
+                _selectedFactory = value;
+                OnPropertyChanged(nameof(SelectedFactory));
             }
         }
 
@@ -143,7 +183,10 @@ namespace Kursovaya.ViewModel
                 _selectedSupplyProduct = value;
                 OnPropertyChanged(nameof(SelectedSupplyProduct));
                 if (value != null)
-                    SelectedPlaces = value.SupplyProductPlaces;
+                {
+                    _selectedPlaces = value.SupplyProductPlaces;
+                    OnPropertyChanged(nameof(SelectedPlaces));
+                }
             }
         }
         public ProductModel SelectedAddProduct
@@ -165,12 +208,18 @@ namespace Kursovaya.ViewModel
             }
         }
 
-        public List<SupplyProductPlaceModel> SelectedPlaces
+        public ObservableCollection<SupplyProductPlaceModel> SelectedPlaces
         {
-            get => _selectedPlaces;
+            get 
+            {
+                if (_selectedPlaces != null)
+                    return new ObservableCollection<SupplyProductPlaceModel>(_selectedPlaces);
+                else return null;
+            }
             set
             {
-                _selectedPlaces = value;
+                if(value != null)
+                    _selectedPlaces = new List<SupplyProductPlaceModel>(value);
                 OnPropertyChanged(nameof(SelectedPlaces));
             }
         }
@@ -201,6 +250,15 @@ namespace Kursovaya.ViewModel
                 OnPropertyChanged(nameof(QuantityAddPlace));
             }
         }
+        public SupplyProductPlaceModel SelectedPlace
+        {
+            get => _selectedPlace;
+            set
+            {
+                _selectedPlace = value;
+                OnPropertyChanged(nameof(SelectedPlace));
+            }
+        }
 
         #endregion Properties
 
@@ -208,62 +266,96 @@ namespace Kursovaya.ViewModel
         public ICommand SaveCommand { get; }
         public ICommand DeleteSupplyProductCommand { get; }
         public ICommand AddSupplyProductCommand { get; }
+        public ICommand DeleteSupplyProductPlaceCommand { get; }
         public ICommand AddSupplyProductPlaceCommand { get; }
 
         //Commands execution
         public void ExecuteSaveCommand(object? obj)
         {
-            //SupplyModel? supplyModel = _supplyRepository.GetById(SelectedSupply.SupplyId, context);
+            int quantityOnPlaces = 0;
+            int allQuantity = 0;
+            foreach (SupplyProductModel supplyProductModel in SelectedSupply.SupplyProducts)
+            {
 
-            //if (SelectedSupply.Workers != null)
-            //{
-            //    supplyModel.Workers.Clear();
-            //    WorkerModel? workerModel = null;
+                foreach(SupplyProductPlaceModel supplyProductPlaceModel in supplyProductModel.SupplyProductPlaces)
+                {
+                    quantityOnPlaces += supplyProductPlaceModel.Quantity;
+                }
+                allQuantity += supplyProductModel.Quantity;
+            }
+            if (quantityOnPlaces != allQuantity)
+                ErrorMessage = "Не вся продукция распределена!";
+            else if (SelectedSupply.Workers.Count == 0)
+                ErrorMessage = "Не выбран ни один работник!";
+            else
+            {
+                SupplyModel? supplyModel = _supplyRepository.GetById(SelectedSupply.SupplyId, context);
 
-            //    foreach (WorkerModel addWorker in SelectedSupply.Workers)
-            //    {
-            //        workerModel = _workerRepository.GetById(addWorker.WorkerId, context);
-            //        supplyModel.Workers.Add(workerModel);
-            //    };
-            //}
-            //else
-            //    supplyModel.Workers.Clear();
+                supplyModel.Factory = SelectedFactory;
+                supplyModel.Date = SelectedSupply.Date;
 
+                //Workers
+                if (SelectedSupply.Workers != null)
+                {
+                    supplyModel.Workers.Clear();
+                    WorkerModel? workerModel = null;
 
+                    foreach (WorkerModel addWorker in SelectedSupply.Workers)
+                    {
+                        workerModel = _workerRepository.GetById(addWorker.WorkerId, context);
+                        supplyModel.Workers.Add(workerModel);
+                    };
+                }
+                else
+                    supplyModel.Workers.Clear();
 
-            //_supplyProductRepository = new Supply_ProductRepository();
+                //Products
+                //Add
+                foreach (SupplyProductModel addSupplyProduct in AddSupplyProduct)
+                {
+                    supplyModel.SupplyProducts.Add(addSupplyProduct);
+                    context.SupplyProducts.AddAsync(addSupplyProduct);
+                }
 
-            //SupplyProductModel? supplyProductModel = null;
-            //foreach(SupplyProductModel supplyProduct in SelectedSupply.SupplyProducts)
-            //{
-            //    supplyProductModel = _supplyProductRepository.GetById(supplyProduct.SupplyProductId, context);
-            //    supplyProductModel.SupplyProductPlaces.Clear();
-            //    context.SupplyProducts.Remove(supplyProductModel);
-            //}
+                //Delete
+                foreach (int idForDelete in DeleteSupplyProduct)
+                {
+                    SupplyProductModel deleteSupplyProduct = context.SupplyProducts.Where(p => p.SupplyProductId == idForDelete).FirstOrDefault();
+                    supplyModel.SupplyProducts.Remove(deleteSupplyProduct);
 
-            //foreach (SupplyProductModel addSupply in SelectedSupply.SupplyProducts)
-            //{
-            //    context.SupplyProducts.Add(addSupply);
-            //};
+                    deleteSupplyProduct.SupplyProductPlaces.Clear();
+                    deleteSupplyProduct.Supply = null;
 
-            //supplyProductModel = _supplyProductRepository.GetById(SelectedSupply.SupplyProducts[0].SupplyProductId, context);
-            //supplyProductModel.SupplyProductPlaces.Clear();
-            //context.SupplyProducts.Remove(supplyProductModel);
-            context.SaveChanges();
+                    context.SupplyProducts.Remove(deleteSupplyProduct);
+                }
+
+                //Edit
+                foreach (SupplyProductModel EditSupplyProduct in EditSupplyProduct)
+                {
+                    SupplyProductModel editSupplyProduct = context.SupplyProducts.Where(p => p.SupplyProductId == EditSupplyProduct.SupplyProductId).FirstOrDefault();
+                    editSupplyProduct.SupplyProductPlaces.Clear();
+                    foreach (SupplyProductPlaceModel supplyProductPlace in EditSupplyProduct.SupplyProductPlaces)
+                        editSupplyProduct.SupplyProductPlaces.Add(supplyProductPlace);
+                }
+
+                context.SaveChanges();
+
+                SupplyViewModel.GoBackCommand.Execute(true);
+            }
         }
         public void ExecuteDeleteSupplyProductCommand(object? obj)
         {
             SelectedSupply.SupplyProducts.Remove(SelectedSupplyProduct);
+            DeleteSupplyProduct.Add(SelectedSupplyProduct.SupplyProductId);
 
             OnPropertyChanged(nameof(SelectedSupplyProducts));
             SelectedPlaces = null;
+
         }
         public void ExecuteAddSupplyProductCommand(object? obj)
         {
             SupplyProductModel addSupplyProductModel = new SupplyProductModel
             {
-                SupplyId = SelectedSupply.SupplyId,
-                Supply = SelectedSupply,
                 ProductId = SelectedAddProduct.ProductId,
                 Product = SelectedAddProduct,
                 Quantity = QuantityAddProduct
@@ -275,10 +367,15 @@ namespace Kursovaya.ViewModel
             SelectedAddProduct = null;
             SelectedSupplyProduct = addSupplyProductModel;
 
-            //SupplyModel? supplyModel = _supplyRepository.GetById(SelectedSupply.SupplyId, context);
-            //supplyModel.SupplyProducts.Add(SelectedSupply.SupplyProducts[6]);
-            ////context.SupplyProducts.Add(addSupplyProductModel);
-            //context.SaveChanges();
+            AddSupplyProduct.Add(addSupplyProductModel);
+        }
+        public void ExecuteDeleteSupplyProductPlaceCommand(object? obj)
+        {
+            SelectedSupply.SupplyProducts.Where(s => s.SupplyProductId == SelectedSupplyProduct.SupplyProductId).FirstOrDefault().SupplyProductPlaces.Remove(SelectedPlace);
+            EditSupplyProduct.Add(SelectedSupplyProduct);
+
+            OnPropertyChanged(nameof(SelectedPlaces));
+            SelectedPlace = null;
         }
         public void ExecuteAddSupplyProductPlaceCommand(object? obj)
         {
@@ -290,11 +387,11 @@ namespace Kursovaya.ViewModel
                 SupplyProduct = SelectedSupplyProduct,
                 Quantity = QuantityAddPlace
             };
-            SelectedSupply.SupplyProducts[SelectedSupplyProduct.SupplyProductId].SupplyProductPlaces.Add(addSupplyProductPlaceModel);
+            SelectedSupply.SupplyProducts.Where(s => s.SupplyProductId == SelectedSupplyProduct.SupplyProductId).FirstOrDefault().SupplyProductPlaces.Add(addSupplyProductPlaceModel);
+            EditSupplyProduct.Add(SelectedSupplyProduct);
 
             OnPropertyChanged(nameof(SelectedSupplyProducts));
-            SelectedPlaces = null;
-            SelectedAddProduct = null;
+            OnPropertyChanged(nameof(SelectedPlaces));
         }
 
         //Methods
@@ -319,7 +416,7 @@ namespace Kursovaya.ViewModel
         }
 
         //Constructor
-        public EditSupplyViewModel(SupplyModel selectedSupply)
+        public EditSupplyViewModel(SupplyModel selectedSupply, SupplyViewModel supplyViewModel)
         {
             SelectedSupply = selectedSupply;
             UpdateSelectedWorkers();
@@ -328,10 +425,17 @@ namespace Kursovaya.ViewModel
 
             AllPlaces = _placeRepository.GetByAll(context);
 
+            AllFactory = factoryRepository.GetByAll(context);
+            SelectedFactory = AllFactory.Where(f => f.FactoryId == SelectedSupply.FactoryId).FirstOrDefault();
+
             SaveCommand = new ViewModelCommand(ExecuteSaveCommand);
             DeleteSupplyProductCommand = new ViewModelCommand(ExecuteDeleteSupplyProductCommand);
             AddSupplyProductCommand = new ViewModelCommand(ExecuteAddSupplyProductCommand);
             AddSupplyProductPlaceCommand = new ViewModelCommand(ExecuteAddSupplyProductPlaceCommand);
+            DeleteSupplyProductPlaceCommand = new ViewModelCommand(ExecuteDeleteSupplyProductPlaceCommand);
+            
+            OnPropertyChanged(nameof(SelectedFactory));
+            SupplyViewModel = supplyViewModel;
         }
     }
 }

@@ -22,10 +22,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="..\.editorconfig" Link=".editorconfig" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="FontAwesome.Sharp" Version="6.3.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.4" />
 	<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.4" />

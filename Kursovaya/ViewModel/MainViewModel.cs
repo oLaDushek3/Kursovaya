@@ -1,13 +1,9 @@
-﻿using System;
-using System.Windows;
-using System.Windows.Controls;
+﻿using System.Windows;
 using System.Windows.Input;
 using FontAwesome.Sharp;
 using Kursovaya.DialogView;
 using Kursovaya.Model.User;
 using Kursovaya.Repositories;
-using Kursovaya.View;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace Kursovaya.ViewModel
 {
@@ -22,9 +18,13 @@ namespace Kursovaya.ViewModel
         private string _caption;
         private IconChar _icon;
 
+        private ViewModelBase _dialogView;
+        private bool _mainEnable;
+        private double _blurEffectRadius;
+        private Visibility _dimmingEffectEnable;
+
         private Visibility _visibility;
         private Visibility _backVisibility;
-        private IDialogShow _dialogShow;
         private ViewModelBase _currentAddView;
         private ViewModelBase _currentEditView;
         private ViewModelBase _currentDeleteDialogView;
@@ -62,6 +62,44 @@ namespace Kursovaya.ViewModel
                 OnPropertyChanged(nameof(CurrentDeleteDialogView));
             }
         }
+
+        public ViewModelBase DialogView
+        {
+            get => _dialogView;
+            set
+            {
+                _dialogView = value;
+                OnPropertyChanged(nameof(DialogView));
+            }
+        }
+        public bool MainEnable
+        {
+            get => _mainEnable;
+            set
+            {
+                _mainEnable = value;
+                OnPropertyChanged(nameof(MainEnable));
+            }
+        }
+        public double BlurEffectRadius
+        {
+            get => _blurEffectRadius;
+            set
+            {
+                _blurEffectRadius = value;
+                OnPropertyChanged(nameof(BlurEffectRadius));
+            }
+        }
+        public Visibility DimmingEffectEnable
+        {
+            get => _dimmingEffectEnable;
+            set
+            {
+                _dimmingEffectEnable = value;
+                OnPropertyChanged(nameof(DimmingEffectEnable));
+            }
+        }
+
         public string Caption
         {
             get => _caption;
@@ -140,7 +178,7 @@ namespace Kursovaya.ViewModel
         }
         private void ExecuteShowSupplyViewCommand(object? obj)
         {
-            _currentMainView = new SupplyViewModel();
+            _currentMainView = new SupplyViewModel(this);
             CurrentChildView = _currentMainView;
 
             Caption = "Поставки";
@@ -181,7 +219,7 @@ namespace Kursovaya.ViewModel
         }
         private void ExecuteShowDeleteViewCommand(object? obj)
         {
-            _dialogShow.CreateNewWindow();
+            //ShowDialog();
         }
 
         //Constructor
@@ -189,7 +227,6 @@ namespace Kursovaya.ViewModel
         {
             _userRepository = new UserRepository();
             User = new UserModel();
-            _dialogShow = new DialogShow();
 
             //Initialize command
             ShowHomeViewCommand = new ViewModelCommand(ExecuteShowHomeViewCommand);
@@ -203,8 +240,13 @@ namespace Kursovaya.ViewModel
             ExecuteShowHomeViewCommand(null);
 
             LoadCurrentUserdata();
+
+            MainEnable = true;
+            BlurEffectRadius = 0;
+            DimmingEffectEnable = Visibility.Collapsed;
         }
 
+        //Methods
         private void LoadCurrentUserdata()
         {
             UserModel user = _userRepository.GetByUsername("admin");
@@ -213,6 +255,24 @@ namespace Kursovaya.ViewModel
                 User.Login = user.Login;
             }
             else user.Login = "Invalid user, not logged in";
+        }
+
+        public void ShowDialog(ViewModelBase calledViewModel)
+        {
+            DialogViewModel dvm = new DialogViewModel(calledViewModel);
+            DialogView = dvm;
+
+            MainEnable = false;
+            BlurEffectRadius = 3;
+            DimmingEffectEnable = Visibility.Visible;
+        }
+
+        public void CloseDialog()
+        {
+            DialogView = null;
+            MainEnable = true;
+            BlurEffectRadius = 0;
+            DimmingEffectEnable = Visibility.Collapsed;
         }
     }
 }

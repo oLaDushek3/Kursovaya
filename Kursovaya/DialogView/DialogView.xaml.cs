@@ -10,16 +10,17 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace Kursovaya.DialogView
 {
     /// <summary>
-    /// Логика взаимодействия для DialogWindow.xaml
+    /// Логика взаимодействия для DialogView.xaml
     /// </summary>
-    public partial class DialogWindow : Window
+    public partial class DialogView : UserControl
     {
-        public DialogWindow()
+        public DialogView()
         {
             InitializeComponent();
         }

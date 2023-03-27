@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Kursovaya.Repositories;
+using System.Collections.Generic;
 
 namespace Kursovaya.Model.Factory
 {
@@ -7,6 +8,7 @@ namespace Kursovaya.Model.Factory
         void Add(FactoryModel factoryModel);
         void Edit(FactoryModel factoryModel);
         void Remove(int id);
-        IEnumerable<FactoryModel> GetByAll();
+        List<FactoryModel> GetByAll(ApplicationContext context);
+        FactoryModel GetById(int id, ApplicationContext context);
     }
 }

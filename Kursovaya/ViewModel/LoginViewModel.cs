@@ -73,7 +73,6 @@ namespace Kursovaya.ViewModel
 
             return validData;
         }
-
         private void ExecuteLoginCommand(object obj)
         {
             var isValidUser = userRepository.AuthenticateUser(new NetworkCredential(Username, Password));

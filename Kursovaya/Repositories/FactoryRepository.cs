@@ -1,6 +1,7 @@
 ﻿using Kursovaya.Model.Factory;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Kursovaya.Repositories
 {
@@ -16,14 +17,22 @@ namespace Kursovaya.Repositories
             throw new NotImplementedException();
         }
 
-        public IEnumerable<FactoryModel> GetByAll()
+        public void Remove(int id)
         {
             throw new NotImplementedException();
         }
 
-        public void Remove(int id)
+
+        public List<FactoryModel> GetByAll(ApplicationContext context)
         {
-            throw new NotImplementedException();
+            List<FactoryModel> factorys = context.Factories.ToList();
+            return factorys;
+        }
+
+        public FactoryModel GetById(int id, ApplicationContext context)
+        {
+            FactoryModel factory = context.Factories.Where(f => f.FactoryId == id).FirstOrDefault();
+            return factory;
         }
     }
 }
