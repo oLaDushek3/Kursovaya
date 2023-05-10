@@ -1,4 +1,5 @@
 ﻿using Kursovaya.Model.Product;
+using Kursovaya.Model.Supply;
 using Kursovaya.Model.Worker;
 using Kursovaya.Repositories;
 using Kursovaya.ViewModel;
@@ -14,15 +15,24 @@ namespace Kursovaya.DialogView.AddSupplyProduct
     {
         #region Fields
         private ApplicationContext _context;
+        private List<ProductModel> _allProducts;
         private ProductModel _selectedProduct;
-        private int _specifiedQuantity;
+        private string _specifiedQuantity = "fff";
         private int _actualQuantity = 0;
         private int _residuary;
 
         #endregion Fields
 
         #region Properties
-        public List<ProductModel> AllProducts;
+        public List<ProductModel> AllProducts
+        {
+            get => _allProducts;
+            set
+            {
+                _allProducts = value;
+                OnPropertyChanged(nameof(AllProducts));
+            }
+        }
         public ProductModel SelectedProduct
         {
             get => _selectedProduct;
@@ -32,7 +42,7 @@ namespace Kursovaya.DialogView.AddSupplyProduct
                 OnPropertyChanged(nameof(SelectedProduct));
             }
         }
-        public int SpecifiedQuantity
+        public string SpecifiedQuantity
         {
             get => _specifiedQuantity;
             set
@@ -46,7 +56,7 @@ namespace Kursovaya.DialogView.AddSupplyProduct
             get => _actualQuantity;
             set
             {
-                _actualQuantity = value - _actualQuantity;
+                _actualQuantity = value;
                 OnPropertyChanged(nameof(ActualQuantity));
             }
         }

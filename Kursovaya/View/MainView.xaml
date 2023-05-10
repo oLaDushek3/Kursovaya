@@ -333,8 +333,9 @@
             <!--Dimming effect-->
             <Rectangle Fill="Black" Grid.ColumnSpan="2" Opacity="0.2" RadiusX="9" RadiusY="9" Visibility="{Binding DimmingEffectEnable}"/>
 
-            <ContentControl Content="{Binding DialogView}"
-                            Grid.ColumnSpan="2"/>
+            <StackPanel Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <ContentControl Content="{Binding DialogView}"/>
+            </StackPanel>
         </Grid>
 
 

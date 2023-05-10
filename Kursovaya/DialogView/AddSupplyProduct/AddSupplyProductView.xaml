@@ -58,18 +58,18 @@
                                Margin="2"/>
                     <TextBox Grid.Column="1" Margin="3" Tag="Введите количество"
                              Style="{StaticResource HintTextBox}"
-                             Text="{Binding SpecifiedQuantity, Mode=TwoWay}"
+                             Text="{Binding Path=SpecifiedQuantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                              MaxLength="10"
                              BorderBrush="{StaticResource color2}"/>
 
                 </Grid>
 
-                <TextBlock Text="{Binding Residuary, StringFormat=Осталось: {0} }"
-                               VerticalAlignment="Center"  
-                               Foreground="{StaticResource titleColor1}"
-                               FontFamily="Motserrat"
-                               FontSize="15"
-                               Margin="2"/>
+                <TextBlock Text="{Binding Residuary, StringFormat=Осталось: {0}, Mode=TwoWay}"
+                           VerticalAlignment="Center"  
+                           Foreground="{StaticResource titleColor1}"
+                           FontFamily="Motserrat"
+                           FontSize="15"
+                           Margin="2"/>
             </StackPanel>
             
             <!--List-->
