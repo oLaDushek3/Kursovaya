@@ -3,9 +3,9 @@ using System.Windows.Input;
 
 namespace Kursovaya.DialogView
 {
-    public class DialogViewModel : ViewModelBase
+    public class ConfirmationDialogViewModel : ViewModelBase
     {
-        private IDialog _dialogInterface;
+        private IConfirmationDialog _dialogInterface;
 
         //Commands
         public ICommand ClickYesCommand { get; }
@@ -22,7 +22,7 @@ namespace Kursovaya.DialogView
         }
 
         //Constructor
-        public DialogViewModel(ViewModelBase calledViewModel)
+        public ConfirmationDialogViewModel(ViewModelBase calledViewModel)
         {
             _dialogInterface = calledViewModel;
             ClickYesCommand = new ViewModelCommand(ExecuteClickYesCommand);

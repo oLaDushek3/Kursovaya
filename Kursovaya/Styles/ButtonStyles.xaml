@@ -111,6 +111,10 @@
         </Setter>
 
         <Style.Triggers>
+            <!--Is disable color-->
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Opacity" Value="0.4"/>
+            </Trigger>
             <!--Mouse over back color-->
             <Trigger Property="IsMouseOver" Value="True">
                 <Setter Property="Foreground" Value="{Binding Path=Tag, RelativeSource={RelativeSource Self}}"/>

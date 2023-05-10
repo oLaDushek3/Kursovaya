@@ -20,9 +20,12 @@ namespace Kursovaya.Repositories
             throw new NotImplementedException();
         }
 
-        public List<WorkerModel> GetByAll()
+        public List<WorkerModel> GetByAll(ApplicationContext context)
         {
-            throw new NotImplementedException();
+            List<WorkerModel> workers = context.Workers.
+                Include(w => w.Post).
+                Include(w => w.Supplies).ToList();
+            return workers;
         }
 
         public void Remove(int id)
@@ -31,8 +34,8 @@ namespace Kursovaya.Repositories
         }
         public WorkerModel GetById(int id, ApplicationContext context)
         {
-            WorkerModel? worker = context.Workers.
-                Include(w => w.Post).FirstOrDefault(w => w.WorkerId == id);
+            WorkerModel worker = context.Workers.
+                Include(w => w.Post).First(w => w.WorkerId == id);
 
             return worker;
         }

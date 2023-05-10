@@ -2,6 +2,7 @@
 using System.Windows.Input;
 using FontAwesome.Sharp;
 using Kursovaya.DialogView;
+using Kursovaya.DialogView.BaseDialog;
 using Kursovaya.Model.User;
 using Kursovaya.Repositories;
 
@@ -257,10 +258,10 @@ namespace Kursovaya.ViewModel
             else user.Login = "Invalid user, not logged in";
         }
 
-        public void ShowDialog(ViewModelBase calledViewModel)
+        public void ShowDialog(ViewModelBase currentDialogView)
         {
-            DialogViewModel dvm = new DialogViewModel(calledViewModel);
-            DialogView = dvm;
+            BaseDialogViewModel baseDialogViewModel = new BaseDialogViewModel(currentDialogView);
+            DialogView = baseDialogViewModel;
 
             MainEnable = false;
             BlurEffectRadius = 3;

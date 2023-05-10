@@ -6,9 +6,14 @@
              xmlns:local="clr-namespace:Kursovaya.View" 
              xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
              xmlns:viewmodel="clr-namespace:Kursovaya.ViewModel"
-             mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800"
+             xmlns:Converters="clr-namespace:Kursovaya.Converters"
+             mc:Ignorable="d" x:Name="editSupplyView"
+             d:DesignHeight="600" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance Type=viewmodel:EditSupplyViewModel, IsDesignTimeCreatable=False}" >
+
+    <UserControl.Resources>
+        <Converters:FullNameConverter x:Key="FullNameConverter" />
+    </UserControl.Resources>
 
     <Border CornerRadius="10 0 0 10">
         <Border.Background>
@@ -31,13 +36,8 @@
                     <RowDefinition Height="45*"/>
                 </Grid.RowDefinitions>
 
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
-
                 <!--Header-->
-                <DockPanel Grid.Row="0" Grid.ColumnSpan="2">
+                <DockPanel Grid.Row="0" >
                     <Border BorderThickness="1" 
                             BorderBrush="{StaticResource color2}" 
                             CornerRadius="10"
@@ -48,7 +48,7 @@
                                 <ColumnDefinition/>
                             </Grid.ColumnDefinitions>
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Grid.Column="0" Grid.ColumnSpan="2"
+                                <TextBlock Grid.Column="0" 
                                            Text="Редактирование"
                                            Foreground="{StaticResource titleColor2}"
                                            FontSize="18"
@@ -81,7 +81,7 @@
                 </DockPanel>
 
                 <!--Base info-->
-                <DockPanel Grid.ColumnSpan="2" Grid.Row="1">
+                <DockPanel  Grid.Row="1">
                     <Border BorderThickness="1" 
                         BorderBrush="{StaticResource color2}" 
                         CornerRadius="10"
@@ -89,7 +89,7 @@
 
                         <StackPanel Margin="5" Cursor="">
 
-                            <TextBlock Text="{Binding SelectedSupply.SupplyId, StringFormat = Поставка № {0}}"
+                            <TextBlock Text="{Binding EditableSupply.SupplyId, StringFormat = Поставка № {0}}"
                                        Foreground="{StaticResource titleColor1}"
                                        FontFamily="Motserrat"
                                        FontSize="18"
@@ -106,7 +106,7 @@
 
                                 <ComboBox ItemsSource="{Binding AllFactory}"
                                           Background="Transparent"
-                                          SelectedItem="{Binding SelectedFactory, Mode=TwoWay}">
+                                          SelectedItem="{Binding EditableSupply.Factory, Mode=TwoWay}">
                                     <ComboBox.ItemTemplate>
                                         <DataTemplate>
                                             <TextBlock Background="Transparent"
@@ -127,8 +127,9 @@
                                            FontSize="15"
                                            Margin="2"/>
 
-                                <DatePicker SelectedDate="{Binding SelectedSupply.Date, Mode=TwoWay}"
-                                            BorderThickness="0"/>
+                                <DatePicker SelectedDate="{Binding EditableSupply.Date, Mode=TwoWay}"
+                                            Style="{StaticResource PickerStyle}"
+                                            BorderThickness="0" Width="100"/>
                             </StackPanel>
 
 
@@ -138,7 +139,7 @@
                 </DockPanel>
 
                 <!--Workers info-->
-                <DockPanel Grid.ColumnSpan="2" Grid.Row="2">
+                <DockPanel  Grid.Row="2">
                     <Border BorderThickness="1" 
                             BorderBrush="{StaticResource color2}" 
                             CornerRadius="10"
@@ -150,87 +151,109 @@
                                 <RowDefinition Height="25"/>
                                 <!--List-->
                                 <RowDefinition/>
+                                <!--Select place-->
+                                <RowDefinition Height="25"/>
                             </Grid.RowDefinitions>
 
                             <!--Header-->
-                            <Grid Grid.Row="0">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition/>
-                                    <ColumnDefinition/>
-                                </Grid.ColumnDefinitions>
+                            <!--Header-->
+                            <Grid>
                                 <TextBlock Text="Работники"
                                            Foreground="{StaticResource titleColor1}"
                                            FontFamily="Montserrat"
                                            FontSize="18"
-                                           VerticalAlignment="Center"
+                                           VerticalAlignment="Center" HorizontalAlignment="Left"
                                            Margin="3"
-                                           Grid.Column="0"/>
+                                           Grid.Row="0"/>
+
+                                <ComboBox Width="150" Margin="10 0 0 0" HorizontalAlignment="Right"
+                                          SelectedIndex="{Binding SupplyWorkersPostId}">
+                                    <TextBlock Text="Все"/>
+                                    <TextBlock Text="Оп. Погрузчика"/>
+                                    <TextBlock Text="Грузчик"/>
+                                </ComboBox>
                             </Grid>
 
 
                             <!--List-->
-                            <StackPanel Grid.Row="1">
+                            <Grid Grid.Row="1">
+                                <ScrollViewer Style="{StaticResource FavsScrollViewer}">
+                                    <ItemsControl ItemsSource="{Binding EditableSupplyWorkers}">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <Grid Margin="0 5 0 5">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="50*"/>
+                                                            <ColumnDefinition Width="70*"/>
+                                                            <ColumnDefinition Width="20*"/>
+                                                        </Grid.ColumnDefinitions>
 
-                                <ListBox ItemsSource="{Binding AllWorkers}"
-                                         Background="Transparent"
-                                         BorderThickness="0"
-                                         Height="55"
-                                         SelectedItem="{Binding SelectedForDeletionWorker}"
-                                         ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-                                    <ListBox.ItemTemplate>
-                                        <DataTemplate>
-                                            <UniformGrid Columns="2">
+                                                        <TextBox Grid.Column="0" 
+                                                         Foreground="{StaticResource titleColor1}"
+                                                         Background="Transparent"
+                                                         BorderThickness="1 0 0 0"
+                                                         BorderBrush="LightGray"
+                                                         IsReadOnly="False"
+                                                         FontFamily="Montserrat"
+                                                         Text="{Binding FullName, Converter={StaticResource FullNameConverter}}"
+                                                         VerticalAlignment="Center" Cursor="Arrow"/>
 
-                                                <Border BorderThickness="1 0 0 0"
-                                                        BorderBrush="LightGray">
-                                                    <TextBlock Grid.Column="0" 
-                                                               Foreground="{StaticResource titleColor1}"
-                                                               Background="Transparent"
-                                                               FontFamily="Montserrat"
-                                                               Text="{Binding FullName}"
-                                                               VerticalAlignment="Center"/>
-                                                </Border>
-
-                                                <TextBlock Grid.Column="1" 
+                                                        <TextBlock Grid.Column="1" 
                                                            Foreground="{StaticResource titleColor1}"
                                                            Background="Transparent"
                                                            FontFamily="Montserrat"
                                                            Text="{Binding Post.Title}"
                                                            VerticalAlignment="Center"/>
-                                            </UniformGrid>
-                                        </DataTemplate>
-                                    </ListBox.ItemTemplate>
-                                </ListBox>
+                                                    
+                                                    <Button Style="{StaticResource iconButton}"
+                                                            Tag="{StaticResource color4}"
+                                                            Command="{Binding ElementName=editSupplyView, Path=DataContext.DeleteWorkerCommand}"
+                                                            CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=DataContext}"
+                                                            Height="10"
+                                                            HorizontalAlignment="Right" Grid.Column="2">
+                                                        <Button.Content>
+                                                            <fa:IconImage Icon="Xmark" 
+                                                                          Width="10"
+                                                                          Style="{StaticResource iconButtonIcon}"/>
+                                                        </Button.Content>
+                                                    </Button>
 
-                                <ComboBox ItemsSource="{Binding AvailableWorker}"
-                                          Background="Transparent"
-                                          SelectedItem="{Binding SelectedForAdditionWorker}">
-                                    <ComboBox.ItemTemplate>
-                                        <DataTemplate>
-                                            <Grid Margin="0 0 0 5">
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="50*"/>
-                                                    <ColumnDefinition Width="70*"/>
-                                                </Grid.ColumnDefinitions>
+                                                </Grid>
+                                            </DataTemplate>
 
-                                                <TextBlock Grid.Column="0"
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </ScrollViewer>
+                            </Grid>
+
+                            <ComboBox ItemsSource="{Binding AvailableWorker}"
+                                      Background="Transparent"
+                                      SelectedItem="{Binding SelectedForAdditionWorker}" 
+                                      Height="25" VerticalAlignment="Center" Grid.Row="2">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid Margin="0 0 0 5">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="50*"/>
+                                                <ColumnDefinition Width="70*"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <TextBlock Grid.Column="0"
                                                            Background="Transparent"
                                                            FontFamily="Montserrat"
-                                                           Text="{Binding FullName}"
+                                                           Text="{Binding FullName, Converter={StaticResource FullNameConverter}}"
                                                            VerticalAlignment="Center"/>
 
-                                                <TextBlock Margin="50 0 0 0" Grid.Column="1" 
+                                            <TextBlock Margin="50 0 0 0" Grid.Column="1" 
                                                            Background="Transparent"
                                                            FontFamily="Montserrat"
                                                            Text="{Binding Post.Title}"
                                                            VerticalAlignment="Center"/>
 
-                                            </Grid>
-                                        </DataTemplate>
-                                    </ComboBox.ItemTemplate>
-                                </ComboBox>
-
-                            </StackPanel>
+                                        </Grid>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
                         </Grid>
                     </Border>
                 </DockPanel>
@@ -257,20 +280,10 @@
                                        VerticalAlignment="Center"
                                        Margin="3"
                                        Grid.Row="0"/>
-                            
+
                             <StackPanel Orientation="Horizontal"
                                         FlowDirection="RightToLeft"
-                                        Grid.Column="1" HorizontalAlignment="Right" Cursor="">
-
-                                <Button Style="{StaticResource iconButton}"
-                                        Tag="{StaticResource color4}" Cursor="Hand"
-                                        Command="{Binding DeleteSupplyProductCommand}">
-                                    <Button.Content>
-                                        <fa:IconImage Icon="Trash"
-                                                      Style="{StaticResource iconButtonIcon}"/>
-                                    </Button.Content>
-
-                                </Button>
+                                        Grid.Column="1" HorizontalAlignment="Right">
 
                                 <Button Style="{StaticResource iconButton}"
                                         Tag="{StaticResource color9}" Cursor="Hand"
@@ -294,37 +307,43 @@
                                          ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                                          SelectedItem="{Binding SelectedSupplyProduct}"
                                          SelectedIndex="0">
-                                        <ListBox.ItemTemplate>
-                                            <DataTemplate>
-                                                <UniformGrid Columns="2">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <UniformGrid Columns="0">
 
-                                                    <Border BorderThickness="1 0 0 0"
+                                                <Border BorderThickness="1 0 0 0"
                                                         BorderBrush="LightGray">
-                                                        <TextBlock Grid.Column="0" 
+                                                    <TextBlock Grid.Column="0" 
                                                                Foreground="{StaticResource titleColor1}"
                                                                Background="Transparent"
                                                                FontFamily="Montserrat"
                                                                Text="{Binding Product.Title}"
                                                                VerticalAlignment="Center"/>
-                                                    </Border>
+                                                </Border>
 
-                                                    <TextBlock Grid.Column="1" 
+                                                <TextBlock Grid.Column="1" 
                                                            Foreground="{StaticResource titleColor1}"
                                                            Background="Transparent"
                                                            FontFamily="Montserrat"
                                                            Text="{Binding Quantity, StringFormat=Всего: {0}шт}"
                                                            VerticalAlignment="Center"/>
-                                                </UniformGrid>
-                                            </DataTemplate>
-                                        </ListBox.ItemTemplate>
-                                    </ListBox>
+                                            </UniformGrid>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
 
-                                </ScrollViewer>
+                            </ScrollViewer>
 
-                            <StackPanel VerticalAlignment="Bottom" Grid.Row="1" Grid.Column="0">
+                            <Grid VerticalAlignment="Bottom" Grid.Row="1" Grid.Column="0">
+
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="50*"/>
+                                    <ColumnDefinition Width="50*"/>
+                                </Grid.ColumnDefinitions>
+                                
                                 <ComboBox ItemsSource="{Binding AllProducts}"
                                           Background="Transparent" 
-                                          Grid.Column="0"
+                                          Grid.Column="0" Margin="3"
                                           SelectedItem="{Binding SelectedAddProduct}">
                                     <ComboBox.ItemTemplate>
                                         <DataTemplate>
@@ -336,121 +355,14 @@
                                     </ComboBox.ItemTemplate>
                                 </ComboBox>
 
-                                <TextBox Grid.Column="1"
+                                <TextBox Grid.Column="1" Margin="3" Tag="Введите количество"
+                                         Style="{StaticResource HintTextBox}"
                                          Text="{Binding QuantityAddProduct, Mode=TwoWay}"
                                          MaxLength="10"
-                                         Background="Transparent"
-                                         BorderThickness="0"/>
-                            </StackPanel>
+                                         BorderBrush="{StaticResource color2}"/>
+                            </Grid>
 
                         </Grid>
-                    </Border>
-                </DockPanel>
-                    
-                <!--Places info-->
-                <DockPanel Grid.Row="3" Grid.Column="1">
-                    <Border BorderThickness="1"
-                            BorderBrush="{StaticResource color2}"
-                            CornerRadius="10"
-                            Margin="2">
-
-                        <Grid Margin="5">
-                            <Grid.RowDefinitions>
-                                <!--Header-->
-                                <RowDefinition Height="25"/>
-                                <!--List-->
-                                <RowDefinition/>
-                            </Grid.RowDefinitions>
-                            
-                            <TextBlock Text="Места"
-                                       Foreground="{StaticResource titleColor1}"
-                                       FontFamily="Motserrat"
-                                       FontSize="18"
-                                       VerticalAlignment="Center"
-                                       Margin="3"
-                                       Grid.Row="0"/>
-
-                            <StackPanel Orientation="Horizontal"
-                                        FlowDirection="RightToLeft"
-                                        Grid.Column="1" HorizontalAlignment="Right" Cursor="">
-
-                                <Button Style="{StaticResource iconButton}"
-                                        Tag="{StaticResource color4}" Cursor="Hand"
-                                        Command="{Binding DeleteSupplyProductPlaceCommand}">
-                                    <Button.Content>
-                                        <fa:IconImage Icon="Trash"
-                                                      Style="{StaticResource iconButtonIcon}"/>
-                                    </Button.Content>
-
-                                </Button>
-
-
-                                <Button Style="{StaticResource iconButton}"
-                                        Tag="{StaticResource color9}" Cursor="Hand"
-                                        Command="{Binding AddSupplyProductPlaceCommand}">
-                                    <Button.Content>
-                                        <fa:IconImage Icon="Plus"
-                                                      Style="{StaticResource iconButtonIcon}"/>
-                                    </Button.Content>
-
-                                </Button>
-
-                            </StackPanel>
-
-                            <ScrollViewer Style="{StaticResource FavsScrollViewer}"
-                                          Grid.Row="1" Grid.Column="1"
-                                          Margin="0 0 0 40">
-
-                                <ListBox ItemsSource="{Binding SelectedPlaces}"
-                                         Background="Transparent"
-                                         BorderThickness="0"
-                                         ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                                         SelectedItem="{Binding SelectedPlace}">
-                                    <ListBox.ItemTemplate>
-                                        <DataTemplate>
-                                            <TextBlock Grid.Column="0"  
-                                                       Margin="4"
-                                                       Background="Transparent"
-                                                       FontFamily="Montserrat"
-                                                       Foreground="{StaticResource titleColor1}"
-                                                       VerticalAlignment="Center">
-                                                <TextBlock.Text>
-                                                    <MultiBinding StringFormat="Место: {0} - {1}шт">
-                                                        <Binding Path="Place.Place1" />
-                                                        <Binding Path="Quantity" />
-                                                    </MultiBinding>
-                                                </TextBlock.Text>
-                                            </TextBlock>
-                                        </DataTemplate>
-                                    </ListBox.ItemTemplate>
-                                </ListBox>
-
-                            </ScrollViewer>
-
-                            <StackPanel VerticalAlignment="Bottom" Grid.Row="1" Grid.Column="1">
-                                <ComboBox ItemsSource="{Binding AllPlaces}"
-                                          Background="Transparent" 
-                                          Grid.Column="0"
-                                          SelectedItem="{Binding SelectedAddPlace}">
-                                    <ComboBox.ItemTemplate>
-                                        <DataTemplate>
-                                            <TextBlock Background="Transparent"
-                                                       FontFamily="Montserrat"
-                                                       Text="{Binding Place1}"
-                                                       VerticalAlignment="Center"/>
-                                        </DataTemplate>
-                                    </ComboBox.ItemTemplate>
-                                </ComboBox>
-
-                                <TextBox Grid.Column="1"
-                                         Text="{Binding QuantityAddPlace, Mode=TwoWay}"
-                                         MaxLength="10"
-                                         Background="Transparent"
-                                         BorderThickness="0"/>
-                            </StackPanel>
-
-                        </Grid>
-
                     </Border>
                 </DockPanel>
 

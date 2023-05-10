@@ -1,16 +1,14 @@
 ﻿using Kursovaya.Model.Supply;
-using Kursovaya.Model.Worker;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
-using System.Windows.Forms;
 
 namespace Kursovaya.Repositories
 {
     public class SupplyRepository : ApplicationContext, ISupplyRepository
     {
+        ApplicationContext context = new ApplicationContext();
         public void Add(SupplyModel supplyModel)
         {
             throw new NotImplementedException();
@@ -23,12 +21,13 @@ namespace Kursovaya.Repositories
 
         public void Remove(int id)
         {
-            throw new NotImplementedException();
+            SupplyModel deletedSupply = context.Supplies.Where(s => s.SupplyId == id).First();
+            context.Supplies.Remove(deletedSupply);
+            context.SaveChanges();
         }
 
         public List<SupplyModel> GetByAll()
         {
-            ApplicationContext context = new ApplicationContext();
             List<SupplyModel> supplies = context.Supplies.
                 Include(s => s.Factory).
 
@@ -41,7 +40,6 @@ namespace Kursovaya.Repositories
 
                 Include(s => s.Workers).
                     ThenInclude(s => s.Post).ToList();
-                
 
             return supplies;
         }

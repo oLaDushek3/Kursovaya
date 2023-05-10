@@ -6,8 +6,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Kursovaya"
         xmlns:view="clr-namespace:Kursovaya.View"
-        xmlns:dialogview="clr-namespace:Kursovaya.DialogView"
-        xmlns:viewmodel="clr-namespace:Kursovaya.ViewModel"
+        xmlns:dialogview="clr-namespace:Kursovaya.DialogView.BaseDialog"
+        xmlns:viewmodel="clr-namespace:Kursovaya.ViewModel" 
+        xmlns:dialogview1="clr-namespace:Kursovaya.DialogView"
         mc:Ignorable="d"
         Title="AI Technology (warehouse)" Height="700" Width="1300"
         WindowStartupLocation="CenterScreen"
@@ -20,8 +21,8 @@
     </Window.DataContext>
 
     <Window.Resources>
-        <DataTemplate DataType="{x:Type dialogview:DialogViewModel}">
-            <dialogview:DialogView/>
+        <DataTemplate DataType="{x:Type dialogview:BaseDialogViewModel}">
+            <dialogview:BaseDialogView/>
         </DataTemplate>
         
         <DataTemplate DataType="{x:Type viewmodel:HomeViewModel}">
@@ -261,7 +262,7 @@
                             <Button Margin="10 0 0 0" Style="{StaticResource iconButton}"
                                     Tag="{StaticResource color1}" Cursor="Hand"
                                     Visibility="{Binding Visibility}"
-                                    Command="{Binding ShowEditViewCommand}">
+                                    Command="{Binding CurrentChildView.EditCommand}">
                                 <Button.Content>
                                     <fa:IconImage Icon="Pencil"
                                                   Style="{StaticResource iconButtonIcon}"/>
@@ -278,23 +279,13 @@
                                 </Button.Content>
                             </Button>
 
-                            <Button Style="{StaticResource iconButton}"
-                                    Tag="{StaticResource color4}" Cursor="Hand"
-                                    Visibility="{Binding Visibility}" 
-                                    Command="{Binding ShowDeleteViewCommand}">
-                                <Button.Content>
-                                    <fa:IconImage Icon="Trash"
-                                                  Style="{StaticResource iconButtonIcon}" Cursor=""/>
-                                </Button.Content>
-                            </Button>
-
                             <Button Margin="10 0 0 0" Style="{StaticResource iconButton}"
                                     Tag="{StaticResource color6}" Cursor="Hand"
-                                    Visibility="{Binding BackVisibility}"
-                                    Command="{Binding GoBackCommand}">
+                                    Visibility="{Binding CurrentChildView.BackVisibility}"
+                                    Command="{Binding CurrentChildView.GoBackCommand}">
                                 <Button.Content>
                                     <fa:IconImage Icon="ArrowLeft"
-                                                  Style="{StaticResource iconButtonIcon}"/>
+                                          Style="{StaticResource iconButtonIcon}"/>
                                 </Button.Content>
                             </Button>
 
@@ -332,7 +323,7 @@
                                Opacity="0.25"
                                Height="400"/>
                         <ContentControl Content="{Binding CurrentChildView}"
-                                        Margin="15 15 15 15"/>
+                                        Margin="15"/>
                     </Grid>
 
                 </Grid>

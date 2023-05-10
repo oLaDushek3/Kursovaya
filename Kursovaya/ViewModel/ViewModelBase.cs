@@ -3,7 +3,7 @@ using Kursovaya.DialogView;
 
 namespace Kursovaya.ViewModel
 {
-    public abstract class ViewModelBase : INotifyPropertyChanged, IDialog
+    public abstract class ViewModelBase : INotifyPropertyChanged, IConfirmationDialog
     {
         public event PropertyChangedEventHandler PropertyChanged;
 

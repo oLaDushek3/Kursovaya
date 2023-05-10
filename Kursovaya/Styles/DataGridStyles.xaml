@@ -140,7 +140,7 @@
             </Setter.Value>
         </Setter>
     </Style>
-    <Style x:Key="DataGridRowStyle1" TargetType="{x:Type DataGridRow}">
+    <Style x:Key="DataGridRowStyle" TargetType="{x:Type DataGridRow}">
         <Setter Property="Background" Value="#F2F2F2"/>
         <Setter Property="Margin" Value="0 4 0 0"/>
         <Setter Property="Height" Value="35"/>
@@ -174,6 +174,7 @@
                     </Border>
                 </ControlTemplate>
             </Setter.Value>
+            
         </Setter>
 
         <Style.Triggers>

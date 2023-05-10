@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Kursovaya.DialogView
+namespace Kursovaya.DialogView.AddSupplyProduct
 {
     /// <summary>
-    /// Логика взаимодействия для DialogView.xaml
+    /// Логика взаимодействия для AddSupplyProductView.xaml
     /// </summary>
-    public partial class DialogView : UserControl
+    public partial class AddSupplyProductView : UserControl
     {
-        public DialogView()
+        public AddSupplyProductView()
         {
             InitializeComponent();
         }

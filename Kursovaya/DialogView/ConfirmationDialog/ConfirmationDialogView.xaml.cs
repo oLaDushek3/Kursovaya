@@ -13,17 +13,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Kursovaya.View
+namespace Kursovaya.DialogView
 {
     /// <summary>
-    /// Логика взаимодействия для SupplyView.xaml
+    /// Логика взаимодействия для DialogView.xaml
     /// </summary>
-    public partial class SupplyView : UserControl
+    public partial class ConfirmationDialogView : UserControl
     {
-        public SupplyView()
+        public ConfirmationDialogView()
         {
             InitializeComponent();
-            
         }
     }
 }

@@ -1,0 +1,113 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"                    
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+                    xmlns:Converters="clr-namespace:Kursovaya.Converters"
+                    xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp">
+
+    <Style x:Key="SearchTextBox" TargetType="TextBox">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="FontFamily" Value="Motserrat"/>
+        <Setter Property="Foreground" Value="{StaticResource titleColor1}"/>
+        <Setter Property="VerticalAlignment" Value="Bottom"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Border BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="0 0 0 2">
+                        <Grid>
+
+                            <fa:IconImage Icon="Search" Foreground="{StaticResource plainTextColor1}"
+                                          Width="12" Margin="0 0 0 1"
+                                          HorizontalAlignment="Left"/>
+
+                            <Grid VerticalAlignment="Bottom" Margin="20 0 20 0">
+                                <TextBlock Text="Поиск..." 
+                                           Foreground="{StaticResource titleColor3}"
+                                           FontSize="{TemplateBinding FontSize}">
+                                    <TextBlock.Visibility>
+                                        <MultiBinding>
+                                            <MultiBinding.Converter>
+                                                <Converters:BoolToVisibilityConverter/>
+                                            </MultiBinding.Converter>
+                                            <Binding ElementName="inputText" Path="Text.IsEmpty"/>
+                                            <Binding ElementName="inputText" Path="IsFocused"/>
+                                        </MultiBinding>
+                                    </TextBlock.Visibility>
+                                </TextBlock>
+
+                                <TextBox x:Name="inputText" Text="{Binding SearchString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                         Foreground="{TemplateBinding Foreground}"
+                                         VerticalAlignment="{TemplateBinding VerticalAlignment}"
+                                         Background="{TemplateBinding Background}"
+                                         BorderThickness="0"
+                                         FontSize="{TemplateBinding FontSize}">
+
+                                </TextBox>
+                            </Grid>
+
+                            <Button Margin="10 0 0 0" Style="{StaticResource iconButton}"
+                                    Tag="{StaticResource color4}" Cursor="Hand"
+                                    Visibility="{Binding Visibility}"
+                                    Command="{Binding ClearSearchCommand}"
+                                    HorizontalAlignment="Right">
+                                <Button.Content>
+                                    <fa:IconImage Icon="Xmark" 
+                                                  Width="11" Margin="0 0 -5 1"
+                                                  Style="{StaticResource iconButtonIcon}"/>
+                                </Button.Content>
+                            </Button>
+
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
+    <Style x:Key="HintTextBox" TargetType="TextBox">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="FontFamily" Value="Motserrat"/>
+        <Setter Property="Foreground" Value="{StaticResource titleColor1}"/>
+        <Setter Property="VerticalAlignment" Value="Bottom"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="Tag" Value="Подсказка"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Border BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="0 0 0 2">
+                        <Grid>
+
+                            <Grid VerticalAlignment="Bottom">
+                                <TextBlock Text="{TemplateBinding Tag}" 
+                                           Foreground="{StaticResource titleColor3}"
+                                           FontSize="{TemplateBinding FontSize}">
+                                    <TextBlock.Visibility>
+                                        <MultiBinding>
+                                            <MultiBinding.Converter>
+                                                <Converters:BoolToVisibilityConverter/>
+                                            </MultiBinding.Converter>
+                                            <Binding ElementName="inputText" Path="Text.IsEmpty"/>
+                                            <Binding ElementName="inputText" Path="IsFocused"/>
+                                        </MultiBinding>
+                                    </TextBlock.Visibility>
+                                </TextBlock>
+
+                                <TextBox x:Name="inputText" Text="{TemplateBinding TextBox.Text}"
+                                         Foreground="{TemplateBinding Foreground}"
+                                         VerticalAlignment="{TemplateBinding VerticalAlignment}"
+                                         Background="{TemplateBinding Background}"
+                                         BorderThickness="0"
+                                         FontSize="{TemplateBinding FontSize}">
+
+                                </TextBox>
+                            </Grid>
+
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

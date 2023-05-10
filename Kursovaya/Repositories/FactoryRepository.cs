@@ -1,4 +1,5 @@
 ﻿using Kursovaya.Model.Factory;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,7 +26,9 @@ namespace Kursovaya.Repositories
 
         public List<FactoryModel> GetByAll(ApplicationContext context)
         {
-            List<FactoryModel> factorys = context.Factories.ToList();
+            List<FactoryModel> factorys = context.Factories.
+                Include(f => f.Supplies).ToList();
+
             return factorys;
         }
 

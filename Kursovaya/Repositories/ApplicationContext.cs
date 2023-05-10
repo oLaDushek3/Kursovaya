@@ -76,11 +76,11 @@ public partial class ApplicationContext : DbContext
 
             entity.HasOne(d => d.Individual).WithMany(p => p.Buyers)
                 .HasForeignKey(d => d.IndividualId)
-                .HasConstraintName("FK__Buyer__Individua__2077C861");
+                .HasConstraintName("FK__Buyer__Individua__2077C861").OnDelete(DeleteBehavior.Cascade);
 
             entity.HasOne(d => d.LegalEntity).WithMany(p => p.Buyers)
                 .HasForeignKey(d => d.LegalEntityId)
-                .HasConstraintName("FK__Buyer__Legal_ent__1E8F7FEF");
+                .HasConstraintName("FK__Buyer__Legal_ent__1E8F7FEF").OnDelete(DeleteBehavior.Cascade);
         });
 
         modelBuilder.Entity<BuyerAddressModel>(entity =>
@@ -103,11 +103,11 @@ public partial class ApplicationContext : DbContext
 
             entity.HasOne(d => d.Individual).WithMany(p => p.BuyerAddresses)
                 .HasForeignKey(d => d.IndividualId)
-                .HasConstraintName("FK__Buyer_add__Indiv__216BEC9A");
+                .HasConstraintName("FK__Buyer_add__Indiv__216BEC9A").OnDelete(DeleteBehavior.Cascade);
 
             entity.HasOne(d => d.LegalEntity).WithMany(p => p.BuyerAddresses)
                 .HasForeignKey(d => d.LegalEntityId)
-                .HasConstraintName("FK__Buyer_add__Legal__1F83A428");
+                .HasConstraintName("FK__Buyer_add__Legal__1F83A428").OnDelete(DeleteBehavior.Cascade);
         });
 
         modelBuilder.Entity<FactoryModel>(entity =>
@@ -256,7 +256,7 @@ public partial class ApplicationContext : DbContext
             entity.HasOne(d => d.ProductType).WithMany(p => p.Products)
                 .HasForeignKey(d => new { d.ProductTypeId })
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Product__1CA7377D");
+                .HasConstraintName("FK__Product__1CA7377D").OnDelete(DeleteBehavior.Cascade);
         });
 
         modelBuilder.Entity<ProductTypeModel>(entity =>
@@ -278,7 +278,7 @@ public partial class ApplicationContext : DbContext
             entity.HasOne(d => d.ProductsGroup).WithMany(p => p.ProductTypes)
                 .HasForeignKey(d => d.ProductsGroupId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Product_t__Produ__15FA39EE");
+                .HasConstraintName("FK__Product_t__Produ__15FA39EE").OnDelete(DeleteBehavior.Cascade);
         });
 
         modelBuilder.Entity<ProductsGroupModel>(entity =>
@@ -312,7 +312,7 @@ public partial class ApplicationContext : DbContext
             entity.HasOne(d => d.BuyerNavigation).WithMany(p => p.Shippings)
                 .HasForeignKey(d => d.Buyer)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Shipping__Buyer__1D9B5BB6");
+                .HasConstraintName("FK__Shipping__Buyer__1D9B5BB6").OnDelete(DeleteBehavior.Cascade);
         });
 
         modelBuilder.Entity<ShippingProductModel>(entity =>
@@ -330,12 +330,12 @@ public partial class ApplicationContext : DbContext
             entity.HasOne(d => d.Product).WithMany(p => p.ShippingProducts)
                 .HasForeignKey(d => d.ProductId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Shipping___Produ__150615B5");
+                .HasConstraintName("FK__Shipping___Produ__150615B5").OnDelete(DeleteBehavior.Cascade);
 
             entity.HasOne(d => d.Shipping).WithMany(p => p.ShippingProducts)
                 .HasForeignKey(d => d.ShippingId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Shipping___Shipp__1229A90A");
+                .HasConstraintName("FK__Shipping___Shipp__1229A90A").OnDelete(DeleteBehavior.Cascade);
         });
 
         modelBuilder.Entity<ShippingProductPlaceModel>(entity =>
@@ -350,12 +350,12 @@ public partial class ApplicationContext : DbContext
             entity.HasOne(d => d.Place).WithMany(p => p.ShippingProductPlaces)
                 .HasForeignKey(d => d.PlaceId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Shipping___Place__2354350C");
+                .HasConstraintName("FK__Shipping___Place__2354350C").OnDelete(DeleteBehavior.Cascade);
 
             entity.HasOne(d => d.ShippingProduct).WithMany(p => p.ShippingProductPlaces)
                 .HasForeignKey(d => d.ShippingProductId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Shipping___Shipp__19CACAD2");
+                .HasConstraintName("FK__Shipping___Shipp__19CACAD2").OnDelete(DeleteBehavior.Cascade);
         });
 
         modelBuilder.Entity<SupplyModel>(entity =>
@@ -373,7 +373,7 @@ public partial class ApplicationContext : DbContext
             entity.HasOne(d => d.Factory).WithMany(p => p.Supplies)
                 .HasForeignKey(d => d.FactoryId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Supply__Factory___18D6A699");
+                .HasConstraintName("FK__Supply__Factory___18D6A699").OnDelete(DeleteBehavior.Cascade);
 
             entity.HasMany(d => d.Workers).WithMany(p => p.Supplies)
                 .UsingEntity<Dictionary<string, object>>(
@@ -381,11 +381,11 @@ public partial class ApplicationContext : DbContext
                     r => r.HasOne<WorkerModel>().WithMany()
                         .HasForeignKey("WorkerId")
                         .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("FK__Supply_Wo__Worke__16EE5E27"),
+                        .HasConstraintName("FK__Supply_Wo__Worke__16EE5E27").OnDelete(DeleteBehavior.Cascade),
                     l => l.HasOne<SupplyModel>().WithMany()
                         .HasForeignKey("SupplyId")
                         .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("FK__Supply_Wo__Suppl__113584D1"),
+                        .HasConstraintName("FK__Supply_Wo__Suppl__113584D1").OnDelete(DeleteBehavior.Cascade),
                     j =>
                     {
                         j.HasKey("SupplyId", "WorkerId").HasName("PK__Supply_W__0A0F08E567334934");
@@ -410,12 +410,12 @@ public partial class ApplicationContext : DbContext
             entity.HasOne(d => d.Product).WithMany(p => p.SupplyProducts)
                 .HasForeignKey(d => d.ProductId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Supply_Pr__Produ__1411F17C");
+                .HasConstraintName("FK__Supply_Pr__Produ__1411F17C").OnDelete(DeleteBehavior.Cascade);
 
             entity.HasOne(d => d.Supply).WithMany(p => p.SupplyProducts)
                 .HasForeignKey(d => d.SupplyId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Supply_Pr__Suppl__10416098");
+                .HasConstraintName("FK__Supply_Pr__Suppl__10416098").OnDelete(DeleteBehavior.Cascade);
         });
 
         modelBuilder.Entity<SupplyProductPlaceModel>(entity =>
@@ -430,12 +430,12 @@ public partial class ApplicationContext : DbContext
             entity.HasOne(d => d.Place).WithMany(p => p.SupplyProductPlaces)
                 .HasForeignKey(d => d.PlaceId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Supply_Pr__Place__226010D3");
+                .HasConstraintName("FK__Supply_Pr__Place__226010D3").OnDelete(DeleteBehavior.Cascade);
 
             entity.HasOne(d => d.SupplyProduct).WithMany(p => p.SupplyProductPlaces)
                 .HasForeignKey(d => d.SupplyProductId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Supply_Pr__Suppl__1ABEEF0B");
+                .HasConstraintName("FK__Supply_Pr__Suppl__1ABEEF0B").OnDelete(DeleteBehavior.Cascade);
         });
 
         modelBuilder.Entity<UserModel>(entity =>
@@ -489,7 +489,7 @@ public partial class ApplicationContext : DbContext
             entity.HasOne(d => d.Post).WithMany(p => p.Workers)
                 .HasForeignKey(d => d.PostId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Worker__Post_id__1BB31344");
+                .HasConstraintName("FK__Worker__Post_id__1BB31344").OnDelete(DeleteBehavior.Cascade);
 
             entity.HasMany(d => d.Shippings).WithMany(p => p.Workers)
                 .UsingEntity<Dictionary<string, object>>(
@@ -497,11 +497,11 @@ public partial class ApplicationContext : DbContext
                     r => r.HasOne<ShippingModel>().WithMany()
                         .HasForeignKey("ShippingId")
                         .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("FK__Shipping___Shipp__131DCD43"),
+                        .HasConstraintName("FK__Shipping___Shipp__131DCD43").OnDelete(DeleteBehavior.Cascade),
                     l => l.HasOne<WorkerModel>().WithMany()
                         .HasForeignKey("WorkerId")
                         .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("FK__Shipping___Worke__17E28260"),
+                        .HasConstraintName("FK__Shipping___Worke__17E28260").OnDelete(DeleteBehavior.Cascade),
                     j =>
                     {
                         j.HasKey("WorkerId", "ShippingId").HasName("PK__Shipping__6EC65FB5900DCB1E");
