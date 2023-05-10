@@ -7,11 +7,8 @@
              xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp" 
              xmlns:basedialog="clr-namespace:Kursovaya.DialogView.BaseDialog"
              xmlns:dialogview="clr-namespace:Kursovaya.DialogView"
+             xmlns:addSupplyProduct="clr-namespace:Kursovaya.DialogView.AddSupplyProduct"
              mc:Ignorable="d"
-             Height="{Binding Path=ActualHeight, ElementName=contentPanel}"
-             Width="{Binding Path=ActualWidth, ElementName=contentPanel}"
-             MinHeight="150" MinWidth="300" 
-             MaxHeight="450" MaxWidth="900" 
              d:DesignHeight="150" d:DesignWidth="300"
              Background="Transparent"
              d:DataContext="{d:DesignInstance Type=basedialog:BaseDialogViewModel, IsDesignTimeCreatable=False}">
@@ -19,6 +16,9 @@
     <UserControl.Resources>
         <DataTemplate DataType="{x:Type dialogview:ConfirmationDialogViewModel}">
             <dialogview:ConfirmationDialogView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type addSupplyProduct:AddSupplyProductViewModel}">
+            <addSupplyProduct:AddSupplyProductView/>
         </DataTemplate>
     </UserControl.Resources>
     
@@ -38,9 +38,9 @@
             </LinearGradientBrush>
         </Border.BorderBrush>
 
-        <StackPanel x:Name="contentPanel">
+        <Grid x:Name="contentPanel">
             <ContentControl Content="{Binding CurrentDialogView}"/>
-        </StackPanel>
+        </Grid>
         
     </Border>
 </UserControl>

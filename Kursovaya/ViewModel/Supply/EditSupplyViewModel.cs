@@ -1,4 +1,5 @@
-﻿using Kursovaya.Model.Factory;
+﻿using Kursovaya.DialogView.AddSupplyProduct;
+using Kursovaya.Model.Factory;
 using Kursovaya.Model.Place;
 using Kursovaya.Model.Product;
 using Kursovaya.Model.Supply;
@@ -256,20 +257,8 @@ namespace Kursovaya.ViewModel
         }
         public void ExecuteAddSupplyProductCommand(object? obj)
         {
-            SupplyProductModel addSupplyProductModel = new SupplyProductModel
-            {
-                ProductId = SelectedAddProduct.ProductId,
-                Product = SelectedAddProduct,
-                Quantity = QuantityAddProduct
-            };
-            _selectedSupply.SupplyProducts.Add(addSupplyProductModel);
-
-            OnPropertyChanged(nameof(SelectedSupplyProducts));
-            SelectedPlaces = null;
-            SelectedAddProduct = null;
-            SelectedSupplyProduct = addSupplyProductModel;
-
-            AddSupplyProduct.Add(addSupplyProductModel);
+            AddSupplyProductViewModel addSupplyProductViewModel = new AddSupplyProductViewModel(context);
+            _currentSupplyViewModel.MainViewModel.ShowDialog(addSupplyProductViewModel);
         }
 
         //Constructor
@@ -278,6 +267,7 @@ namespace Kursovaya.ViewModel
             this.context = context;
             _selectedSupply = selectedSupply;
             _editableSupply = _supplyRepository.GetById(selectedSupply.SupplyId, context);
+            _currentSupplyViewModel = supplyViewModel;
             SortSupplyWorkersByPost();
 
             _allProducts = _productRepository.GetByAll(context);
@@ -290,8 +280,6 @@ namespace Kursovaya.ViewModel
             DeleteSupplyProductCommand = new ViewModelCommand(ExecuteDeleteSupplyProductCommand);
             AddSupplyProductCommand = new ViewModelCommand(ExecuteAddSupplyProductCommand);
             DeleteWorkerCommand = new ViewModelCommand(ExecuteDeleteWorkerCommand);
-            
-            _currentSupplyViewModel = supplyViewModel;
         }
 
         //Methods

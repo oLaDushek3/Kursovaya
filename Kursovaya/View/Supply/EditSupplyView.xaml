@@ -334,34 +334,6 @@
 
                             </ScrollViewer>
 
-                            <Grid VerticalAlignment="Bottom" Grid.Row="1" Grid.Column="0">
-
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="50*"/>
-                                    <ColumnDefinition Width="50*"/>
-                                </Grid.ColumnDefinitions>
-                                
-                                <ComboBox ItemsSource="{Binding AllProducts}"
-                                          Background="Transparent" 
-                                          Grid.Column="0" Margin="3"
-                                          SelectedItem="{Binding SelectedAddProduct}">
-                                    <ComboBox.ItemTemplate>
-                                        <DataTemplate>
-                                            <TextBlock Background="Transparent"
-                                                       FontFamily="Montserrat"
-                                                       Text="{Binding Title}"
-                                                       VerticalAlignment="Center"/>
-                                        </DataTemplate>
-                                    </ComboBox.ItemTemplate>
-                                </ComboBox>
-
-                                <TextBox Grid.Column="1" Margin="3" Tag="Введите количество"
-                                         Style="{StaticResource HintTextBox}"
-                                         Text="{Binding QuantityAddProduct, Mode=TwoWay}"
-                                         MaxLength="10"
-                                         BorderBrush="{StaticResource color2}"/>
-                            </Grid>
-
                         </Grid>
                     </Border>
                 </DockPanel>

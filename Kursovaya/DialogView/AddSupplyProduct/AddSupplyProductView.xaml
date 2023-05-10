@@ -6,92 +6,188 @@
              xmlns:viewmodel="clr-namespace:Kursovaya.DialogView.AddSupplyProduct"
              xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
              mc:Ignorable="d"
-             Height="350" Width="600"
-             Background="Transparent"
+             Height="300" Width="400" Background="Transparent"
              d:DataContext="{d:DesignInstance Type=viewmodel:AddSupplyProductViewModel, IsDesignTimeCreatable=False}">
 
     <Grid>
         <Grid.RowDefinitions>
+            <!--Main-->
             <RowDefinition Height="75*"/>
+            <!--Buttons-->
+            <RowDefinition Height="20*"/>
         </Grid.RowDefinitions>
+        
+        <!--Main-->
+        <Grid>
 
-        <TextBlock Text="Вы уверены?" Grid.Row="0"
-                   Foreground="{StaticResource titleColor1}"
-                   FontSize="25"
-                   TextWrapping="Wrap"
-                   FontFamily="Montserrat"
-                   TextAlignment="Center"
-                   VerticalAlignment="Top"
-                   Margin="0 30 0 0"/>
+            <Grid.ColumnDefinitions>
+                <!--Base info-->
+                <ColumnDefinition/>
+                <!--List-->
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
 
-        <Button Grid.Row="1"
-                BorderThickness="0"
-                Content="Назад"
-                Foreground="White"
-                FontSize="16"
-                FontFamily="Montserrat"
-                Cursor="Hand"
-                IsDefault="True"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Bottom"
-                Margin="0 0 20 20"
-                Command="{Binding ClickCancelCommand}">
+            <!--Base info-->
+            <StackPanel Grid.Row="1" Grid.Column="0">
 
-            <Button.Style>
-                <Style TargetType="Button">
-                    <Setter Property="Background" Value="#5F25A2"/>
-                    <Style.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Background" Value="#693CAD"/>
-                        </Trigger>
-                    </Style.Triggers>
-                </Style>
-            </Button.Style>
+                <ComboBox ItemsSource="{Binding AllProducts}"
+                          Background="Transparent" 
+                          Grid.Column="0" Margin="3"
+                          SelectedItem="{Binding SelectedProduct}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Background="Transparent"
+                                       FontFamily="Montserrat"
+                                       Text="{Binding Title}"
+                                       VerticalAlignment="Center"/>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
 
-            <Button.Template>
-                <ControlTemplate TargetType="Button">
-                    <Border Width="100" Height="40"
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="50"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    
+                    <TextBlock Text="Всего:"
+                               VerticalAlignment="Center"  
+                               Foreground="{StaticResource titleColor1}"
+                               FontFamily="Motserrat"
+                               FontSize="15"
+                               Margin="2"/>
+                    <TextBox Grid.Column="1" Margin="3" Tag="Введите количество"
+                             Style="{StaticResource HintTextBox}"
+                             Text="{Binding SpecifiedQuantity, Mode=TwoWay}"
+                             MaxLength="10"
+                             BorderBrush="{StaticResource color2}"/>
+
+                </Grid>
+
+                <TextBlock Text="{Binding Residuary, StringFormat=Осталось: {0} }"
+                               VerticalAlignment="Center"  
+                               Foreground="{StaticResource titleColor1}"
+                               FontFamily="Motserrat"
+                               FontSize="15"
+                               Margin="2"/>
+            </StackPanel>
+            
+            <!--List-->
+            <ItemsControl ItemsSource="{Binding AddSupplyProductPlaces}"
+                          Grid.Column="1">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+
+                        <Grid>
+                            <TextBox Grid.Column="0"
+                                     Margin="4"
+                                     Background="Transparent"
+                                     BorderThickness="1 0 0 0"
+                                     BorderBrush="LightGray"
+                                     IsReadOnly="True"
+                                     FontFamily="Montserrat"
+                                     Foreground="{StaticResource titleColor1}"
+                                     VerticalAlignment="Center">
+
+                                <TextBox.Text>
+                                    <MultiBinding StringFormat="Место: {0} - {1}шт">
+                                        <Binding Path="Place.Place1" />
+                                        <Binding Path="Quantity" />
+                                    </MultiBinding>
+                                </TextBox.Text>
+
+                            </TextBox>
+
+                            <Button Style="{StaticResource iconButton}" x:Name="btn"
+                                    Command="{Binding ElementName=supplyView, Path=DataContext.ClearSortCommand}"
+                                    CommandParameter="{Binding ElementName=btn, Path=DataContext}"
+                                    Tag="{StaticResource color9}" Cursor="Hand"
+                                    Visibility="{Binding Visibility}"
+                                    HorizontalAlignment="Right">
+                                <Button.Content>
+                                    <fa:IconImage Icon="Xmark"
+                                                  Style="{StaticResource iconButtonIcon}"/>
+                                </Button.Content>
+                            </Button>
+                        </Grid>
+
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+        </Grid>
+
+        <!--Buttons-->
+        <Grid Grid.Row="2">
+
+            <Button BorderThickness="0"
+                    Content="Назад"
+                    Foreground="White"
+                    FontSize="16"
+                    FontFamily="Montserrat"
+                    Cursor="Hand"
+                    IsDefault="True"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Bottom"
+                    Margin="0 0 10 10"
+                    Command="{Binding ClickCancelCommand}">
+
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Setter Property="Background" Value="#5F25A2"/>
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#693CAD"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border Width="100" Height="40"
+                                CornerRadius="20"
+                                Background="{TemplateBinding Background}">
+                            <ContentPresenter VerticalAlignment="Center"
+                                              HorizontalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+
+            <Button Content="Добавить"  
+                    Foreground="White"
+                    FontSize="16"
+                    FontFamily="Montserrat"
+                    IsDefault="True"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Bottom"
+                    Margin="10 0 0 10"
+                    Command="{Binding ClickAddCommand}">
+
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Setter Property="Background" Value="#5F25A2"/>
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#693CAD"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border Width="100" Height="40"
                             CornerRadius="20"
                             Background="{TemplateBinding Background}">
-                        <ContentPresenter VerticalAlignment="Center"
+                            <ContentPresenter VerticalAlignment="Center"
                                           HorizontalAlignment="Center"/>
-                    </Border>
-                </ControlTemplate>
-            </Button.Template>
-        </Button>
-
-        <Button Content="Добавить"             
-                Foreground="White"
-                FontSize="16"
-                FontFamily="Montserrat"
-                IsDefault="True"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Bottom"
-                Margin="20 0 0 20"
-                Command="{Binding ClickAddCommand}">
-
-            <Button.Style>
-                <Style TargetType="Button">
-                    <Setter Property="Background" Value="#5F25A2"/>
-                    <Style.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Background" Value="#693CAD"/>
-                        </Trigger>
-                    </Style.Triggers>
-                </Style>
-            </Button.Style>
-
-            <Button.Template>
-                <ControlTemplate TargetType="Button">
-                    <Border Width="100" Height="40"
-                            CornerRadius="20"
-                            Background="{TemplateBinding Background}">
-                        <ContentPresenter VerticalAlignment="Center"
-                                          HorizontalAlignment="Center"/>
-                    </Border>
-                </ControlTemplate>
-            </Button.Template>
-        </Button>
+                        </Border>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+        </Grid>
 
     </Grid>
 

@@ -15,6 +15,7 @@
         <DataTemplate DataType="{x:Type viewmodel:EditSupplyViewModel}">
             <local:EditSupplyView/>
         </DataTemplate>
+        <Converters:TextLengthConverter x:Key="TextLengthConverter"/>
         <Converters:ExpanderHeaderWidthConverter x:Key="ExpanderHeaderWidthConverter"/>
         <Converters:FullNameConverter x:Key="FullNameConverter" />
     </UserControl.Resources>
@@ -144,25 +145,11 @@
                     </DataGrid.RowStyle>
                     <DataGrid.Columns>
 
-                        <DataGridTextColumn Header="#" IsReadOnly="True" CanUserResize="False" Width="auto"
-                                            Binding="{Binding SupplyId}"/>
+                        <DataGridTextColumn IsReadOnly="True" CanUserResize="False" Width="auto"
+                                            Binding="{Binding SupplyId}" Header="#"/>
 
                         <DataGridTextColumn Header="Производство" IsReadOnly="True" CanUserResize="False" 
-                                            Width="225">
-                            <DataGridTextColumn.ElementStyle>
-                                <Style>
-                                    <Setter Property="TextBlock.Text">
-                                        <Setter.Value>
-                                            <Binding Path="Factory.Address">
-                                                <Binding.Converter>
-                                                    <Converters:TextLengthConverter/>
-                                                </Binding.Converter>
-                                            </Binding>
-                                        </Setter.Value>
-                                    </Setter>
-                                </Style>
-                            </DataGridTextColumn.ElementStyle>
-                        </DataGridTextColumn>
+                                            Width="225" Binding="{Binding Factory.Address, Converter={StaticResource TextLengthConverter}}"/>
 
                         <DataGridTextColumn Header="Дата" IsReadOnly="True" CanUserResize="False" Width="175"
                                             Binding="{Binding Date, StringFormat='d MMMM yyyy', ConverterCulture=ru}"/>
