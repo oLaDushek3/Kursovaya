@@ -17,7 +17,7 @@ namespace Kursovaya.DialogView.AddSupplyProduct
         private ApplicationContext _context;
         private List<ProductModel> _allProducts;
         private ProductModel _selectedProduct;
-        private string _specifiedQuantity = "fff";
+        private int _specifiedQuantity;
         private int _actualQuantity = 0;
         private int _residuary;
 
@@ -42,7 +42,7 @@ namespace Kursovaya.DialogView.AddSupplyProduct
                 OnPropertyChanged(nameof(SelectedProduct));
             }
         }
-        public string SpecifiedQuantity
+        public int SpecifiedQuantity
         {
             get => _specifiedQuantity;
             set

@@ -94,7 +94,8 @@
                                     </TextBlock.Visibility>
                                 </TextBlock>
 
-                                <TextBox x:Name="inputText" Text="{TemplateBinding TextBox.Text}"
+                                <TextBox x:Name="inputText" 
+                                         Text="{Binding Path=Text, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                          Foreground="{TemplateBinding Foreground}"
                                          VerticalAlignment="{TemplateBinding VerticalAlignment}"
                                          Background="{TemplateBinding Background}"
