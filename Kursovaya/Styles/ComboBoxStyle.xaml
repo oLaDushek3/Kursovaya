@@ -50,7 +50,6 @@
         <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
         <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
         <Setter Property="ScrollViewer.CanContentScroll" Value="true"/>
-        <Setter Property="MinWidth" Value="120"/>
         <Setter Property="MinHeight" Value="20"/>
         <Setter Property="Foreground" Value="{StaticResource titleColor1}"/>
         <Setter Property="Template">

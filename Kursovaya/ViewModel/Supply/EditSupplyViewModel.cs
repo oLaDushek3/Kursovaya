@@ -257,7 +257,7 @@ namespace Kursovaya.ViewModel
         }
         public void ExecuteAddSupplyProductCommand(object? obj)
         {
-            AddSupplyProductViewModel addSupplyProductViewModel = new AddSupplyProductViewModel(context);
+            AddSupplyProductViewModel addSupplyProductViewModel = new AddSupplyProductViewModel(context, _currentSupplyViewModel);
             _currentSupplyViewModel.MainViewModel.ShowDialog(addSupplyProductViewModel);
         }
 
