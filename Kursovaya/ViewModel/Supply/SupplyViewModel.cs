@@ -3,48 +3,52 @@ using Kursovaya.Model.Factory;
 using Kursovaya.Model.Supply;
 using Kursovaya.Model.Worker;
 using Kursovaya.Repositories;
+using Kursovaya.View;
+using Kursovaya.ViewModel.Supply;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Data;
 using System.Linq;
-using System.Reflection.Metadata.Ecma335;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace Kursovaya.ViewModel
 {
-    public class SupplyViewModel : ViewModelBase, IConfirmationDialog
+    public class SupplyViewModel : ViewModelBase
     {
+        public MainViewModel MainViewModel;
         #region Fields
-        ApplicationContext context = new ApplicationContext();
+        public ApplicationContext context = new ApplicationContext();
 
-        private ViewModelBase _currentChildView;
-        private bool _isEnabled;
-        private Visibility _backVisibility;
+        private ViewModelBase? _currentChildView;
+        private bool _isEnabled = true;
+        private Visibility _backVisibility = Visibility.Collapsed;
         private bool _animationAction;
         private bool _reverseAnimationAction;
 
         //Supply fields
         private ISupplyRepository _supplyRepository = new SupplyRepository();
-        private List<SupplyModel> AllSuply;
-        private List<SupplyModel> _displayedSupplys;
+        private List<SupplyModel>? _allSuply;
+        private List<SupplyModel>? _displayedSupplys;
         private SupplyModel? _selectedSupply;
 
-        private string _searchString;
-        private List<SupplyModel> _searcSupplys;
+        private string? _searchString;
+        private List<SupplyModel>? _searcSupplys;
 
         private IFactoryRepository _factoryRepository = new FactoryRepository();
-        private FactoryModel _selectedFactory;
-        private List<SupplyModel> _factorySortSupplys;
+        private FactoryModel? _selectedFactory;
+        private List<SupplyModel>? _factorySortSupplys;
 
-        private DateTime _selectedFirstDate = DateTime.Today;
-        private DateTime _selectedSecondDate = DateTime.Today;
-        private List<SupplyModel> _dateSortSupplys;
+        private DateTime? _selectedFirstDate = null;
+        private DateTime? _selectedSecondDate = null;
+        private List<SupplyModel>? _dateSortSupplys;
 
         //Selected supply fields
-        private List<WorkerModel> _selectedSupplyWorkers = new List<WorkerModel>();
+        private List<WorkerModel>? _selectedSupplyWorkers = new List<WorkerModel>();
         private int _supplyWorkersPostId;
         #endregion Fields
 
@@ -99,7 +103,6 @@ namespace Kursovaya.ViewModel
                 OnPropertyChanged(nameof(ReverseAnimationAction));
             }
         }
-        public MainViewModel MainViewModel { get; set; }
 
         //Supply properties
         public ObservableCollection<SupplyModel> DisplayedSupplys
@@ -145,7 +148,7 @@ namespace Kursovaya.ViewModel
             }
         }
 
-        public  DateTime SelectedFirstDate
+        public DateTime? SelectedFirstDate
         {
             get => _selectedFirstDate;
             set
@@ -154,7 +157,7 @@ namespace Kursovaya.ViewModel
                 OnPropertyChanged(nameof(SelectedFirstDate)); 
             }
         }
-        public DateTime SelectedSecondDate
+        public DateTime? SelectedSecondDate
         {
             get => _selectedSecondDate;
             set
@@ -187,17 +190,27 @@ namespace Kursovaya.ViewModel
         #endregion Properties
 
         //Commands
+        public ICommand AddCommand { get; }
         public ICommand EditCommand { get; }
         public ICommand GoBackCommand { get; }
         public ICommand DeleteSupplyCommand { get; }
         public ICommand ClearSearchCommand { get; }
         public ICommand ClearSortCommand { get; }
         public ICommand SortByDateCommande { get; }
+        public ICommand ClearSortByDateCommande { get; }
 
         //Commands execution
+        private void ExecuteAddCommand(object? obj)
+        {
+            CurrentChildView = new AddSupplyViewModel(this);
+            IsEnabled = false;
+            BackVisibility = Visibility.Visible;
+            ReverseAnimationAction = false;
+            AnimationAction = true;
+        }
         private void ExecuteEditCommand(object? obj)
         {
-            CurrentChildView = new EditSupplyViewModel(SelectedSupply, this, context);
+            CurrentChildView = new EditSupplyViewModel(SelectedSupply, this);
             IsEnabled = false;
             BackVisibility = Visibility.Visible;
             ReverseAnimationAction = false;
@@ -208,16 +221,33 @@ namespace Kursovaya.ViewModel
             if(SelectedSupply == null) return false;
             return true;
         }
-        private void ExecuteGoBackCommand(object? obj)
+        private async void ExecuteGoBackCommand(object? obj)
         {
-            ConfirmationDialogViewModel confirmationDialogViewModel = new ConfirmationDialogViewModel(this);
-            MainViewModel.ShowDialog(confirmationDialogViewModel);
-        }
-        private void ExecuteDeleteSupplyCommand(object? obj)
-        {
-            if(SelectedSupply != null)
+            ConfirmationDialogViewModel confirmationDialogViewModel = new ConfirmationDialogViewModel(MainViewModel);
+            bool result = await MainViewModel.ShowDialog(confirmationDialogViewModel);
+
+            if (result)
             {
-                _supplyRepository.Remove(SelectedSupply.SupplyId);
+                MainViewModel.CloseDialog();
+
+                AnimationAction = false;
+                ReverseAnimationAction = true;
+                BackVisibility = Visibility.Collapsed;
+                IsEnabled = true;
+
+                Thread myThread = new Thread(ClearCurrentChildView);
+                myThread.Start();
+            }
+        }
+        private async void ExecuteDeleteSupplyCommand(object obj)
+        {
+            ConfirmationDialogViewModel confirmationDialogViewModel = new ConfirmationDialogViewModel(MainViewModel);
+            bool result = await MainViewModel.ShowDialog(confirmationDialogViewModel);
+
+            if (result)
+            {
+                _supplyRepository.Remove((obj as SupplyModel).SupplyId, context);
+                RefreshSupplyList(null);
             }
         }
         private void ExecuteClearSearchCommand(object? obj)
@@ -235,19 +265,21 @@ namespace Kursovaya.ViewModel
         }
         private void ExecuteSortByDateCommande(object? obj)
         {
-            if (SelectedFirstDate != null & SelectedSecondDate != null)
-                _dateSortSupplys = AllSuply.Where(s => s.Date >= SelectedFirstDate & s.Date <= SelectedSecondDate).ToList();
-            else
-                _dateSortSupplys = null;
-
-            Merger();
+            SortByDate();
         }
-        private bool CanExecuteSortByDateCommande(object? obj)
+        private bool CanExecuteClearSortByDateCommande(object? obj)
         {
-            if (SelectedFirstDate != null & SelectedSecondDate != null)
+            if (SelectedFirstDate != null && SelectedSecondDate != null)
                 return true;
-            else
-                return false;
+            
+            return false;
+        }
+        private void ExecuteClearSortByDateCommande (object? obj)
+        {
+            SelectedFirstDate = null;
+            SelectedSecondDate = null;
+            _dateSortSupplys = null;
+            Merger();
         }
 
         //Constructor
@@ -255,28 +287,41 @@ namespace Kursovaya.ViewModel
         { 
             MainViewModel = mainViewModel;
 
+            AddCommand = new ViewModelCommand(ExecuteAddCommand);
             EditCommand = new ViewModelCommand(ExecuteEditCommand, CanExecuteEditCommand);
             GoBackCommand = new ViewModelCommand(ExecuteGoBackCommand);
             DeleteSupplyCommand = new ViewModelCommand(ExecuteDeleteSupplyCommand);
             ClearSearchCommand = new ViewModelCommand(ExecuteClearSearchCommand);
             ClearSortCommand = new ViewModelCommand(ExecuteClearSortCommand);
-            SortByDateCommande = new ViewModelCommand(ExecuteSortByDateCommande, CanExecuteSortByDateCommande);
-
-            AllSuply = _supplyRepository.GetByAll();
-            _displayedSupplys = AllSuply.ToList();
+            SortByDateCommande = new ViewModelCommand(ExecuteSortByDateCommande);
+            ClearSortByDateCommande = new ViewModelCommand(ExecuteClearSortByDateCommande, CanExecuteClearSortByDateCommande);
 
             AllFactory = _factoryRepository.GetByAll(context);
 
-            IsEnabled = true;
-            BackVisibility = Visibility.Collapsed;
+            RefreshSupplyList(null);
         }
 
         //Methods
+        private void RefreshSupplyList(int? selectedSupplyId)
+        {
+            context = new ApplicationContext();
+
+            _allSuply = _supplyRepository.GetByAll(context);
+            _displayedSupplys = _allSuply.ToList();
+            OnPropertyChanged(nameof(DisplayedSupplys));
+            
+            SelectedSupply = _displayedSupplys.Where(s => s.SupplyId == selectedSupplyId).FirstOrDefault();
+            OnPropertyChanged(nameof(SelectedSupply));
+
+            Search();
+            FilterByFactory();
+            SortByDate();
+        }
 
         private void Search()
         {
-            if (SearchString != "")
-                _searcSupplys = AllSuply.Where(s => s.Factory.Address.ToLower().Contains(SearchString.ToLower()) | s.SupplyId.ToString().Contains(SearchString.ToLower()) | s.Date.ToString().Contains(SearchString.ToLower())).ToList();
+            if (SearchString != "" && SearchString != null)
+                _searcSupplys = _allSuply.Where(s => s.Factory.Address.ToLower().Contains(SearchString.ToLower()) | s.SupplyId.ToString().Contains(SearchString.ToLower()) | s.Date.ToString().Contains(SearchString.ToLower())).ToList();
             else
                 _searcSupplys = null;
 
@@ -285,14 +330,20 @@ namespace Kursovaya.ViewModel
         private void FilterByFactory()
         {
             if (_selectedFactory != null)
-                _factorySortSupplys = AllSuply.Where(s => s.Factory.FactoryId == _selectedFactory.FactoryId).ToList();
+                _factorySortSupplys = _allSuply.Where(s => s.Factory.FactoryId == _selectedFactory.FactoryId).ToList();
             else
                 _factorySortSupplys = null;
             Merger();
         }
+        private void SortByDate()
+        {
+            if (SelectedFirstDate != null && SelectedSecondDate != null)
+                _dateSortSupplys = _allSuply.Where(s => s.Date >= SelectedFirstDate & s.Date <= SelectedSecondDate).ToList();
+            Merger();
+        }
         private void Merger()
         {
-            _displayedSupplys = AllSuply;
+            _displayedSupplys = _allSuply;
 
             if (_factorySortSupplys != null && _searcSupplys != null && _dateSortSupplys != null)
             {
@@ -302,7 +353,7 @@ namespace Kursovaya.ViewModel
 
             if (_factorySortSupplys != null)
             {
-                _displayedSupplys = AllSuply.Intersect(_factorySortSupplys).ToList();
+                _displayedSupplys = _allSuply.Intersect(_factorySortSupplys).ToList();
 
                 if (_searcSupplys != null)
                 {
@@ -333,23 +384,36 @@ namespace Kursovaya.ViewModel
 
             if (_factorySortSupplys == null && _searcSupplys == null && _dateSortSupplys == null)
             {
-                _displayedSupplys = AllSuply;
+                _displayedSupplys = _allSuply;
                 OnPropertyChanged(nameof(DisplayedSupplys));
             }
         }
 
         private void SortSupplyWorkersByPost()
         {
-            if (_supplyWorkersPostId != 0)
-                _selectedSupplyWorkers = _selectedSupply.Workers.Where(w => w.PostId == _supplyWorkersPostId).ToList();
-            else
-                _selectedSupplyWorkers = _selectedSupply.Workers.ToList();
+            if(_selectedSupply != null)
+            {
+                if (_supplyWorkersPostId != 0)
+                    _selectedSupplyWorkers = _selectedSupply.Workers.Where(w => w.PostId == _supplyWorkersPostId).ToList();
+                else
+                    _selectedSupplyWorkers = _selectedSupply.Workers.ToList();
 
-            OnPropertyChanged(nameof(SelectedSupplyWorkers));
+                OnPropertyChanged(nameof(SelectedSupplyWorkers));
+            }
+            else
+            {
+                _selectedSupplyWorkers.Clear();
+                OnPropertyChanged(nameof(SelectedSupplyWorkers));
+            }
         }
 
-        //DialogClick
-        public new void ClickYes()
+        private void ClearCurrentChildView()
+        {
+            Thread.Sleep(400);
+            CurrentChildView = null;
+        }
+
+        public void SaveModifiedSupply(SupplyModel modifiedSupply)
         {
             MainViewModel.CloseDialog();
 
@@ -360,16 +424,22 @@ namespace Kursovaya.ViewModel
 
             Thread myThread = new Thread(ClearCurrentChildView);
             myThread.Start();
-        }
 
-        public new void ClickNo()
+            RefreshSupplyList(modifiedSupply.SupplyId);
+        }
+        public void AddNewSupply(SupplyModel modifiedSupply)
         {
             MainViewModel.CloseDialog();
-        }
-        private void ClearCurrentChildView()
-        {
-            Thread.Sleep(400);
-            CurrentChildView = null;
+
+            AnimationAction = false;
+            ReverseAnimationAction = true;
+            BackVisibility = Visibility.Collapsed;
+            IsEnabled = true;
+
+            Thread myThread = new Thread(ClearCurrentChildView);
+            myThread.Start();
+
+            RefreshSupplyList(modifiedSupply.SupplyId);
         }
     }
 }

@@ -8,7 +8,6 @@ namespace Kursovaya.Repositories
 {
     public class SupplyRepository : ApplicationContext, ISupplyRepository
     {
-        ApplicationContext context = new ApplicationContext();
         public void Add(SupplyModel supplyModel)
         {
             throw new NotImplementedException();
@@ -19,14 +18,14 @@ namespace Kursovaya.Repositories
             throw new NotImplementedException();
         }
 
-        public void Remove(int id)
+        public void Remove(int id, ApplicationContext context)
         {
             SupplyModel deletedSupply = context.Supplies.Where(s => s.SupplyId == id).First();
             context.Supplies.Remove(deletedSupply);
             context.SaveChanges();
         }
 
-        public List<SupplyModel> GetByAll()
+        public List<SupplyModel> GetByAll(ApplicationContext context)
         {
             List<SupplyModel> supplies = context.Supplies.
                 Include(s => s.Factory).

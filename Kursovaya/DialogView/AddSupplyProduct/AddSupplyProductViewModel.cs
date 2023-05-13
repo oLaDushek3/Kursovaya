@@ -4,8 +4,10 @@ using Kursovaya.Model.Supply;
 using Kursovaya.Model.Worker;
 using Kursovaya.Repositories;
 using Kursovaya.ViewModel;
+using Kursovaya.ViewModel.Supply;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,7 +19,8 @@ namespace Kursovaya.DialogView.AddSupplyProduct
     {
         #region Fields
         private ApplicationContext _context;
-        private SupplyViewModel _supplyViewModel;
+        private EditSupplyViewModel _currentEditSupplyViewModel;
+        private AddSupplyViewModel _currentAddSupplyViewModel;
 
         //Product
         private List<ProductModel> _allProducts;
@@ -30,9 +33,10 @@ namespace Kursovaya.DialogView.AddSupplyProduct
         private List<PlaceModel> _availablePlaces;
         private PlaceModel _selectedPlace;
         private int _quantityOnPlace;
+        private List<SupplyProductPlaceModel> _addSupplyProductPlaces = new List<SupplyProductPlaceModel>();
 
         //SupplyProductPlace
-        private SupplyProductPlaceModel _addSupplyProductPlaceModel = new SupplyProductPlaceModel();
+        private SupplyProductModel _addSupplyProduct = new SupplyProductModel();
         #endregion Fields
 
         #region Properties
@@ -52,7 +56,8 @@ namespace Kursovaya.DialogView.AddSupplyProduct
             {
                 _selectedProduct = value;
                 OnPropertyChanged(nameof(SelectedProduct));
-                AddSupplyProductPlaceModel.SupplyProduct = _context.SupplyProducts.Where(s => s.ProductId == _selectedProduct.ProductId).First();
+
+                AddSupplyProduct.Product = value;
             }
         }
         public int SpecifiedQuantity
@@ -62,7 +67,7 @@ namespace Kursovaya.DialogView.AddSupplyProduct
             {
                 _specifiedQuantity = value;
                 OnPropertyChanged(nameof(SpecifiedQuantity));
-                AddSupplyProductPlaceModel.Quantity = _specifiedQuantity;
+                AddSupplyProduct.Quantity = _specifiedQuantity;
                 UpdateResiduary();
             }
         }
@@ -113,56 +118,111 @@ namespace Kursovaya.DialogView.AddSupplyProduct
                 OnPropertyChanged(nameof(QuantityOnPlace));
             }
         }
-
-        //SupplyProductPlace
-        public SupplyProductPlaceModel AddSupplyProductPlaceModel
+        public ObservableCollection<SupplyProductPlaceModel> AddSupplyProductPlaces
         {
-            get => _addSupplyProductPlaceModel;
+            get => new ObservableCollection<SupplyProductPlaceModel>(_addSupplyProductPlaces);
             set
             {
-                _addSupplyProductPlaceModel = value;
-                OnPropertyChanged(nameof(AddSupplyProductPlaceModel));
+                _addSupplyProductPlaces = new List<SupplyProductPlaceModel>(value);
+                OnPropertyChanged(nameof(AddSupplyProductPlaces));
+            }
+        }
+
+        //SupplyProductPlace
+        public SupplyProductModel AddSupplyProduct
+        {
+            get => _addSupplyProduct;
+            set
+            {
+                _addSupplyProduct = value;
+                OnPropertyChanged(nameof(AddSupplyProduct));
             }
         }
         #endregion Properties
 
         //Command
         public ICommand AddPlaceCommand { get; }
+        public ICommand DeletePlaceCommand { get; }
         public ICommand AddCommand { get; }
         public ICommand GoBackCommand { get; }
 
-        public void ExecuteAddPlaceCommand(object? obj)
+        private void ExecuteAddPlaceCommand(object? obj)
         {
+            SupplyProductPlaceModel supplyProductPlaceModel = new SupplyProductPlaceModel()
+            {
+                Place = SelectedPlace,
+                Quantity = QuantityOnPlace,
+                SupplyProduct = AddSupplyProduct
+            };
 
+            _addSupplyProductPlaces.Add(supplyProductPlaceModel);
+            OnPropertyChanged(nameof(AddSupplyProductPlaces));
+
+            ActualQuantity += QuantityOnPlace;
+            UpdateResiduary();
+
+            SelectedPlace = null;
+            QuantityOnPlace = 0;
+            AvailablePlaces = _context.Places.Where(p => !AddSupplyProductPlaces.Select(pl => pl.Place.PlaceId).Contains(p.PlaceId)).ToList();
+            OnPropertyChanged(nameof(AvailablePlaces));
         }
-        public bool CanExecuteAddPlaceCommand(object? obj)
+        private void ExecuteDeletePlaceCommand(object obj)
         {
-            if (_selectedPlace != null && _quantityOnPlace != 0)
+            _addSupplyProductPlaces.Remove(obj as SupplyProductPlaceModel);
+            OnPropertyChanged(nameof(AddSupplyProductPlaces));
+
+            ActualQuantity -= (obj as SupplyProductPlaceModel).Quantity;
+            UpdateResiduary();
+
+            AvailablePlaces = _context.Places.Where(p => !AddSupplyProductPlaces.Select(pl => pl.Place.PlaceId).Contains(p.PlaceId)).ToList();
+        }
+        private bool CanExecuteAddPlaceCommand(object? obj)
+        {
+            if (_selectedPlace != null && _quantityOnPlace != 0 && _selectedProduct != null)
                 return true;
             return false;
         }
-        public void ExecuteAddCommand(object? obj)
+        private void ExecuteAddCommand(object? obj)
         {
+            AddSupplyProduct.SupplyProductPlaces = AddSupplyProductPlaces.ToList();
+            _currentEditSupplyViewModel?.AddSupplyProduct(AddSupplyProduct);
+            _currentAddSupplyViewModel?.AddSupplyProduct(AddSupplyProduct);
 
+            GoBackCommand.Execute(null);
         }
-        public bool CanExecuteAddCommand(object? obj)
+        private bool CanExecuteAddCommand(object? obj)
         {
-            if (_specifiedQuantity != 0 & _residuary == 0 && _addSupplyProductPlaceModel.SupplyProduct != null)
+            if (_specifiedQuantity != 0 & _residuary == 0 && _selectedProduct != null)
                 return true;
             return false;
         }
-        public void ExecuteGoBackCommand(object? obj)
+        private void ExecuteGoBackCommand(object? obj)
         {
-            _supplyViewModel.MainViewModel.CloseDialog();
+            _currentEditSupplyViewModel?.currentSupplyViewModel.MainViewModel.CloseDialog();
+            _currentAddSupplyViewModel?.currentSupplyViewModel.MainViewModel.CloseDialog();
         }
-
-        public AddSupplyProductViewModel(ApplicationContext context, SupplyViewModel supplyViewModel)
+        public AddSupplyProductViewModel(ApplicationContext context, EditSupplyViewModel editSupplyViewModel)
         {
             _context = context;
-            _supplyViewModel = supplyViewModel;
+            _currentEditSupplyViewModel = editSupplyViewModel;
             AllProducts = _context.Products.ToList();
+            AvailablePlaces = _context.Places.ToList();
 
             AddPlaceCommand = new ViewModelCommand(ExecuteAddPlaceCommand, CanExecuteAddPlaceCommand);
+            DeletePlaceCommand = new ViewModelCommand(ExecuteDeletePlaceCommand);
+            AddCommand = new ViewModelCommand(ExecuteAddCommand, CanExecuteAddCommand);
+            GoBackCommand = new ViewModelCommand(ExecuteGoBackCommand);
+        }
+
+        public AddSupplyProductViewModel(ApplicationContext context, AddSupplyViewModel addSupplyViewModel)
+        {
+            _context = context;
+            _currentAddSupplyViewModel = addSupplyViewModel;
+            AllProducts = _context.Products.ToList();
+            AvailablePlaces = _context.Places.ToList();
+
+            AddPlaceCommand = new ViewModelCommand(ExecuteAddPlaceCommand, CanExecuteAddPlaceCommand);
+            DeletePlaceCommand = new ViewModelCommand(ExecuteDeletePlaceCommand);
             AddCommand = new ViewModelCommand(ExecuteAddCommand, CanExecuteAddCommand);
             GoBackCommand = new ViewModelCommand(ExecuteGoBackCommand);
         }

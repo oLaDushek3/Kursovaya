@@ -272,7 +272,7 @@
                             <Button Style="{StaticResource iconButton}"
                                     Tag="{StaticResource color9}" Cursor="Hand"
                                     Visibility="{Binding Visibility}"
-                                    Command="{Binding ShowAddViewCommand}">
+                                    Command="{Binding CurrentChildView.AddCommand}">
                                 <Button.Content>
                                     <fa:IconImage Icon="plus"
                                                   Style="{StaticResource iconButtonIcon}" Cursor=""/>

@@ -58,7 +58,11 @@ public partial class ApplicationContext : DbContext
 
     public virtual DbSet<WorkerModel> Workers { get; set; }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) => optionsBuilder.UseSqlServer(@"Server=.\SQLEXPRESS;Database=Kursovaya;Trusted_Connection=True;Encrypt=False");
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        optionsBuilder.UseSqlServer(@"Server=.\;Database=Kursovaya;Trusted_Connection=True;Encrypt=False");
+        optionsBuilder.EnableSensitiveDataLogging();
+    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

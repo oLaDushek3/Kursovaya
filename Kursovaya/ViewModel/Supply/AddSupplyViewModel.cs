@@ -13,19 +13,17 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
 
-namespace Kursovaya.ViewModel
+namespace Kursovaya.ViewModel.Supply
 {
-    public class EditSupplyViewModel : ViewModelBase
+    public class AddSupplyViewModel : ViewModelBase
     {
         public SupplyViewModel currentSupplyViewModel;
 
         #region Fields
-        ApplicationContext context = new ApplicationContext();
+        ApplicationContext context = new();
 
         //Supply fields
-        private ISupplyRepository _supplyRepository = new SupplyRepository();
-        private SupplyModel _selectedSupply;
-        private SupplyModel _editableSupply = new SupplyModel();
+        private SupplyModel _createdSupply = new() { Date = DateTime.Today};
 
         //Factory fields
         private IFactoryRepository factoryRepository = new FactoryRepository();
@@ -35,22 +33,22 @@ namespace Kursovaya.ViewModel
         private IWorkerRepository _workerRepository = new WorkerRepository();
         private List<WorkerModel> _availableWorker;
         private WorkerModel? _selectedForAdditionWorker;
-        private List<WorkerModel> _editableSupplyWorkers = new List<WorkerModel>();
+        private List<WorkerModel> _createdSupplyWorkers = new();
         private int _supplyWorkersPostId;
 
         //Product and place fields
-        private List<SupplyProductModel> _editableSupplyProduct;
+        private List<SupplyProductModel> _createdSupplyProduct = new();
         #endregion Fields
 
         #region Properties
         //Supply properties
-        public SupplyModel EditableSupply
+        public SupplyModel CreatedSupply
         {
-            get => _editableSupply;
+            get => _createdSupply;
             set
             {
-                _editableSupply = value;
-                OnPropertyChanged(nameof(EditableSupply));
+                _createdSupply = value;
+                OnPropertyChanged(nameof(CreatedSupply));
             }
         }
 
@@ -82,17 +80,17 @@ namespace Kursovaya.ViewModel
             {
                 _selectedForAdditionWorker = value;
                 OnPropertyChanged(nameof(SelectedForAdditionWorker));
-                if(value != null)
+                if (value != null)
                     AddWorker();
             }
         }
-        public ObservableCollection<WorkerModel> EditableSupplyWorkers
+        public ObservableCollection<WorkerModel> CreatedSupplyWorkers
         {
-            get => new ObservableCollection<WorkerModel>(_editableSupplyWorkers);
+            get => new ObservableCollection<WorkerModel>(_createdSupplyWorkers);
             set
             {
-                _editableSupplyWorkers = new List<WorkerModel>(value);
-                OnPropertyChanged(nameof(EditableSupplyWorkers));
+                _createdSupplyWorkers = new List<WorkerModel>(value);
+                OnPropertyChanged(nameof(CreatedSupplyWorkers));
             }
         }
         public int SupplyWorkersPostId
@@ -107,13 +105,13 @@ namespace Kursovaya.ViewModel
         }
 
         //Product and place properties
-        public ObservableCollection<SupplyProductModel> EditableSupplyProduct
+        public ObservableCollection<SupplyProductModel> CreatedSupplyProduct
         {
-            get => new ObservableCollection<SupplyProductModel>(_editableSupplyProduct);
+            get => new ObservableCollection<SupplyProductModel>(_createdSupplyProduct);
             set
             {
-                _editableSupplyProduct = new List<SupplyProductModel>(value);
-                OnPropertyChanged(nameof(EditableSupplyProduct));
+                _createdSupplyProduct = new List<SupplyProductModel>(value);
+                OnPropertyChanged(nameof(CreatedSupplyProduct));
             }
         }
 
@@ -128,34 +126,20 @@ namespace Kursovaya.ViewModel
         //Commands execution
         public void ExecuteSaveCommand(object? obj)
         {
-            List<SupplyProductModel> deleteSupplyProducts;
-            List<SupplyProductModel> addSupplyProducts;
-
-            deleteSupplyProducts = _editableSupply.SupplyProducts.Except(_editableSupplyProduct).ToList();
-            foreach (SupplyProductModel supplyProduct in deleteSupplyProducts)
-            {
-                context.SupplyProducts.Remove(supplyProduct);
-            }
-
-            addSupplyProducts = _editableSupplyProduct.Except(_editableSupply.SupplyProducts).ToList();
-            foreach (SupplyProductModel supplyProduct in addSupplyProducts)
-            {
-                supplyProduct.Supply = _editableSupply;
-                context.SupplyProducts.Add(supplyProduct);
-            }
-
+            context.Supplies.Add(_createdSupply);
+            CreatedSupply.SupplyProducts = _createdSupplyProduct;
             context.SaveChanges();
-            currentSupplyViewModel.SaveModifiedSupply(_editableSupply);
+            currentSupplyViewModel.AddNewSupply(CreatedSupply);
         }
-        public void ExecuteDeleteWorkerCommand(object? obj)
+        public void ExecuteDeleteWorkerCommand(object obj)
         {
-            EditableSupply.Workers.Remove(obj as WorkerModel);
+            CreatedSupply.Workers.Remove(obj as WorkerModel);
             SortSupplyWorkersByPost();
         }
         public void ExecuteDeleteSupplyProductCommand(object obj)
         {
-            _editableSupplyProduct.Remove(obj as SupplyProductModel);
-            OnPropertyChanged(nameof(EditableSupplyProduct));
+            _createdSupplyProduct.Remove(obj as SupplyProductModel);
+            OnPropertyChanged(nameof(CreatedSupplyProduct));
         }
         public void ExecuteAddSupplyProductCommand(object? obj)
         {
@@ -164,15 +148,12 @@ namespace Kursovaya.ViewModel
         }
 
         //Constructor
-        public EditSupplyViewModel(SupplyModel selectedSupply, SupplyViewModel supplyViewModel)
+        public AddSupplyViewModel(SupplyViewModel supplyViewModel)
         {
-            _selectedSupply = selectedSupply;
-            _editableSupply = _supplyRepository.GetById(_selectedSupply.SupplyId, context);
             currentSupplyViewModel = supplyViewModel;
             SortSupplyWorkersByPost();
 
             _allFactory = factoryRepository.GetByAll(context);
-            _editableSupplyProduct = _editableSupply.SupplyProducts.ToList();
 
             SaveCommand = new ViewModelCommand(ExecuteSaveCommand);
             DeleteSupplyProductCommand = new ViewModelCommand(ExecuteDeleteSupplyProductCommand);
@@ -185,28 +166,28 @@ namespace Kursovaya.ViewModel
         {
             if (_supplyWorkersPostId != 0)
             {
-                _editableSupplyWorkers = _editableSupply.Workers.Where(w => w.PostId == _supplyWorkersPostId).ToList();
-                _availableWorker = (_workerRepository.GetByAll(context)).Where(w => !_editableSupplyWorkers.Select(w => w.WorkerId).Contains(w.WorkerId)).Where(w => w.PostId == _supplyWorkersPostId).ToList();
+                _createdSupplyWorkers = _createdSupply.Workers.Where(w => w.PostId == _supplyWorkersPostId).ToList();
+                _availableWorker = (_workerRepository.GetByAll(context)).Where(w => !_createdSupplyWorkers.Select(w => w.WorkerId).Contains(w.WorkerId)).Where(w => w.PostId == _supplyWorkersPostId).ToList();
             }
             else
             {
-                _editableSupplyWorkers = _editableSupply.Workers.ToList();
-                _availableWorker = (_workerRepository.GetByAll(context)).Where(w => !_editableSupplyWorkers.Select(w => w.WorkerId).Contains(w.WorkerId)).ToList();
+                _createdSupplyWorkers = _createdSupply.Workers.ToList();
+                _availableWorker = (_workerRepository.GetByAll(context)).Where(w => !_createdSupplyWorkers.Select(w => w.WorkerId).Contains(w.WorkerId)).ToList();
             }
 
-            OnPropertyChanged(nameof(EditableSupplyWorkers));
+            OnPropertyChanged(nameof(CreatedSupplyWorkers));
             OnPropertyChanged(nameof(AvailableWorker));
         }
         private void AddWorker()
         {
-            EditableSupply.Workers.Add(SelectedForAdditionWorker);
+            CreatedSupply.Workers.Add(SelectedForAdditionWorker);
             SortSupplyWorkersByPost();
             SelectedForAdditionWorker = null;
         }
         public void AddSupplyProduct(SupplyProductModel supplyProductModel)
         {
-            _editableSupplyProduct.Add(supplyProductModel);
-            OnPropertyChanged(nameof(EditableSupplyProduct));
+            _createdSupplyProduct.Add(supplyProductModel);
+            OnPropertyChanged(nameof(CreatedSupplyProduct));
         }
     }
 }

@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:viewmodel="clr-namespace:Kursovaya.DialogView.AddSupplyProduct"
              xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
-             mc:Ignorable="d"
+             mc:Ignorable="d" x:Name="addSupplyProductView"
              Height="300" Width="400" Background="Transparent"
              d:DataContext="{d:DesignInstance Type=viewmodel:AddSupplyProductViewModel, IsDesignTimeCreatable=False}"
              Margin="10">
@@ -17,7 +17,7 @@
             <!--Buttons-->
             <RowDefinition Height="20*"/>
         </Grid.RowDefinitions>
-        
+
         <!--Main-->
         <Grid>
 
@@ -50,7 +50,7 @@
                         <ColumnDefinition Width="50"/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    
+
                     <TextBlock Text="Всего:"
                                VerticalAlignment="Center"  
                                Foreground="{StaticResource titleColor1}"
@@ -72,58 +72,65 @@
                            FontSize="15"
                            Margin="2"/>
             </StackPanel>
-            
+
             <!--List-->
             <StackPanel Grid.Column="1">
-                
-                <StackPanel Orientation="Horizontal">
+
+                <Grid>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="30*"/>
+                        <ColumnDefinition Width="55*"/>
+                        <ColumnDefinition Width="15*"/>
+                    </Grid.ColumnDefinitions>
+
                     <ComboBox ItemsSource="{Binding AvailablePlaces}"
                               Background="Transparent" 
-                              Width="50" Margin="3"
+                              Width="50" HorizontalAlignment="Left" Margin="3"
                               SelectedItem="{Binding SelectedPlace}">
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
                                 <TextBlock Background="Transparent"
-                                       FontFamily="Montserrat"
-                                       Text="{Binding Title}"
-                                       VerticalAlignment="Center"/>
+                                           FontFamily="Montserrat"
+                                           Text="{Binding Place1}"
+                                           VerticalAlignment="Center"/>
                             </DataTemplate>
                         </ComboBox.ItemTemplate>
                     </ComboBox>
-                    
-                    <TextBox Grid.Column="1" Margin="3" Tag="Количество"
+
+                    <TextBox Grid.Column="1" Tag="Количество"
                              Style="{StaticResource HintTextBox}"
                              Text="{Binding Path=QuantityOnPlace, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                             MaxLength="10"
+                             MaxLength="10" Margin="3"
                              BorderBrush="{StaticResource color2}"/>
 
-                    <Button Grid.Column="1" HorizontalAlignment="Right"
-                                    Style="{StaticResource iconButton}"
-                                    Tag="{StaticResource color9}" Cursor="Hand"
-                                    Command="{Binding AddPlaceCommand}"
-                                    Margin="0 0 10 0">
+                    <Button Grid.Column="2" HorizontalAlignment="Right"
+                            Style="{StaticResource iconButton}"
+                            Tag="{StaticResource color9}" Cursor="Hand"
+                            Command="{Binding AddPlaceCommand}"
+                            Margin="3">
                         <Button.Content>
                             <fa:IconImage Icon="Plus" 
                                           Style="{StaticResource iconButtonIcon}"/>
                         </Button.Content>
                     </Button>
 
-                </StackPanel>
-                
+                </Grid>
+
                 <ItemsControl ItemsSource="{Binding AddSupplyProductPlaces}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
 
                             <Grid>
                                 <TextBox Grid.Column="0"
-                                     Margin="4"
-                                     Background="Transparent"
-                                     BorderThickness="1 0 0 0"
-                                     BorderBrush="LightGray"
-                                     IsReadOnly="True"
-                                     FontFamily="Montserrat"
-                                     Foreground="{StaticResource titleColor1}"
-                                     VerticalAlignment="Center">
+                                         Margin="4"
+                                         Background="Transparent"
+                                         BorderThickness="1 0 0 0"
+                                         BorderBrush="LightGray"
+                                         IsReadOnly="True"
+                                         FontFamily="Montserrat"
+                                         Foreground="{StaticResource titleColor1}"
+                                         VerticalAlignment="Center">
 
                                     <TextBox.Text>
                                         <MultiBinding StringFormat="Место: {0} - {1}шт">
@@ -134,15 +141,14 @@
 
                                 </TextBox>
 
-                                <Button Style="{StaticResource iconButton}" x:Name="btn"
-                                    Command="{Binding ElementName=supplyView, Path=DataContext.ClearSortCommand}"
-                                    CommandParameter="{Binding ElementName=btn, Path=DataContext}"
-                                    Tag="{StaticResource color9}" Cursor="Hand"
-                                    Visibility="{Binding Visibility}"
-                                    HorizontalAlignment="Right">
+                                <Button Style="{StaticResource iconButton}"
+                                        Command="{Binding ElementName=addSupplyProductView, Path=DataContext.DeletePlaceCommand}"
+                                        CommandParameter="{Binding  RelativeSource={RelativeSource Self}, Path=DataContext}"
+                                        Tag="{StaticResource color4}"
+                                        HorizontalAlignment="Right">
                                     <Button.Content>
                                         <fa:IconImage Icon="Xmark"
-                                                  Style="{StaticResource iconButtonIcon}"/>
+                                                      Style="{StaticResource iconButtonIcon}"/>
                                     </Button.Content>
                                 </Button>
                             </Grid>

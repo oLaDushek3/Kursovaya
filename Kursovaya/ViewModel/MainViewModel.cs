@@ -1,10 +1,14 @@
-﻿using System.Windows;
+﻿using System;
+using System.Data;
+using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 using FontAwesome.Sharp;
 using Kursovaya.DialogView;
 using Kursovaya.DialogView.BaseDialog;
 using Kursovaya.Model.User;
 using Kursovaya.Repositories;
+using Microsoft.Extensions.Logging;
 
 namespace Kursovaya.ViewModel
 {
@@ -64,7 +68,7 @@ namespace Kursovaya.ViewModel
             }
         }
 
-        public ViewModelBase DialogView
+        public ViewModelBase? DialogView
         {
             get => _dialogView;
             set
@@ -258,22 +262,34 @@ namespace Kursovaya.ViewModel
             else user.Login = "Invalid user, not logged in";
         }
 
-        public void ShowDialog(ViewModelBase currentDialogView)
+        //Dialog
+
+        public delegate void CloseDialogDelegate();
+        public event CloseDialogDelegate CloseDialogEvent;
+        public bool DialogResult;
+
+        public Task<bool> ShowDialog(ViewModelBase currentDialogView)
         {
-            BaseDialogViewModel baseDialogViewModel = new BaseDialogViewModel(currentDialogView);
+            BaseDialogViewModel baseDialogViewModel = new(currentDialogView);
             DialogView = baseDialogViewModel;
 
             MainEnable = false;
             BlurEffectRadius = 3;
             DimmingEffectEnable = Visibility.Visible;
-        }
 
+            var completion = new TaskCompletionSource<bool>();
+
+            CloseDialogEvent += () => completion.TrySetResult(DialogResult);
+            return completion.Task;
+        }
         public void CloseDialog()
         {
             DialogView = null;
             MainEnable = true;
             BlurEffectRadius = 0;
             DimmingEffectEnable = Visibility.Collapsed;
+
+            CloseDialogEvent.Invoke();
         }
     }
 }

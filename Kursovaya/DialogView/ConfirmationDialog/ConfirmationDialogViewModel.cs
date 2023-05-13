@@ -1,11 +1,12 @@
 ﻿using Kursovaya.ViewModel;
+using System;
 using System.Windows.Input;
 
 namespace Kursovaya.DialogView
 {
     public class ConfirmationDialogViewModel : ViewModelBase
     {
-        private IConfirmationDialog _dialogInterface;
+        private MainViewModel _currentMainViewModel;
 
         //Commands
         public ICommand ClickYesCommand { get; }
@@ -14,17 +15,18 @@ namespace Kursovaya.DialogView
         //Commands execution
         private void ExecuteClickYesCommand(object? obj)
         {
-            _dialogInterface.ClickYes();
+            _currentMainViewModel.DialogResult = true;
+            _currentMainViewModel.CloseDialog();
         }
         private void ExecuteClickNoCommand(object? obj)
         {
-            _dialogInterface.ClickNo();
+            _currentMainViewModel.DialogResult = false;
         }
 
         //Constructor
-        public ConfirmationDialogViewModel(ViewModelBase calledViewModel)
+        public ConfirmationDialogViewModel(MainViewModel currentMainViewModel)
         {
-            _dialogInterface = calledViewModel;
+            _currentMainViewModel = currentMainViewModel;
             ClickYesCommand = new ViewModelCommand(ExecuteClickYesCommand);
             ClickNoCommand = new ViewModelCommand(ExecuteClickNoCommand);
         }

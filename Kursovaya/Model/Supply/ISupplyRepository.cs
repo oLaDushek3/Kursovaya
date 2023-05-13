@@ -8,8 +8,8 @@ namespace Kursovaya.Model.Supply
     {
         void Add(SupplyModel supplyModel);
         void Edit(SupplyModel supplyModel);
-        void Remove(int id);
-        List<SupplyModel> GetByAll();
+        void Remove(int id, ApplicationContext context);
+        List<SupplyModel> GetByAll(ApplicationContext context);
         SupplyModel GetById(int id, ApplicationContext context);
     }
 }
