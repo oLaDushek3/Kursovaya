@@ -54,7 +54,6 @@ namespace Kursovaya.ViewModel
         //Commands
         public ICommand LoginCommand { get; }
         public ICommand ShowPasswordCommand { get; }
-        public ICommand RecoverPasswordCommand { get; }
 
         //Constructor
         public LoginViewModel()

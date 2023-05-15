@@ -1,8 +1,10 @@
 ﻿using Humanizer;
+using Kursovaya.DialogView;
 using Kursovaya.DialogView.AddSupplyProduct;
 using Kursovaya.Model.Factory;
 using Kursovaya.Model.Place;
 using Kursovaya.Model.Product;
+using Kursovaya.Model.Shipping;
 using Kursovaya.Model.Supply;
 using Kursovaya.Model.Worker;
 using Kursovaya.Repositories;
@@ -126,26 +128,32 @@ namespace Kursovaya.ViewModel
         public ICommand AddSupplyProductCommand { get; }
 
         //Commands execution
-        public void ExecuteSaveCommand(object? obj)
+        public async void ExecuteSaveCommand(object? obj)
         {
-            List<SupplyProductModel> deleteSupplyProducts;
-            List<SupplyProductModel> addSupplyProducts;
+            ConfirmationDialogViewModel confirmationDialogViewModel = new ConfirmationDialogViewModel(currentSupplyViewModel.MainViewModel);
+            bool result = await currentSupplyViewModel.MainViewModel.ShowDialog(confirmationDialogViewModel);
 
-            deleteSupplyProducts = _editableSupply.SupplyProducts.Except(_editableSupplyProduct).ToList();
-            foreach (SupplyProductModel supplyProduct in deleteSupplyProducts)
+            if (result)
             {
-                context.SupplyProducts.Remove(supplyProduct);
-            }
+                List<SupplyProductModel> deleteSupplyProducts;
+                List<SupplyProductModel> addSupplyProducts;
 
-            addSupplyProducts = _editableSupplyProduct.Except(_editableSupply.SupplyProducts).ToList();
-            foreach (SupplyProductModel supplyProduct in addSupplyProducts)
-            {
-                supplyProduct.Supply = _editableSupply;
-                context.SupplyProducts.Add(supplyProduct);
-            }
+                deleteSupplyProducts = _editableSupply.SupplyProducts.Except(_editableSupplyProduct).ToList();
+                foreach (SupplyProductModel supplyProduct in deleteSupplyProducts)
+                {
+                    context.SupplyProducts.Remove(supplyProduct);
+                }
 
-            context.SaveChanges();
-            currentSupplyViewModel.SaveModifiedSupply(_editableSupply);
+                addSupplyProducts = _editableSupplyProduct.Except(_editableSupply.SupplyProducts).ToList();
+                foreach (SupplyProductModel supplyProduct in addSupplyProducts)
+                {
+                    supplyProduct.Supply = _editableSupply;
+                    context.SupplyProducts.Add(supplyProduct);
+                }
+
+                context.SaveChanges();
+                currentSupplyViewModel.SaveModifiedSupply(_editableSupply);
+            }
         }
         public void ExecuteDeleteWorkerCommand(object? obj)
         {

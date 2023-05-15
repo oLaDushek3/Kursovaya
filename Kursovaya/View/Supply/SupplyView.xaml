@@ -143,19 +143,16 @@
                     BorderBrush="{StaticResource color2}" 
                     CornerRadius="10"
                     Margin="2">
-                <DataGrid Visibility="Visible" x:Name="dataGrid"
+                <DataGrid Visibility="Visible" Tag="#623ED0"
                           Style="{StaticResource DataGridStyle1}" 
                           CellStyle="{StaticResource DataGridCellStyle1}" 
                           ColumnHeaderStyle="{StaticResource DataGridColumnHeaderStyle1}"
+                          RowStyle ="{StaticResource DataGridRowStyle}"
                           ItemsSource="{Binding DisplayedSupplys}"
                           Grid.Column="0"
                           Margin="5"
                           SelectedItem="{Binding Path=SelectedSupply, Mode=TwoWay}"
                           SelectedIndex="0">
-                    <DataGrid.RowStyle>
-                        <Style TargetType="{x:Type DataGridRow}" BasedOn="{StaticResource DataGridRowStyle}">
-                        </Style>
-                    </DataGrid.RowStyle>
                     <DataGrid.Columns>
 
                         <DataGridTextColumn IsReadOnly="True" CanUserResize="False" Width="auto"
@@ -322,6 +319,7 @@
                                    Grid.Row="0"/>
 
                     <ScrollViewer Style="{StaticResource FavsScrollViewer}" 
+                                  Tag="{StaticResource color2}"
                                   Grid.Row="1">
                         <ItemsControl ItemsSource="{Binding SelectedSupply.SupplyProducts}">
                             <ItemsControl.ItemTemplate>
@@ -400,7 +398,7 @@
                    Grid.RowSpan="4" 
                    Margin="0 0 -15 0">
             <ContentControl HorizontalAlignment="Right"
-                            Width="{Binding ActualWidth, ElementName=WidthDockPanel}"
+                            Width="{Binding Path=ActualWidth , RelativeSource={RelativeSource AncestorType=DockPanel}}"
                             Content="{Binding CurrentChildView}">
                 
                 <ContentControl.Effect>

@@ -1,12 +1,8 @@
-﻿using System;
+﻿using Kursovaya.Styles;
+using System;
 using System.Windows;
 using System.Windows.Input;
-using System.Runtime.InteropServices;
 using System.Windows.Interop;
-using Kursovaya.Styles;
-using Kursovaya.Model.User;
-using Kursovaya.Repositories;
-using Kursovaya.ViewModel;
 
 namespace Kursovaya.View
 {

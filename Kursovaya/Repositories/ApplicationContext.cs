@@ -97,12 +97,12 @@ public partial class ApplicationContext : DbContext
 
             entity.Property(e => e.BuyerAddressId).HasColumnName("Buyer_address_id");
             entity.Property(e => e.Adress)
-                .HasMaxLength(80)
+                .HasMaxLength(50)
                 .IsUnicode(false);
             entity.Property(e => e.IndividualId).HasColumnName("Individual_id");
             entity.Property(e => e.LegalEntityId).HasColumnName("Legal_entity_id");
             entity.Property(e => e.Note)
-                .HasMaxLength(20)
+                .HasMaxLength(50)
                 .IsUnicode(false);
 
             entity.HasOne(d => d.Individual).WithMany(p => p.BuyerAddresses)
@@ -145,7 +145,7 @@ public partial class ApplicationContext : DbContext
 
             entity.Property(e => e.IndividualId).HasColumnName("Individual_id");
             entity.Property(e => e.Name)
-                .HasMaxLength(15)
+                .HasMaxLength(50)
                 .IsUnicode(false);
             entity.Property(e => e.PhoneNumber)
                 .HasMaxLength(10)
@@ -155,10 +155,6 @@ public partial class ApplicationContext : DbContext
                 .HasMaxLength(12)
                 .IsUnicode(false)
                 .HasColumnName("Series_passport_number");
-            entity.Property(e => e.Surname)
-                .HasMaxLength(20)
-                .IsUnicode(false)
-                .HasColumnName("surname");
         });
 
         modelBuilder.Entity<LegalEntityModel>(entity =>

@@ -1,0 +1,343 @@
+﻿<UserControl x:Class="Kursovaya.View.BuyerView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
+             xmlns:viewmodelBuyer="clr-namespace:Kursovaya.ViewModel.Buyer"
+             xmlns:viewBuyer="clr-namespace:Kursovaya.View"
+             xmlns:Converters="clr-namespace:Kursovaya.Converters"
+             mc:Ignorable="d" x:Name="buyerView"
+             d:DesignHeight="600" d:DesignWidth="1000"
+             d:DataContext="{d:DesignInstance Type=viewmodelBuyer:BuyerViewModel, IsDesignTimeCreatable=False}">
+
+    <UserControl.Resources>
+        <DataTemplate DataType="{x:Type viewmodelBuyer:EditBuyerViewModel}">
+            <viewBuyer:EditBuyerView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewmodelBuyer:AddBuyerViewModel}">
+            <viewBuyer:AddBuyerView/>
+        </DataTemplate>
+        <Converters:TextLengthConverter x:Key="TextLengthConverter"/>
+        <Converters:FullNameConverter x:Key="FullNameConverter"/>
+        <Converters:BuyerConverter x:Key="BuyerConverter"/>
+        <Converters:BuyerAdressConverter x:Key="BuyerAdressConverter"/>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <!--All orders-->
+            <ColumnDefinition Width="65*"/>
+            <!--Selected buyer-->
+            <ColumnDefinition  Width="35*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <!--Header-->
+            <RowDefinition Height="35"/>
+            <!--Details-->
+            <RowDefinition Height="25*"/>
+        </Grid.RowDefinitions>
+
+        <!--Header-->
+        <DockPanel Grid.Column="0" Grid.Row="0">
+            <Border BorderThickness="1" 
+                    BorderBrush="{StaticResource color6}" 
+                    CornerRadius="10"
+                    Margin="2">
+                <StackPanel Orientation="Horizontal" Cursor="">
+
+                    <TextBox Width="200" Margin="15 0 0 0"
+                             BorderBrush="{StaticResource color6}"
+                             Style="{StaticResource SearchTextBox}"/>
+
+                    <ComboBox ItemsSource="{Binding BuyerTypeList}" SelectedItem="{Binding SelectedBuyerType, Mode=TwoWay}"
+                              Width="auto" Margin="10 0 0 0"/>
+
+                    <Button Margin="0 0 10 0" Style="{StaticResource iconButton}"
+                            Tag="{StaticResource color4}" Cursor="Hand"
+                            Command="{Binding ClearSortCommand}"
+                            HorizontalAlignment="Right">
+                        <Button.Content>
+                            <fa:IconImage Icon="Xmark" 
+                                          Width="11"
+                                          Style="{StaticResource iconButtonIcon}"/>
+                        </Button.Content>
+                    </Button>
+
+                </StackPanel>
+            </Border>
+        </DockPanel>
+
+        <DockPanel Grid.Column="1" Grid.Row="0"
+                   IsEnabled="{Binding IsEnabled}">
+            <Border BorderThickness="1" 
+                    BorderBrush="{StaticResource color6}" 
+                    CornerRadius="10"
+                    Margin="2">
+                <TextBlock Text="Подробности"
+                           Foreground="{StaticResource titleColor2}"
+                           FontSize="18"
+                           FontFamily="Montserrat"
+                           FontWeight="Medium"
+                           VerticalAlignment="Center"
+                           Margin="10 0 0 0"/>
+            </Border>
+        </DockPanel>
+
+        <!--All orders-->
+        <DockPanel Grid.Column="0" Grid.Row="1" Grid.RowSpan="3"
+                   IsEnabled="{Binding IsEnabled}"
+                   x:Name="myDockPanel">
+            <Border BorderThickness="1" 
+                    BorderBrush="{StaticResource color6}" 
+                    CornerRadius="10"
+                    Margin="2">
+                <DataGrid Visibility="Visible" Tag="#E5C07B"
+                          Style="{StaticResource DataGridStyle1}" 
+                          CellStyle="{StaticResource DataGridCellStyle1}" 
+                          ColumnHeaderStyle="{StaticResource DataGridColumnHeaderStyle1}"
+                          RowStyle ="{StaticResource DataGridRowStyle}"
+                          ItemsSource="{Binding DisplayedBuyer}"
+                          Grid.Column="0"
+                          Margin="5"
+                          SelectedItem="{Binding Path=SelectedBuyer, Mode=TwoWay}"
+                          SelectedIndex="0">
+                    <DataGrid.Columns>
+
+                        <DataGridTextColumn IsReadOnly="True" CanUserResize="False" Width="auto"
+                                            Binding="{Binding Buyer1}" Header="#"/>
+
+                        <DataGridTextColumn Header="Заказчик" IsReadOnly="True" CanUserResize="False"
+                                            Width="225" Binding="{Binding Converter={StaticResource BuyerConverter}}"/>
+
+                        <DataGridTextColumn Header="Адрес" IsReadOnly="True" CanUserResize="False" Width="250"
+                                            Binding="{Binding Converter={StaticResource BuyerAdressConverter}}"/>
+                        
+                        <DataGridTemplateColumn>
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button Style="{StaticResource iconButton}"
+                                            Tag="{StaticResource color4}" Cursor="Hand"
+                                            Visibility="{Binding Visibility}" 
+                                            Command="{Binding ElementName=buyerView, Path=DataContext.DeleteBuyerCommand}"
+                                            CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=DataContext}"
+                                            HorizontalAlignment="Right">
+                                        <Button.Content>
+                                            <fa:IconImage Icon="Trash"
+                                                          Style="{StaticResource iconButtonIcon}"/>
+                                        </Button.Content>
+                                    </Button>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+
+
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Border>
+        </DockPanel>
+
+        <!--Selected  buyer-->
+        <!--Details-->
+        <DockPanel Grid.Column="1" Grid.Row="1">
+            <Border BorderThickness="1" 
+                    BorderBrush="{StaticResource color6}" 
+                    CornerRadius="10"
+                    Margin="2">
+
+                <StackPanel Margin="5">
+
+                    <TextBlock Text="{Binding SelectedBuyer.Buyer1, StringFormat = Покупатель № {0}}"
+                               Foreground="{StaticResource titleColor2}"
+                               FontFamily="Motserrat"
+                               FontSize="18"
+                               VerticalAlignment="Center"
+                               Margin="2"/>
+
+                    <Grid>
+                        <!--Individual info-->
+                        <StackPanel>
+                            <TextBlock Text="{Binding SelectedBuyer.Individual.Name, Converter={StaticResource FullNameConverter},StringFormat = ФИО: {0}}"
+                               Foreground="{StaticResource titleColor1}"
+                               FontFamily="Motserrat"
+                               FontSize="15"
+                               VerticalAlignment="Center"
+                               Margin="2"
+                               TextWrapping="Wrap"/>
+
+                            <TextBlock Text="{Binding SelectedBuyer.Individual.PhoneNumber,StringFormat = Телефон:+7{0}}"
+                               Foreground="{StaticResource titleColor1}"
+                               FontFamily="Motserrat"
+                               FontSize="15"
+                               VerticalAlignment="Center"
+                               Margin="2"
+                               TextWrapping="Wrap"/>
+
+                            <TextBlock Text="{Binding SelectedBuyer.Individual.BuyerAddresses[0].Adress,StringFormat = Адрес: {0}}"
+                                       Foreground="{StaticResource titleColor1}"
+                                       FontFamily="Motserrat"
+                                       FontSize="15"
+                                       VerticalAlignment="Center"
+                                       Margin="2"
+                                       TextWrapping="Wrap"/>
+                            
+                            <TextBlock Text="{Binding SelectedBuyer.Individual.BuyerAddresses[0].Note,StringFormat = Примечание: {0}}"
+                                       Foreground="{StaticResource titleColor1}"
+                                       FontFamily="Motserrat"
+                                       FontSize="15"
+                                       VerticalAlignment="Center"
+                                       Margin="2"
+                                       TextWrapping="Wrap"/>
+
+                            <TextBlock Text="{Binding SelectedBuyer.Individual.SeriesPassportNumber,StringFormat = Паспорт: {0}}"
+                               Foreground="{StaticResource titleColor1}"
+                               FontFamily="Motserrat"
+                               FontSize="15"
+                               VerticalAlignment="Center"
+                               Margin="2"
+                               TextWrapping="Wrap"/>
+                        </StackPanel>
+
+                        <!--Legal entityu info-->
+                        <StackPanel>
+                            <TextBlock Text="{Binding SelectedBuyer.LegalEntity.Organization, Converter={StaticResource TextLengthConverter},StringFormat = Компания: {0}}"
+                                       Foreground="{StaticResource titleColor1}"
+                                       FontFamily="Motserrat"
+                                       FontSize="15"
+                                       VerticalAlignment="Center"
+                                       Margin="2"
+                                       TextWrapping="Wrap"/>
+
+                            <TextBlock Text="{Binding SelectedBuyer.LegalEntity.PhoneNumber,StringFormat = Телефон: +7{0}}"
+                                       Foreground="{StaticResource titleColor1}"
+                                       FontFamily="Motserrat"
+                                       FontSize="15"
+                                       VerticalAlignment="Center"
+                                       Margin="2"
+                                       TextWrapping="Wrap"/>
+
+                            <TextBlock Text="{Binding SelectedBuyer.LegalEntity.BuyerAddresses[0].Adress,StringFormat = Адрес: {0}}"
+                                       Foreground="{StaticResource titleColor1}"
+                                       FontFamily="Motserrat"
+                                       FontSize="15"
+                                       VerticalAlignment="Center"
+                                       Margin="2"
+                                       TextWrapping="Wrap"/>
+                            
+                            <TextBlock Text="{Binding SelectedBuyer.LegalEntity.BuyerAddresses[0].Note,StringFormat = Примечание: {0}}"
+                                       Foreground="{StaticResource titleColor1}"
+                                       FontFamily="Motserrat"
+                                       FontSize="15"
+                                       VerticalAlignment="Center"
+                                       Margin="2"
+                                       TextWrapping="Wrap"/>
+
+                            <TextBlock Text="{Binding SelectedBuyer.LegalEntity.СheckingAccount,StringFormat = Расчетный счет: {0}}"
+                                       Foreground="{StaticResource titleColor1}"
+                                       FontFamily="Motserrat"
+                                       FontSize="15"
+                                       VerticalAlignment="Center"
+                                       Margin="2"
+                                       TextWrapping="Wrap"/>
+
+                            <TextBlock Text="{Binding SelectedBuyer.LegalEntity.Bank,StringFormat = Банк: {0}}"
+                                       Foreground="{StaticResource titleColor1}"
+                                       FontFamily="Motserrat"
+                                       FontSize="15"
+                                       VerticalAlignment="Center"
+                                       Margin="2"
+                                       TextWrapping="Wrap"/>
+
+                            <TextBlock Text="{Binding SelectedBuyer.LegalEntity.CorrespondentAccount,StringFormat = Корреспондентский счет: {0}}"
+                                       Foreground="{StaticResource titleColor1}"
+                                       FontFamily="Motserrat"
+                                       FontSize="15"
+                                       VerticalAlignment="Center"
+                                       Margin="2"
+                                       TextWrapping="Wrap"/>
+
+                            <TextBlock Text="{Binding SelectedBuyer.LegalEntity.Bic,StringFormat = БИК: {0}}"
+                                       Foreground="{StaticResource titleColor1}"
+                                       FontFamily="Motserrat"
+                                       FontSize="15"
+                                       VerticalAlignment="Center"
+                                       Margin="2"
+                                       TextWrapping="Wrap"/>
+
+                            <TextBlock Text="{Binding SelectedBuyer.LegalEntity.Rrc,StringFormat = КПП: {0}}"
+                                       Foreground="{StaticResource titleColor1}"
+                                       FontFamily="Motserrat"
+                                       FontSize="15"
+                                       VerticalAlignment="Center"
+                                       Margin="2"
+                                       TextWrapping="Wrap"/>
+
+                            <TextBlock Text="{Binding SelectedBuyer.LegalEntity.Tin,StringFormat = ИНН: {0}}"
+                                       Foreground="{StaticResource titleColor1}"
+                                       FontFamily="Motserrat"
+                                       FontSize="15"
+                                       VerticalAlignment="Center"
+                                       Margin="2"
+                                       TextWrapping="Wrap"/>
+                        </StackPanel>
+                    </Grid>
+
+                </StackPanel>
+            </Border>
+        </DockPanel>
+
+        <!--Add/Edit pannel-->
+        <DockPanel x:Name="WidthDockPanel"
+                   Grid.Column="1" 
+                   Grid.RowSpan="4" 
+                   Margin="0 0 -15 0">
+            <ContentControl HorizontalAlignment="Right"
+                            Width="{Binding Path=ActualWidth , RelativeSource={RelativeSource AncestorType=DockPanel}}"
+                            Content="{Binding CurrentChildView}">
+
+                <ContentControl.Effect>
+                    <DropShadowEffect BlurRadius="15" Direction="-90"
+                                      RenderingBias="Quality" ShadowDepth="2"/>
+                </ContentControl.Effect>
+
+                <ContentControl.Style>
+                    <Style TargetType="ContentControl">
+                        <Style.Triggers>
+
+                            <DataTrigger Binding="{Binding AnimationAction}" Value="True">
+                                <DataTrigger.EnterActions>
+                                    <BeginStoryboard Name="FadeIn">
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetProperty="Width"
+                                                             From="0"
+                                                             Duration="0:0:0.4"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </DataTrigger.EnterActions>
+                                <DataTrigger.ExitActions>
+                                    <RemoveStoryboard BeginStoryboardName="FadeIn" />
+                                </DataTrigger.ExitActions>
+                            </DataTrigger>
+
+                            <DataTrigger Binding="{Binding ReverseAnimationAction}" Value="True">
+                                <DataTrigger.EnterActions>
+                                    <BeginStoryboard Name="FadeOut">
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetProperty="Width"
+                                                             To="0"
+                                                             Duration="0:0:0.4"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </DataTrigger.EnterActions>
+                                <DataTrigger.ExitActions>
+                                    <RemoveStoryboard BeginStoryboardName="FadeOut" />
+                                </DataTrigger.ExitActions>
+                            </DataTrigger>
+
+                        </Style.Triggers>
+                    </Style>
+                </ContentControl.Style>
+            </ContentControl>
+        </DockPanel>
+    </Grid>
+</UserControl>

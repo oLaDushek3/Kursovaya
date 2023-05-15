@@ -8,7 +8,8 @@ namespace Kursovaya.Model.Product
     {
         void Add(ProductModel productModel);
         void Edit(ProductModel productModel);
-        void Remove(int id);
+        void Remove(int id, ApplicationContext context);
+        ProductModel? GetById(int id, ApplicationContext context);
         List<ProductModel> GetByAll(ApplicationContext context);
     }
 }

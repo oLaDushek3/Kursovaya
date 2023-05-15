@@ -28,16 +28,16 @@
                 <ControlTemplate TargetType="{x:Type ScrollBar}">
                     <DockPanel Grid.Row="2">
                         <Border BorderThickness="1"
-                                        BorderBrush="{StaticResource color2}"
-                                        CornerRadius="6"
-                                        Margin="0">
+                                BorderBrush="{TemplateBinding Background}"
+                                CornerRadius="6"
+                                Margin="0">
                             <Grid x:Name="Bg" SnapsToDevicePixels="true" Background="Transparent">
                                 <Border Padding="0 4">
                                     <Track x:Name="PART_Track"
-                                                   IsDirectionReversed="true"
-                                                   IsEnabled="{TemplateBinding IsMouseOver}"
-                                                   Width="8"
-                                                   HorizontalAlignment="Center">
+                                           IsDirectionReversed="true"
+                                           IsEnabled="{TemplateBinding IsMouseOver}"
+                                           Width="8"
+                                           HorizontalAlignment="Center">
                                         <Track.DecreaseRepeatButton>
                                             <RepeatButton Opacity="0" Command="{x:Static ScrollBar.PageUpCommand}" />
                                         </Track.DecreaseRepeatButton>
@@ -109,6 +109,7 @@
                                    Maximum="{TemplateBinding ScrollableHeight}" 
                                    Minimum="0" 
                                    Grid.Row="0" 
+                                   Background="{TemplateBinding Tag}"
                                    Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}"
                                    Value="{Binding VerticalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
                                    ViewportSize="{TemplateBinding ViewportHeight}"/>

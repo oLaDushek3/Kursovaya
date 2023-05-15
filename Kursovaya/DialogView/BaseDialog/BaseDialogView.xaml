@@ -8,6 +8,7 @@
              xmlns:basedialog="clr-namespace:Kursovaya.DialogView.BaseDialog"
              xmlns:dialogview="clr-namespace:Kursovaya.DialogView"
              xmlns:addSupplyProduct="clr-namespace:Kursovaya.DialogView.AddSupplyProduct"
+             xmlns:addShippingProduct="clr-namespace:Kursovaya.DialogView.AddShippingProduct"
              mc:Ignorable="d"
              d:DesignHeight="150" d:DesignWidth="300"
              Background="Transparent"
@@ -19,6 +20,9 @@
         </DataTemplate>
         <DataTemplate DataType="{x:Type addSupplyProduct:AddSupplyProductViewModel}">
             <addSupplyProduct:AddSupplyProductView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type addShippingProduct:AddShippingProductViewModel}">
+            <addShippingProduct:AddShippingProductView/>
         </DataTemplate>
     </UserControl.Resources>
     

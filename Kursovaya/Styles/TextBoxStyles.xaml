@@ -99,7 +99,8 @@
                                          VerticalAlignment="{TemplateBinding VerticalAlignment}"
                                          Background="{TemplateBinding Background}"
                                          BorderThickness="0"
-                                         FontSize="{TemplateBinding FontSize}">
+                                         FontSize="{TemplateBinding FontSize}"
+                                         MaxLength="{Binding Path=MaxLength, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
 
                                 </TextBox>
                             </Grid>

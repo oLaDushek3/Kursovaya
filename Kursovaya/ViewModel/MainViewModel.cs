@@ -1,14 +1,13 @@
-﻿using System;
-using System.Data;
+﻿using Kursovaya.DialogView.BaseDialog;
+using Kursovaya.Model.User;
+using Kursovaya.Repositories;
+using Kursovaya.ViewModel.Buyer;
+using Kursovaya.ViewModel.Product;
+using Kursovaya.ViewModel.Shipping;
+using System;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-using FontAwesome.Sharp;
-using Kursovaya.DialogView;
-using Kursovaya.DialogView.BaseDialog;
-using Kursovaya.Model.User;
-using Kursovaya.Repositories;
-using Microsoft.Extensions.Logging;
 
 namespace Kursovaya.ViewModel
 {
@@ -21,21 +20,16 @@ namespace Kursovaya.ViewModel
         private ViewModelBase _currentChildView;
         private ViewModelBase _currentMainView;
         private string _caption;
-        private IconChar _icon;
+        private string _icon;
 
         private ViewModelBase _dialogView;
         private bool _mainEnable;
         private double _blurEffectRadius;
         private Visibility _dimmingEffectEnable;
 
-        private Visibility _visibility;
-        private Visibility _backVisibility;
-        private ViewModelBase _currentAddView;
-        private ViewModelBase _currentEditView;
         private ViewModelBase _currentDeleteDialogView;
 
-        private ICommand _goBackCommand { get; set; }
-
+        private bool _isViewVisidible = true;
         //Properties
         public UserModel User 
         {
@@ -115,7 +109,7 @@ namespace Kursovaya.ViewModel
                 OnPropertyChanged(nameof(Caption));
             }
         }
-        public IconChar Icon
+        public string Icon
         {
             get => _icon;
 
@@ -125,61 +119,27 @@ namespace Kursovaya.ViewModel
                 OnPropertyChanged(nameof(Icon));
             }
         }
-        public Visibility Visibility
-        {
-            get => _visibility;
 
+        public bool IsViewVisidible
+        {
+            get => _isViewVisidible;
             set
             {
-                _visibility = value;
-                OnPropertyChanged(nameof(Visibility));
+                _isViewVisidible = value;
+                OnPropertyChanged(nameof(IsViewVisidible));
             }
         }
-        public Visibility BackVisibility
-        {
-            get => _backVisibility;
-
-            set
-            {
-                _backVisibility = value;
-                OnPropertyChanged(nameof(BackVisibility));
-            }
-        }
-
-        public ICommand GoBackCommand
-        {
-            get => _goBackCommand;
-
-            set
-            {
-                _goBackCommand = value;
-                OnPropertyChanged(nameof(GoBackCommand));
-            }
-        }
-
         //Commands
-        public ICommand ShowHomeViewCommand { get; }
+        public ICommand LogoutCommand { get; }
         public ICommand ShowSupplyViewCommand { get; }
-        public ICommand ShowFactoryViewCommand { get; }
-
-        public ICommand ShowEditViewCommand { get; }
-        public ICommand ShowAddViewCommand { get; }
-        public ICommand ShowDeleteViewCommand { get; }
-
+        public ICommand ShowShippingViewCommand { get; }
+        public ICommand ShowBuyerViewCommand { get; }
+        public ICommand ShowProductViewCommand { get; }
 
         //Commands execution
-        //Navigation button commands execution
-        private void ExecuteShowHomeViewCommand(object? obj)
+        private void ExecuteLogoutCommand(object? obj)
         {
-            _currentMainView = new HomeViewModel();
-            CurrentChildView = _currentMainView;
-
-            Caption = "Главная";
-            Icon = IconChar.Home;
-            Visibility = Visibility.Collapsed;
-            BackVisibility = Visibility.Collapsed;
-
-            GoBackCommand = new ViewModelCommand(ExecuteShowHomeViewCommand);
+            IsViewVisidible = false;
         }
         private void ExecuteShowSupplyViewCommand(object? obj)
         {
@@ -187,44 +147,32 @@ namespace Kursovaya.ViewModel
             CurrentChildView = _currentMainView;
 
             Caption = "Поставки";
-            Icon = IconChar.Truck;
-            Visibility = Visibility.Visible;
-            BackVisibility = Visibility.Collapsed;
-
-            GoBackCommand = new ViewModelCommand(ExecuteShowSupplyViewCommand);
+            Icon = "Truck";
 
         }
-        private void ExecuteShowFactoryViewCommand(object? obj)
+        private void ExecuteShowShippingViewCommand(object? obj)
         {
-            _currentMainView = new FactoryViewModel();
+            _currentMainView = new ShippingViewModel(this);
             CurrentChildView = _currentMainView;
 
-            Caption = "Производства";
-            Icon = IconChar.Industry;
-            Visibility = Visibility.Visible;
-            BackVisibility = Visibility.Collapsed;
+            Caption = "Заказы";
+            Icon = "Box";
+        }
+        private void ExecuteShowBuyerViewCommand (object? obj)
+        {
+            _currentMainView = new BuyerViewModel(this);
+            CurrentChildView = _currentMainView;
 
-            GoBackCommand = new ViewModelCommand(ExecuteShowFactoryViewCommand);
+            Caption = "Покуапетли";
+            Icon = "UserGroup";
         }
+        private void ExecuteShowProductViewCommand (object? obj)
+        {
+            _currentMainView = new ProductViewModel(this);
+            CurrentChildView = _currentMainView;
 
-        //Edit Add Delete button commands execution
-        private void ExecuteShowEditViewCommand(object? obj)
-        {
-            CurrentChildView = _currentEditView;
-            Caption += " изменение";
-            Visibility = Visibility.Collapsed;
-            BackVisibility = Visibility.Visible;
-        }
-        private void ExecuteShowAddViewCommand(object? obj)
-        {
-            CurrentChildView = _currentAddView;
-            Caption += " добавление";
-            Visibility = Visibility.Collapsed;
-            BackVisibility = Visibility.Visible;
-        }
-        private void ExecuteShowDeleteViewCommand(object? obj)
-        {
-            //ShowDialog();
+            Caption = "Продукция";
+            Icon = "Boxes";
         }
 
         //Constructor
@@ -234,15 +182,11 @@ namespace Kursovaya.ViewModel
             User = new UserModel();
 
             //Initialize command
-            ShowHomeViewCommand = new ViewModelCommand(ExecuteShowHomeViewCommand);
+            LogoutCommand = new ViewModelCommand(ExecuteLogoutCommand);
             ShowSupplyViewCommand = new ViewModelCommand(ExecuteShowSupplyViewCommand);
-            ShowFactoryViewCommand = new ViewModelCommand(ExecuteShowFactoryViewCommand);
-            ShowEditViewCommand = new ViewModelCommand(ExecuteShowEditViewCommand);
-            ShowAddViewCommand =  new ViewModelCommand(ExecuteShowAddViewCommand);
-            ShowDeleteViewCommand = new ViewModelCommand(ExecuteShowDeleteViewCommand);
-
-            //Default view
-            ExecuteShowHomeViewCommand(null);
+            ShowShippingViewCommand = new ViewModelCommand(ExecuteShowShippingViewCommand);
+            ShowBuyerViewCommand = new ViewModelCommand(ExecuteShowBuyerViewCommand);
+            ShowProductViewCommand = new ViewModelCommand(ExecuteShowProductViewCommand);
 
             LoadCurrentUserdata();
 
@@ -251,9 +195,10 @@ namespace Kursovaya.ViewModel
             DimmingEffectEnable = Visibility.Collapsed;
         }
 
-        //Methods
+        #region Methods
         private void LoadCurrentUserdata()
         {
+            //User = _userRepository.GetByUsername(Thread.CurrentPrincipal.Identity.Name);
             UserModel user = _userRepository.GetByUsername("admin");
             if (user != null)
             {
@@ -263,7 +208,6 @@ namespace Kursovaya.ViewModel
         }
 
         //Dialog
-
         public delegate void CloseDialogDelegate();
         public event CloseDialogDelegate CloseDialogEvent;
         public bool DialogResult;
@@ -289,7 +233,8 @@ namespace Kursovaya.ViewModel
             BlurEffectRadius = 0;
             DimmingEffectEnable = Visibility.Collapsed;
 
-            CloseDialogEvent.Invoke();
+            CloseDialogEvent?.Invoke();
         }
+        #endregion Methods
     }
 }

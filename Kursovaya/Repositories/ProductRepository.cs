@@ -19,9 +19,20 @@ namespace Kursovaya.Repositories
             throw new NotImplementedException();
         }
 
-        public void Remove(int id)
+        public void Remove(int id, ApplicationContext context)
         {
-            throw new NotImplementedException();
+            ProductModel productModel = context.Products.Where(p => p.ProductId == id).First();
+            context.Products.Remove(productModel);
+            context.SaveChanges();
+        }
+
+        public ProductModel? GetById(int id, ApplicationContext context)
+        {
+            ProductModel? product = context.Products.
+                Include(p => p.ProductType).
+                    ThenInclude(t => t.ProductsGroup).FirstOrDefault();
+
+            return product;
         }
 
         public List<ProductModel> GetByAll(ApplicationContext context)

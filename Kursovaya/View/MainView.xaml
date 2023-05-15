@@ -8,7 +8,9 @@
         xmlns:view="clr-namespace:Kursovaya.View"
         xmlns:dialogview="clr-namespace:Kursovaya.DialogView.BaseDialog"
         xmlns:viewmodel="clr-namespace:Kursovaya.ViewModel" 
-        xmlns:dialogview1="clr-namespace:Kursovaya.DialogView"
+        xmlns:shippingViewModel="clr-namespace:Kursovaya.ViewModel.Shipping" 
+        xmlns:buyerViewModel="clr-namespace:Kursovaya.ViewModel.Buyer" 
+        xmlns:productViewModel="clr-namespace:Kursovaya.ViewModel.Product" 
         mc:Ignorable="d"
         Title="AI Technology (warehouse)" Height="700" Width="1300"
         WindowStartupLocation="CenterScreen"
@@ -20,23 +22,34 @@
         <viewmodel:MainViewModel/>
     </Window.DataContext>
 
+
     <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        
         <DataTemplate DataType="{x:Type dialogview:BaseDialogViewModel}">
             <dialogview:BaseDialogView/>
-        </DataTemplate>
-        
-        <DataTemplate DataType="{x:Type viewmodel:HomeViewModel}">
-            <view:HomeView/>
         </DataTemplate>
 
         <DataTemplate DataType="{x:Type viewmodel:SupplyViewModel}">
             <view:SupplyView/>
         </DataTemplate>
 
-        <DataTemplate DataType="{x:Type viewmodel:FactoryViewModel}">
-            <view:FactoryView/>
+        <DataTemplate DataType="{x:Type shippingViewModel:ShippingViewModel}">
+            <view:ShippingView/>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type buyerViewModel:BuyerViewModel}">
+            <view:BuyerView/>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type productViewModel:ProductViewModel}">
+            <view:ProductView/>
         </DataTemplate>
     </Window.Resources>
+
+    <Window.Visibility>
+        <Binding Path="IsViewVisidible" Mode="TwoWay" Converter="{StaticResource BooleanToVisibilityConverter}"/>
+    </Window.Visibility>
 
     <Border CornerRadius="10"
             BorderThickness="2">
@@ -108,19 +121,6 @@
 
                     <!--Menu Button-->
                     <RadioButton Style="{StaticResource menuButton}"
-                                 Tag="{StaticResource color1}"
-                                 Command="{Binding ShowHomeViewCommand}"
-                                 IsChecked="True">
-
-                        <StackPanel Orientation="Horizontal">
-                            <fa:IconImage Icon="Home" Style="{StaticResource menuButtonIcon}"/>
-                            <TextBlock Text="Главная" Style="{StaticResource menuButtonText}"/>
-                        </StackPanel>
-
-                    </RadioButton>
-
-
-                    <RadioButton Style="{StaticResource menuButton}"
                                  Tag="{StaticResource color2}"
                                  Command="{Binding ShowSupplyViewCommand}">
 
@@ -132,18 +132,8 @@
                     </RadioButton>
 
                     <RadioButton Style="{StaticResource menuButton}"
-                                 Tag="{StaticResource color4}"
-                                 Command="{Binding ShowFactoryViewCommand}">
-
-                        <StackPanel Orientation="Horizontal">
-                            <fa:IconImage Icon="Industry" Style="{StaticResource menuButtonIcon}"/>
-                            <TextBlock Text="Производства" Style="{StaticResource menuButtonText}"/>
-                        </StackPanel>
-
-                    </RadioButton>
-
-                    <RadioButton Style="{StaticResource menuButton}"
-                                 Tag="{StaticResource color3}">
+                                 Tag="{StaticResource color3}"
+                                 Command="{Binding ShowShippingViewCommand}">
 
                         <StackPanel Orientation="Horizontal">
                             <fa:IconImage Icon="box" Style="{StaticResource menuButtonIcon}"/>
@@ -153,15 +143,48 @@
                     </RadioButton>
 
                     <RadioButton Style="{StaticResource menuButton}"
-                                 Tag="{StaticResource color5}">
+                                 Tag="{StaticResource color6}"
+                                 Command="{Binding ShowBuyerViewCommand}">
 
                         <StackPanel Orientation="Horizontal">
                             <fa:IconImage Icon="UserGroup" Style="{StaticResource menuButtonIcon}"/>
-                            <TextBlock Text="Заказчики" Style="{StaticResource menuButtonText}"/>
+                            <TextBlock Text="Покупатели" Style="{StaticResource menuButtonText}"/>
                         </StackPanel>
 
                     </RadioButton>
 
+                    <RadioButton Style="{StaticResource menuButton}"
+                                 Tag="{StaticResource color1}"
+                                 Command="{Binding ShowProductViewCommand}">
+
+                        <StackPanel Orientation="Horizontal">
+                            <fa:IconImage Icon="Boxes" Style="{StaticResource menuButtonIcon}"/>
+                            <TextBlock Text="Продукция" Style="{StaticResource menuButtonText}"/>
+                        </StackPanel>
+
+                    </RadioButton>
+
+                    <RadioButton Style="{StaticResource menuButton}"
+                                 Tag="{StaticResource color5}"
+                                 Command="{Binding ShowProductViewCommand}">
+
+                        <StackPanel Orientation="Horizontal">
+                            <fa:IconImage Icon="UserTie" Style="{StaticResource menuButtonIcon}"/>
+                            <TextBlock Text="Работники" Style="{StaticResource menuButtonText}"/>
+                        </StackPanel>
+
+                    </RadioButton>
+
+                    <RadioButton Style="{StaticResource menuButton}"
+                                 Tag="{StaticResource color9}"
+                                 Command="{Binding ShowProductViewCommand}">
+
+                        <StackPanel Orientation="Horizontal">
+                            <fa:IconImage Icon="ChartLine" Style="{StaticResource menuButtonIcon}"/>
+                            <TextBlock Text="Работники" Style="{StaticResource menuButtonText}"/>
+                        </StackPanel>
+
+                    </RadioButton>
 
                 </StackPanel>
 
@@ -261,7 +284,7 @@
 
                             <Button Margin="10 0 0 0" Style="{StaticResource iconButton}"
                                     Tag="{StaticResource color1}" Cursor="Hand"
-                                    Visibility="{Binding Visibility}"
+                                    Visibility="{Binding CurrentChildView.Visibility}"
                                     Command="{Binding CurrentChildView.EditCommand}">
                                 <Button.Content>
                                     <fa:IconImage Icon="Pencil"
@@ -271,7 +294,7 @@
 
                             <Button Style="{StaticResource iconButton}"
                                     Tag="{StaticResource color9}" Cursor="Hand"
-                                    Visibility="{Binding Visibility}"
+                                    Visibility="{Binding CurrentChildView.Visibility}"
                                     Command="{Binding CurrentChildView.AddCommand}">
                                 <Button.Content>
                                     <fa:IconImage Icon="plus"
@@ -298,7 +321,8 @@
                                     Margin="0,0,10,0">
 
                             <Button Style="{StaticResource iconButton}"
-                                    Tag="{StaticResource color4}">
+                                    Tag="{StaticResource color4}"
+                                    Command="{Binding LogoutCommand}">
                                 <fa:IconImage Icon="RightFromBracket" 
                                               Style="{StaticResource iconButtonIcon}"
                                               FlowDirection="LeftToRight"/>

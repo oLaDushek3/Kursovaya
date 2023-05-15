@@ -21,6 +21,7 @@ namespace Kursovaya.DialogView
         private void ExecuteClickNoCommand(object? obj)
         {
             _currentMainViewModel.DialogResult = false;
+            _currentMainViewModel.CloseDialog();
         }
 
         //Constructor

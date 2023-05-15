@@ -1,6 +1,9 @@
 ﻿using Kursovaya.Model.Buyer;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using Microsoft.EntityFrameworkCore;
+using Kursovaya.Model.Supply;
 
 namespace Kursovaya.Repositories
 {
@@ -16,14 +19,33 @@ namespace Kursovaya.Repositories
             throw new NotImplementedException();
         }
 
-        public IEnumerable<BuyerModel> GetByAll()
+        public void Remove(int id, ApplicationContext context)
         {
-            throw new NotImplementedException();
+            BuyerModel deletedBuyer = context.Buyers.Where(s => s.Buyer1 == id).First();
+            context.Buyers.Remove(deletedBuyer);
+            context.SaveChanges();
         }
 
-        public void Remove(int id)
+        public List<BuyerModel> GetByAll(ApplicationContext context)
         {
-            throw new NotImplementedException();
+            List<BuyerModel> buyers = context.Buyers.
+                Include(b => b.Individual).
+                    ThenInclude(b => b.BuyerAddresses).
+                Include(b => b.LegalEntity).
+                    ThenInclude(b => b.BuyerAddresses).ToList();
+
+            return buyers;
+        }
+
+        public BuyerModel? GetById(int id, ApplicationContext context)
+        {
+            BuyerModel? buyer = context.Buyers.Where(b => b.Buyer1 == id).
+                Include(b => b.Individual).
+                    ThenInclude(b => b.BuyerAddresses).
+                Include(b => b.LegalEntity).
+                    ThenInclude(b => b.BuyerAddresses).FirstOrDefault();
+
+            return buyer;
         }
     }
 }

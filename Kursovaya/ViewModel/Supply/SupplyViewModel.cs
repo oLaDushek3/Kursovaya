@@ -37,7 +37,7 @@ namespace Kursovaya.ViewModel
         private SupplyModel? _selectedSupply;
 
         private string? _searchString;
-        private List<SupplyModel>? _searcSupplys;
+        private List<SupplyModel>? _searchSupplys;
 
         private IFactoryRepository _factoryRepository = new FactoryRepository();
         private FactoryModel? _selectedFactory;
@@ -253,7 +253,7 @@ namespace Kursovaya.ViewModel
         private void ExecuteClearSearchCommand(object? obj)
         {
             SearchString = "";
-            _searcSupplys = null;
+            _searchSupplys = null;
             Merger();
         }
         private void ExecuteClearSortCommand(object? obj)
@@ -321,9 +321,9 @@ namespace Kursovaya.ViewModel
         private void Search()
         {
             if (SearchString != "" && SearchString != null)
-                _searcSupplys = _allSuply.Where(s => s.Factory.Address.ToLower().Contains(SearchString.ToLower()) | s.SupplyId.ToString().Contains(SearchString.ToLower()) | s.Date.ToString().Contains(SearchString.ToLower())).ToList();
+                _searchSupplys = _allSuply.Where(s => s.Factory.Address.ToLower().Contains(SearchString.ToLower()) | s.SupplyId.ToString().Contains(SearchString.ToLower()) | s.Date.ToString().Contains(SearchString.ToLower())).ToList();
             else
-                _searcSupplys = null;
+                _searchSupplys = null;
 
             Merger();
         }
@@ -345,9 +345,9 @@ namespace Kursovaya.ViewModel
         {
             _displayedSupplys = _allSuply;
 
-            if (_factorySortSupplys != null && _searcSupplys != null && _dateSortSupplys != null)
+            if (_factorySortSupplys != null && _searchSupplys != null && _dateSortSupplys != null)
             {
-                _displayedSupplys = _factorySortSupplys.Intersect(_searcSupplys.Intersect(_dateSortSupplys)).ToList();
+                _displayedSupplys = _factorySortSupplys.Intersect(_searchSupplys.Intersect(_dateSortSupplys)).ToList();
                 OnPropertyChanged(nameof(DisplayedSupplys));
             }
 
@@ -355,9 +355,9 @@ namespace Kursovaya.ViewModel
             {
                 _displayedSupplys = _allSuply.Intersect(_factorySortSupplys).ToList();
 
-                if (_searcSupplys != null)
+                if (_searchSupplys != null)
                 {
-                    _displayedSupplys = _displayedSupplys.Intersect(_searcSupplys).ToList();
+                    _displayedSupplys = _displayedSupplys.Intersect(_searchSupplys).ToList();
                 }
 
                 if (_dateSortSupplys != null)
@@ -369,9 +369,9 @@ namespace Kursovaya.ViewModel
             }
             else
             {
-                if (_searcSupplys != null)
+                if (_searchSupplys != null)
                 {
-                    _displayedSupplys = _displayedSupplys.Intersect(_searcSupplys).ToList();
+                    _displayedSupplys = _displayedSupplys.Intersect(_searchSupplys).ToList();
                 }
 
                 if (_dateSortSupplys != null)
@@ -382,7 +382,7 @@ namespace Kursovaya.ViewModel
                 OnPropertyChanged(nameof(DisplayedSupplys));
             }
 
-            if (_factorySortSupplys == null && _searcSupplys == null && _dateSortSupplys == null)
+            if (_factorySortSupplys == null && _searchSupplys == null && _dateSortSupplys == null)
             {
                 _displayedSupplys = _allSuply;
                 OnPropertyChanged(nameof(DisplayedSupplys));

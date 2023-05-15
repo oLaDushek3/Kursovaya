@@ -1,4 +1,6 @@
 ﻿using Humanizer;
+using Kursovaya.DialogView;
+using Kursovaya.DialogView.AddShippingProduct;
 using Kursovaya.DialogView.AddSupplyProduct;
 using Kursovaya.Model.Factory;
 using Kursovaya.Model.Place;
@@ -143,7 +145,7 @@ namespace Kursovaya.ViewModel.Supply
         }
         public void ExecuteAddSupplyProductCommand(object? obj)
         {
-            AddSupplyProductViewModel addSupplyProductViewModel = new AddSupplyProductViewModel(context, this);
+            AddSupplyProductViewModel addSupplyProductViewModel = new (context, this);
             currentSupplyViewModel.MainViewModel.ShowDialog(addSupplyProductViewModel);
         }
 

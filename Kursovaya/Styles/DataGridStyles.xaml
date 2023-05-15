@@ -179,22 +179,14 @@
 
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="#623ed0"/>
+                <Setter Property="Background" Value="{Binding RelativeSource={RelativeSource AncestorType=DataGrid}, Path=Tag}"/>
                 <Setter Property="Foreground" Value="#ffffff"/>
             </Trigger>
 
             <Trigger Property="IsSelected" Value="True">
-                <Setter Property="Background" Value="#623ed0"/>
+                <Setter Property="Background" Value="{Binding RelativeSource={RelativeSource AncestorType=DataGrid}, Path=Tag}"/>
                 <Setter Property="Foreground" Value="#ffffff"/>
             </Trigger>
-
-            <MultiTrigger>
-                <MultiTrigger.Conditions>
-                    <Condition Property="IsSelected" Value="True"/>
-                    <Condition Property="Selector.IsSelectionActive" Value="False"/>
-                </MultiTrigger.Conditions>
-                <Setter Property="Background" Value="#623ed0"/>
-            </MultiTrigger>
         </Style.Triggers>
     </Style>
 

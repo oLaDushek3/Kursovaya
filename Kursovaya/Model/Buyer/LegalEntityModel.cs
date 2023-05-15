@@ -22,7 +22,7 @@ public partial class LegalEntityModel
 
     public string PhoneNumber { get; set; } = null!;
 
-    public virtual ICollection<BuyerAddressModel> BuyerAddresses { get; } = new List<BuyerAddressModel>();
+    public virtual ICollection<BuyerAddressModel> BuyerAddresses { get; set; } = new List<BuyerAddressModel>();
 
     public virtual ICollection<BuyerModel> Buyers { get; } = new List<BuyerModel>();
 }

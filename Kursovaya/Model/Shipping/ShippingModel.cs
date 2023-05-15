@@ -17,7 +17,7 @@ public partial class ShippingModel
 
     public virtual BuyerModel BuyerNavigation { get; set; } = null!;
 
-    public virtual ICollection<ShippingProductModel> ShippingProducts { get; } = new List<ShippingProductModel>();
+    public virtual ICollection<ShippingProductModel> ShippingProducts { get; set; } = new List<ShippingProductModel>();
 
     public virtual ICollection<WorkerModel> Workers { get; } = new List<WorkerModel>();
 }
