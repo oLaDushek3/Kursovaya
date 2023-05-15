@@ -10,7 +10,7 @@ public partial class ProductTypeModel
 
     public int ProductsGroupId { get; set; }
 
-    public virtual ICollection<ProductModel> Products { get; } = new List<ProductModel>();
+    public virtual List<ProductModel> Products { get; } = new List<ProductModel>();
 
     public virtual ProductsGroupModel ProductsGroup { get; set; } = null!;
 }

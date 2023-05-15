@@ -5,15 +5,14 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Kursovaya.View" 
              xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
-             xmlns:viewmodelBuyer="clr-namespace:Kursovaya.ViewModel.Buyer"
+             xmlns:viewmodelProduct="clr-namespace:Kursovaya.ViewModel.Product"
              xmlns:Converters="clr-namespace:Kursovaya.Converters"
              mc:Ignorable="d" x:Name="editBuyerView"
              d:DesignHeight="600" d:DesignWidth="800"
-             d:DataContext="{d:DesignInstance Type=viewmodelBuyer:EditBuyerViewModel, IsDesignTimeCreatable=False}" >
+             d:DataContext="{d:DesignInstance Type=viewmodelProduct:EditProductViewModel, IsDesignTimeCreatable=False}" >
 
     <UserControl.Resources>
         <Converters:TextLengthConverter x:Key="TextLengthConverter"/>
-        <Converters:MoneyConverter x:Key="MoneyConverter"/>
     </UserControl.Resources>
 
     <Border CornerRadius="10 0 0 10">
@@ -79,76 +78,105 @@
 
                 <!--Base info-->
                 <DockPanel Grid.Column="1" Grid.Row="1">
-                    <Border BorderThickness="1" 
-                    BorderBrush="{StaticResource color1}" 
-                    CornerRadius="10"
-                    Margin="2">
+                    <Border BorderThickness="1"
+                            BorderBrush="{StaticResource color1}"
+                            CornerRadius="10"
+                            Margin="2">
 
                         <StackPanel Margin="5">
 
-                            <TextBlock Text="{Binding SelectedProduct.ProductId, StringFormat = Продукция № {0}}"
+                            <TextBlock Text="{Binding EditableProduct.ProductId, StringFormat = Продукция № {0}}"
                                Foreground="{StaticResource titleColor1}"
                                FontFamily="Motserrat"
                                FontSize="18"
                                VerticalAlignment="Center"
                                Margin="2"/>
 
+                            <ComboBox ItemsSource="{Binding ProductTypeList}"
+                                      SelectedItem="{Binding EditableProduct.ProductType, Mode=TwoWay}"
+                                      Width="250" Margin="2" HorizontalAlignment="Left">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock>
+                                            <TextBlock.Text>
+                                                <MultiBinding StringFormat="{}{0}/{1}">
+                                                    <Binding Path="ProductsGroup.Name"/>
+                                                    <Binding Path="Title"/>
+                                                </MultiBinding>
+                                            </TextBlock.Text>
+                                        </TextBlock>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
 
                             <StackPanel>
-                                <TextBlock Text="{Binding SelectedProduct.Title, StringFormat = Название: {0}}"
-                               Foreground="{StaticResource titleColor1}"
-                               FontFamily="Motserrat"
-                               FontSize="15"
-                               VerticalAlignment="Center"
-                               Margin="2"
-                               TextWrapping="Wrap"/>
+                                <Grid Margin="0 3">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="90"/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="Название:"
+                                               Foreground="{StaticResource titleColor1}"
+                                               FontFamily="Motserrat"
+                                               FontSize="18"
+                                               VerticalAlignment="Center"
+                                               Margin="2" Grid.Column="0"/>
+                                    <TextBox Tag="Введите название" Style="{StaticResource HintTextBox}"
+                                             Text="{Binding EditableProduct.Title, Mode=TwoWay}" MaxLength="50"
+                                             BorderBrush="{StaticResource color1}"
+                                             VerticalAlignment="Center" Grid.Column="1"/>
+                                </Grid>
+                                
+                                <Grid Margin="0 3">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="90"/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="Описание:"
+                                               Foreground="{StaticResource titleColor1}"
+                                               FontFamily="Motserrat"
+                                               FontSize="18"
+                                               VerticalAlignment="Center"
+                                               Margin="2" Grid.Column="0"/>
+                                    <TextBox Tag="Введите описание" Style="{StaticResource HintTextBox}"
+                                             Text="{Binding EditableProduct.Characteristic, Mode=TwoWay}" MaxLength="100"
+                                             BorderBrush="{StaticResource color1}" 
+                                             VerticalAlignment="Center" Grid.Column="1"/>
+                                </Grid>
 
-                                <TextBlock Text="{Binding SelectedProduct.Characteristic, StringFormat = Описание: {0}}"
-                               Foreground="{StaticResource titleColor1}"
-                               FontFamily="Motserrat"
-                               FontSize="15"
-                               VerticalAlignment="Center"
-                               Margin="2"
-                               TextWrapping="Wrap"/>
+                                <Grid Margin="0 3">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="190"/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="Количество на складе:"
+                                               Foreground="{StaticResource titleColor1}"
+                                               FontFamily="Motserrat"
+                                               FontSize="18"
+                                               VerticalAlignment="Center"
+                                               Margin="2" Grid.Column="0"/>
+                                    <TextBox Tag="Введите количество на складе" Style="{StaticResource HintTextBox}"
+                                             Text="{Binding EditableProduct.Quantity, Mode=TwoWay}" MaxLength="10"
+                                             BorderBrush="{StaticResource color1}" 
+                                             VerticalAlignment="Center" Grid.Column="1"/>
+                                </Grid>
 
-                                <TextBlock Text="{Binding SelectedProduct.Quantity, StringFormat = Количество на слкаде: {0}}"
-                                       Foreground="{StaticResource titleColor1}"
-                                       FontFamily="Motserrat"
-                                       FontSize="15"
-                                       VerticalAlignment="Center"
-                                       Margin="2"
-                                       TextWrapping="Wrap"/>
-
-                                <TextBlock Text="{Binding SelectedProduct.ProductType.ProductsGroup.Name, StringFormat = Группа: {0}}"
-                                       Foreground="{StaticResource titleColor1}"
-                                       FontFamily="Motserrat"
-                                       FontSize="15"
-                                       VerticalAlignment="Center"
-                                       Margin="2"
-                                       TextWrapping="Wrap"/>
-                                <TextBlock Text="{Binding SelectedProduct.ProductType.Title, StringFormat = Тип: {0}}"
-                                       Foreground="{StaticResource titleColor1}"
-                                       FontFamily="Motserrat"
-                                       FontSize="15"
-                                       VerticalAlignment="Center"
-                                       Margin="2"
-                                       TextWrapping="Wrap"/>
-
-                                <TextBlock Text="{Binding SelectedProduct.PricePerUnit, Converter={StaticResource MoneyConverter}, StringFormat = Стоимость еденицы: {0}}"
-                                       Foreground="{StaticResource titleColor1}"
-                                       FontFamily="Motserrat"
-                                       FontSize="15"
-                                       VerticalAlignment="Center"
-                                       Margin="2"
-                                       TextWrapping="Wrap"/>
-
-                                <TextBlock Text="{Binding SelectedBuyer.Individual.SeriesPassportNumber,StringFormat = Паспорт: {0}}"
-                               Foreground="{StaticResource titleColor1}"
-                               FontFamily="Motserrat"
-                               FontSize="15"
-                               VerticalAlignment="Center"
-                               Margin="2"
-                               TextWrapping="Wrap"/>
+                                <Grid Margin="0 3">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="180"/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="Стоимость еденицы:"
+                                               Foreground="{StaticResource titleColor1}"
+                                               FontFamily="Motserrat"
+                                               FontSize="18"
+                                               VerticalAlignment="Center"
+                                               Margin="2" Grid.Column="0"/>
+                                    <TextBox Tag="Введите стоимость еденицы" Style="{StaticResource HintTextBox}"
+                                             Text="{Binding EditableProduct.PricePerUnit, Mode=TwoWay}" MaxLength="10"
+                                             BorderBrush="{StaticResource color1}" 
+                                             VerticalAlignment="Center" Grid.Column="1"/>
+                                </Grid>
                             </StackPanel>
 
                         </StackPanel>

@@ -7,17 +7,17 @@
              xmlns:viewmodelProduct="clr-namespace:Kursovaya.ViewModel.Product"
              xmlns:viewProduct="clr-namespace:Kursovaya.View"
              xmlns:Converters="clr-namespace:Kursovaya.Converters"
-             mc:Ignorable="d" x:Name="buyerView"
+             mc:Ignorable="d" x:Name="productView"
              d:DesignHeight="600" d:DesignWidth="1000"
              d:DataContext="{d:DesignInstance Type=viewmodelProduct:ProductViewModel, IsDesignTimeCreatable=False}">
 
     <UserControl.Resources>
-        <!--<DataTemplate DataType="{x:Type viewmodelProduct:EditBuyerViewModel}">
-            <viewProduct:EditBuyerView/>
+        <DataTemplate DataType="{x:Type viewmodelProduct:EditProductViewModel}">
+            <viewProduct:EditProductView/>
         </DataTemplate>
-        <DataTemplate DataType="{x:Type viewmodelProduct:AddBuyerViewModel}">
-            <viewProduct:AddBuyerView/>
-        </DataTemplate>-->
+        <DataTemplate DataType="{x:Type viewmodelProduct:AddProductViewModel}">
+            <viewProduct:AddProductView/>
+        </DataTemplate>
         <Converters:TextLengthConverter x:Key="TextLengthConverter"/>
         <Converters:MoneyConverter x:Key="MoneyConverter"/>
     </UserControl.Resources>
@@ -48,8 +48,23 @@
                              BorderBrush="{StaticResource color1}"
                              Style="{StaticResource SearchTextBox}"/>
 
-                    <ComboBox ItemsSource="{Binding BuyerTypeList}" SelectedItem="{Binding SelectedBuyerType, Mode=TwoWay}"
-                              Width="auto" Margin="10 0 0 0"/>
+                    <ComboBox ItemsSource="{Binding ProductGroupList}" SelectedItem="{Binding SelectedProductGroup, Mode=TwoWay}"
+                              Width="50" Margin="10 0 0 0">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Name}"/>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+
+                    <ComboBox ItemsSource="{Binding ProductTypeList}" SelectedItem="{Binding SelectedProductType, Mode=TwoWay}"
+                              Width="50" Margin="10 0 0 0" IsEnabled="True">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Title}"/>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
 
                     <Button Margin="0 0 10 0" Style="{StaticResource iconButton}"
                             Tag="{StaticResource color4}" Cursor="Hand"
@@ -123,7 +138,7 @@
                                     <Button Style="{StaticResource iconButton}"
                                             Tag="{StaticResource color4}" Cursor="Hand"
                                             Visibility="{Binding Visibility}" 
-                                            Command="{Binding ElementName=buyerView, Path=DataContext.DeleteBuyerCommand}"
+                                            Command="{Binding ElementName=productView, Path=DataContext.DeleteProductCommand}"
                                             CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=DataContext}"
                                             HorizontalAlignment="Right">
                                         <Button.Content>

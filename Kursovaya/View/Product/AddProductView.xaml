@@ -5,11 +5,11 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Kursovaya.View" 
              xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
-             xmlns:viewmodelBuyer="clr-namespace:Kursovaya.ViewModel.Buyer"
+             xmlns:viewmodelProduct="clr-namespace:Kursovaya.ViewModel.Product"
              xmlns:Converters="clr-namespace:Kursovaya.Converters"
              mc:Ignorable="d" x:Name="addBuyerView"
              d:DesignHeight="600" d:DesignWidth="800"
-             d:DataContext="{d:DesignInstance Type=viewmodelBuyer:AddBuyerViewModel, IsDesignTimeCreatable=False}">
+             d:DataContext="{d:DesignInstance Type=viewmodelProduct:AddProductViewModel, IsDesignTimeCreatable=False}">
 
     <UserControl.Resources>
         <Converters:TextLengthConverter x:Key="TextLengthConverter"/>
@@ -77,301 +77,107 @@
                 </DockPanel>
 
                 <!--Base info-->
-                <DockPanel  Grid.Row="1">
-
-                    <Border BorderThickness="1" 
-                            BorderBrush="{StaticResource color1}" 
+                <DockPanel Grid.Column="1" Grid.Row="1">
+                    <Border BorderThickness="1"
+                            BorderBrush="{StaticResource color1}"
                             CornerRadius="10"
                             Margin="2">
 
                         <StackPanel Margin="5">
 
-                            <TextBlock Text="Новый покупатель" Foreground="{StaticResource titleColor1}"
-                                       FontFamily="Motserrat"
-                                       FontSize="18"
-                                       VerticalAlignment="Center"
-                                       Margin="2"/>
+                            <TextBlock Text="{Binding CreatedProduct.ProductId, StringFormat = Продукция № {0}}"
+                               Foreground="{StaticResource titleColor1}"
+                               FontFamily="Motserrat"
+                               FontSize="18"
+                               VerticalAlignment="Center"
+                               Margin="2"/>
 
-                            <StackPanel Orientation="Horizontal" Margin="2">
-                                <TextBlock Text="Тип покупателя:" Foreground="{StaticResource titleColor1}"
-                                           FontFamily="Motserrat"
-                                           FontSize="18"
-                                           VerticalAlignment="Center"
-                                           Margin="2"/>
-                                <ComboBox ItemsSource="{Binding BuyerTypeList}" SelectedItem="{Binding SelectedBuyerType, Mode=TwoWay}"
-                                          Width="150" Margin="2" HorizontalAlignment="Left"/>
+                            <ComboBox ItemsSource="{Binding ProductTypeList}"
+                                      SelectedItem="{Binding CreatedProduct.ProductType, Mode=TwoWay}"
+                                      Width="250" Margin="2" HorizontalAlignment="Left">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock>
+                                            <TextBlock.Text>
+                                                <MultiBinding StringFormat="{}{0}/{1}">
+                                                    <Binding Path="ProductsGroup.Name"/>
+                                                    <Binding Path="Title"/>
+                                                </MultiBinding>
+                                            </TextBlock.Text>
+                                        </TextBlock>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+
+                            <StackPanel>
+                                <Grid Margin="0 3">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="90"/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="Название:"
+                                               Foreground="{StaticResource titleColor1}"
+                                               FontFamily="Motserrat"
+                                               FontSize="18"
+                                               VerticalAlignment="Center"
+                                               Margin="2" Grid.Column="0"/>
+                                    <TextBox Tag="Введите название" Style="{StaticResource HintTextBox}"
+                                             Text="{Binding CreatedProduct.Title, Mode=TwoWay}" MaxLength="50"
+                                             BorderBrush="{StaticResource color1}"
+                                             VerticalAlignment="Center" Grid.Column="1"/>
+                                </Grid>
+
+                                <Grid Margin="0 3">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="90"/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="Описание:"
+                                               Foreground="{StaticResource titleColor1}"
+                                               FontFamily="Motserrat"
+                                               FontSize="18"
+                                               VerticalAlignment="Center"
+                                               Margin="2" Grid.Column="0"/>
+                                    <TextBox Tag="Введите описание" Style="{StaticResource HintTextBox}"
+                                             Text="{Binding CreatedProduct.Characteristic, Mode=TwoWay}" MaxLength="100"
+                                             BorderBrush="{StaticResource color1}" 
+                                             VerticalAlignment="Center" Grid.Column="1"/>
+                                </Grid>
+
+                                <Grid Margin="0 3">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="190"/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="Количество на складе:"
+                                               Foreground="{StaticResource titleColor1}"
+                                               FontFamily="Motserrat"
+                                               FontSize="18"
+                                               VerticalAlignment="Center"
+                                               Margin="2" Grid.Column="0"/>
+                                    <TextBox Tag="Введите количество на складе" Style="{StaticResource HintTextBox}"
+                                             Text="{Binding CreatedProduct.Quantity, Mode=TwoWay}" MaxLength="10"
+                                             BorderBrush="{StaticResource color1}" 
+                                             VerticalAlignment="Center" Grid.Column="1"/>
+                                </Grid>
+
+                                <Grid Margin="0 3">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="180"/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="Стоимость еденицы:"
+                                               Foreground="{StaticResource titleColor1}"
+                                               FontFamily="Motserrat"
+                                               FontSize="18"
+                                               VerticalAlignment="Center"
+                                               Margin="2" Grid.Column="0"/>
+                                    <TextBox Tag="Введите стоимость еденицы" Style="{StaticResource HintTextBox}"
+                                             Text="{Binding CreatedProduct.PricePerUnit, Mode=TwoWay}" MaxLength="10"
+                                             BorderBrush="{StaticResource color1}" 
+                                             VerticalAlignment="Center" Grid.Column="1"/>
+                                </Grid>
                             </StackPanel>
-
-                            <Grid>
-                                <!--Individual info-->
-                                <StackPanel Visibility="{Binding VisibleIndividualPanel}">
-                                    <Grid Margin="0 3">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="50"/>
-                                            <ColumnDefinition/>
-                                        </Grid.ColumnDefinitions>
-                                        <TextBlock Text="ФИО:"
-                                                   Foreground="{StaticResource titleColor1}"
-                                                   FontFamily="Motserrat"
-                                                   FontSize="18"
-                                                   VerticalAlignment="Center"
-                                                   Margin="2" Grid.Column="0"/>
-                                        <TextBox Tag="Введите ФИО" Style="{StaticResource HintTextBox}"
-                                                 Text="{Binding CreatedIndividual.Name, Mode=TwoWay}" MaxLength="50"
-                                                 BorderBrush="{StaticResource color1}" 
-                                                 VerticalAlignment="Center" Grid.Column="1"/>
-                                    </Grid>
-
-                                    <Grid Margin="0 3">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="80"/>
-                                            <ColumnDefinition/>
-                                        </Grid.ColumnDefinitions>
-                                        <TextBlock Text="Телефон:"
-                                                   Foreground="{StaticResource titleColor1}"
-                                                   FontFamily="Motserrat"
-                                                   FontSize="18"
-                                                   VerticalAlignment="Center"
-                                                   Margin="2" Grid.Column="0"
-                                                   TextWrapping="Wrap"/>
-                                        <TextBox Tag="Введите номер телефона без 8" Style="{StaticResource HintTextBox}"
-                                                 Text="{Binding CreatedIndividual.PhoneNumber, Mode=TwoWay}" MaxLength="10"
-                                                 BorderBrush="{StaticResource color1}" 
-                                                 VerticalAlignment="Center" Grid.Column="1"/>
-                                    </Grid>
-
-                                    <Grid Margin="0 3">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="60"/>
-                                            <ColumnDefinition/>
-                                        </Grid.ColumnDefinitions>
-                                        <TextBlock Text="Адрес:"
-                                                   Foreground="{StaticResource titleColor1}"
-                                                   FontFamily="Motserrat"
-                                                   FontSize="18"
-                                                   VerticalAlignment="Center"
-                                                   Margin="2" Grid.Column="0"/>
-                                        <TextBox Tag="Введите фдрес" Style="{StaticResource HintTextBox}"
-                                                 Text="{Binding CreatedBuyerAddress.Adress, Mode=TwoWay}" MaxLength="80"
-                                                 BorderBrush="{StaticResource color1}" 
-                                                 VerticalAlignment="Center" Grid.Column="1"/>
-                                    </Grid>
-
-                                    <Grid Margin="0 3">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="115"/>
-                                            <ColumnDefinition/>
-                                        </Grid.ColumnDefinitions>
-                                        <TextBlock Text="Примечание:"
-                                                   Foreground="{StaticResource titleColor1}"
-                                                   FontFamily="Motserrat"
-                                                   FontSize="18"
-                                                   VerticalAlignment="Center"
-                                                   Margin="2" Grid.Column="0"/>
-                                        <TextBox Tag="Введите примечание к адресу" Style="{StaticResource HintTextBox}"
-                                                 Text="{Binding CreatedBuyerAddress.Note, Mode=TwoWay}" MaxLength="80"
-                                                 BorderBrush="{StaticResource color1}" 
-                                                 VerticalAlignment="Center" Grid.Column="1"/>
-                                    </Grid>
-
-                                    <Grid Margin="0 3">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="80"/>
-                                            <ColumnDefinition/>
-                                        </Grid.ColumnDefinitions>
-                                        <TextBlock Text="Паспорт:"
-                                                   Foreground="{StaticResource titleColor1}"
-                                                   FontFamily="Motserrat"
-                                                   FontSize="18"
-                                                   VerticalAlignment="Center"
-                                                   Margin="2" Grid.Column="0"/>
-                                        <TextBox Tag="Введите паспорт" Style="{StaticResource HintTextBox}"
-                                                 Text="{Binding CreatedIndividual.SeriesPassportNumber, Mode=TwoWay}" MaxLength="12"
-                                                 BorderBrush="{StaticResource color1}" 
-                                                 VerticalAlignment="Center" Grid.Column="1"/>
-                                    </Grid>
-                                </StackPanel>
-
-                                <!--Legal entityu info-->
-                                <StackPanel Visibility="{Binding VisibleLeaglEntityPanel}">
-                                    <Grid Margin="0 3">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="90"/>
-                                            <ColumnDefinition/>
-                                        </Grid.ColumnDefinitions>
-                                        <TextBlock Text="Компания:"
-                                                   Foreground="{StaticResource titleColor1}"
-                                                   FontFamily="Motserrat"
-                                                   FontSize="18"
-                                                   VerticalAlignment="Center"
-                                                   Margin="2" Grid.Column="0"/>
-                                        <TextBox Tag="Введите название компания" Style="{StaticResource HintTextBox}"
-                                                 Text="{Binding CreatedLegalEntity.Organization, Mode=TwoWay}" MaxLength="30"
-                                                 BorderBrush="{StaticResource color1}" 
-                                                 VerticalAlignment="Center" Grid.Column="1"/>
-                                    </Grid>
-
-                                    <Grid Margin="0 3">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="80"/>
-                                            <ColumnDefinition/>
-                                        </Grid.ColumnDefinitions>
-                                        <TextBlock Text="Телефон:"
-                                                   Foreground="{StaticResource titleColor1}"
-                                                   FontFamily="Motserrat"
-                                                   FontSize="18"
-                                                   VerticalAlignment="Center"
-                                                   Margin="2" Grid.Column="0"
-                                                   TextWrapping="Wrap"/>
-                                        <TextBox Tag="Введите номер телефона без 8" Style="{StaticResource HintTextBox}"
-                                                 Text="{Binding CreatedLegalEntity.PhoneNumber, Mode=TwoWay}" MaxLength="10"
-                                                 BorderBrush="{StaticResource color1}" 
-                                                 VerticalAlignment="Center" Grid.Column="1"/>
-                                    </Grid>
-
-                                    <Grid Margin="0 3">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="60"/>
-                                            <ColumnDefinition/>
-                                        </Grid.ColumnDefinitions>
-                                        <TextBlock Text="Адрес:"
-                                                   Foreground="{StaticResource titleColor1}"
-                                                   FontFamily="Motserrat"
-                                                   FontSize="18"
-                                                   VerticalAlignment="Center"
-                                                   Margin="2" Grid.Column="0"/>
-                                        <TextBox Tag="Введите фдрес" Style="{StaticResource HintTextBox}"
-                                                 Text="{Binding CreatedBuyerAddress.Adress, Mode=TwoWay}" MaxLength="80"
-                                                 BorderBrush="{StaticResource color1}" 
-                                                 VerticalAlignment="Center" Grid.Column="1"/>
-                                    </Grid>
-
-                                    <Grid Margin="0 3">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="115"/>
-                                            <ColumnDefinition/>
-                                        </Grid.ColumnDefinitions>
-                                        <TextBlock Text="Примечание:"
-                                                   Foreground="{StaticResource titleColor1}"
-                                                   FontFamily="Motserrat"
-                                                   FontSize="18"
-                                                   VerticalAlignment="Center"
-                                                   Margin="2" Grid.Column="0"/>
-                                        <TextBox Tag="Введите примечание к адресу" Style="{StaticResource HintTextBox}"
-                                                 Text="{Binding CreatedBuyerAddress.Note, Mode=TwoWay}" MaxLength="80"
-                                                 BorderBrush="{StaticResource color1}" 
-                                                 VerticalAlignment="Center" Grid.Column="1"/>
-                                    </Grid>
-
-                                    <Grid Margin="0 3">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="140"/>
-                                            <ColumnDefinition/>
-                                        </Grid.ColumnDefinitions>
-                                        <TextBlock Text="Расчетный счет:"
-                                                   Foreground="{StaticResource titleColor1}"
-                                                   FontFamily="Motserrat"
-                                                   FontSize="18"
-                                                   VerticalAlignment="Center"
-                                                   Margin="2" Grid.Column="0"
-                                                   TextWrapping="Wrap"/>
-                                        <TextBox Tag="Введите расчетный счет" Style="{StaticResource HintTextBox}"
-                                                 Text="{Binding CreatedLegalEntity.СheckingAccount, Mode=TwoWay}" MaxLength="20"
-                                                 BorderBrush="{StaticResource color1}" 
-                                                 VerticalAlignment="Center" Grid.Column="1"/>
-                                    </Grid>
-
-                                    <Grid Margin="0 3">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="50"/>
-                                            <ColumnDefinition/>
-                                        </Grid.ColumnDefinitions>
-                                        <TextBlock Text="Банк:"
-                                                   Foreground="{StaticResource titleColor1}"
-                                                   FontFamily="Motserrat"
-                                                   FontSize="18"
-                                                   VerticalAlignment="Center"
-                                                   Margin="2" Grid.Column="0"
-                                                   TextWrapping="Wrap"/>
-                                        <TextBox Tag="Введите название банка" Style="{StaticResource HintTextBox}"
-                                                 Text="{Binding CreatedLegalEntity.Bank, Mode=TwoWay}" MaxLength="30"
-                                                 BorderBrush="{StaticResource color1}" 
-                                                 VerticalAlignment="Center" Grid.Column="1"/>
-                                    </Grid>
-
-                                    <Grid Margin="0 3">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="220"/>
-                                            <ColumnDefinition/>
-                                        </Grid.ColumnDefinitions>
-                                        <TextBlock Text="Корреспондентский счет:"
-                                                   Foreground="{StaticResource titleColor1}"
-                                                   FontFamily="Motserrat"
-                                                   FontSize="18"
-                                                   VerticalAlignment="Center"
-                                                   Margin="2" Grid.Column="0"
-                                                   TextWrapping="Wrap"/>
-                                        <TextBox Tag="Введите корреспондентский счет" Style="{StaticResource HintTextBox}"
-                                                 Text="{Binding CreatedLegalEntity.CorrespondentAccount, Mode=TwoWay}" MaxLength="20"
-                                                 BorderBrush="{StaticResource color1}" 
-                                                 VerticalAlignment="Center" Grid.Column="1"/>
-                                    </Grid>
-
-                                    <Grid Margin="0 3">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="50"/>
-                                            <ColumnDefinition/>
-                                        </Grid.ColumnDefinitions>
-                                        <TextBlock Text="БИК:"
-                                                   Foreground="{StaticResource titleColor1}"
-                                                   FontFamily="Motserrat"
-                                                   FontSize="18"
-                                                   VerticalAlignment="Center"
-                                                   Margin="2" Grid.Column="0"
-                                                   TextWrapping="Wrap"/>
-                                        <TextBox Tag="Введите БИК" Style="{StaticResource HintTextBox}"
-                                                 Text="{Binding CreatedLegalEntity.Bic, Mode=TwoWay}" MaxLength="9"
-                                                 BorderBrush="{StaticResource color1}" 
-                                                 VerticalAlignment="Center" Grid.Column="1"/>
-                                    </Grid>
-
-                                    <Grid Margin="0 3">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="50"/>
-                                            <ColumnDefinition/>
-                                        </Grid.ColumnDefinitions>
-                                        <TextBlock Text="КПП:"
-                                                   Foreground="{StaticResource titleColor1}"
-                                                   FontFamily="Motserrat"
-                                                   FontSize="18"
-                                                   VerticalAlignment="Center"
-                                                   Margin="2" Grid.Column="0"
-                                                   TextWrapping="Wrap"/>
-                                        <TextBox Tag="Введите КПП" Style="{StaticResource HintTextBox}"
-                                                 Text="{Binding CreatedLegalEntity.Rrc, Mode=TwoWay}" MaxLength="9"
-                                                 BorderBrush="{StaticResource color1}" 
-                                                 VerticalAlignment="Center" Grid.Column="1"/>
-                                    </Grid>
-
-                                    <Grid Margin="0 3">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="50"/>
-                                            <ColumnDefinition/>
-                                        </Grid.ColumnDefinitions>
-                                        <TextBlock Text="ИНН:"
-                                                   Foreground="{StaticResource titleColor1}"
-                                                   FontFamily="Motserrat"
-                                                   FontSize="18"
-                                                   VerticalAlignment="Center"
-                                                   Margin="2" Grid.Column="0"
-                                                   TextWrapping="Wrap"/>
-                                        <TextBox Tag="Введите ИНН" Style="{StaticResource HintTextBox}"
-                                                 Text="{Binding CreatedLegalEntity.Tin, Mode=TwoWay}" MaxLength="10"
-                                                 BorderBrush="{StaticResource color1}" 
-                                                 VerticalAlignment="Center" Grid.Column="1"/>
-                                    </Grid>
-                                </StackPanel>
-                            </Grid>
 
                         </StackPanel>
                     </Border>

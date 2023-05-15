@@ -155,7 +155,7 @@ namespace Kursovaya.ViewModel.Product
         //Commands execution
         private void ExecuteAddCommand(object? obj)
         {
-            //CurrentChildView = new AddBuyerViewModel(this);
+            CurrentChildView = new AddProductViewModel(this);
             IsEnabled = false;
             BackVisibility = Visibility.Visible;
             ReverseAnimationAction = false;
@@ -163,7 +163,7 @@ namespace Kursovaya.ViewModel.Product
         }
         private void ExecuteEditCommand(object? obj)
         {
-            //CurrentChildView = new EditBuyerViewModel(SelectedBuyer, this);
+            CurrentChildView = new EditProductViewModel(SelectedProduct, this);
             IsEnabled = false;
             BackVisibility = Visibility.Visible;
             ReverseAnimationAction = false;
@@ -176,7 +176,7 @@ namespace Kursovaya.ViewModel.Product
         }
         private async void ExecuteGoBackCommand(object? obj)
         {
-            ConfirmationDialogViewModel confirmationDialogViewModel = new ConfirmationDialogViewModel(MainViewModel);
+            ConfirmationDialogViewModel confirmationDialogViewModel = new(MainViewModel);
             bool result = await MainViewModel.ShowDialog(confirmationDialogViewModel);
 
             if (result)
@@ -225,6 +225,7 @@ namespace Kursovaya.ViewModel.Product
             AddCommand = new ViewModelCommand(ExecuteAddCommand);
             EditCommand = new ViewModelCommand(ExecuteEditCommand, CanExecuteEditCommand);
             GoBackCommand = new ViewModelCommand(ExecuteGoBackCommand);
+            DeleteProductCommand = new ViewModelCommand(ExecuteDeleteProductCommand);
             ClearSearchCommand = new ViewModelCommand(ExecuteClearSearchCommand);
             ClearSortCommand = new ViewModelCommand(ExecuteClearSortCommand);
 

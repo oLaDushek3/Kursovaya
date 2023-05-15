@@ -75,7 +75,6 @@ namespace Kursovaya.ViewModel.Buyer
             }
         }
 
-
         //Constructor
         public EditBuyerViewModel(BuyerModel selectedBuyer, BuyerViewModel currentBuyerViewModel)
         {
