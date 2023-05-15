@@ -1,6 +1,7 @@
 ﻿using Kursovaya.Model.Product;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Kursovaya.Repositories
 {
@@ -16,14 +17,22 @@ namespace Kursovaya.Repositories
             throw new NotImplementedException();
         }
 
-        public IEnumerable<ProductsGroupModel> GetByAll()
+        public void Remove(int id, ApplicationContext context)
         {
-            throw new NotImplementedException();
+            ProductsGroupModel? productsGroupModel = context.ProductsGroups.Where(g => g.ProductsGroupId== id).FirstOrDefault();
+            context.ProductsGroups.Remove(productsGroupModel);
         }
 
-        public void Remove(int id)
+        public ProductsGroupModel? GetById(int id, ApplicationContext context)
         {
-            throw new NotImplementedException();
+            ProductsGroupModel productsGroupModels = context.ProductsGroups.Where(g => g.ProductsGroupId == id).FirstOrDefault();
+            return productsGroupModels;
+        }
+
+        public List<ProductsGroupModel> GetByAll(ApplicationContext context)
+        {
+            List<ProductsGroupModel> productsGroupModels = context.ProductsGroups.ToList();
+            return productsGroupModels;
         }
     }
 }

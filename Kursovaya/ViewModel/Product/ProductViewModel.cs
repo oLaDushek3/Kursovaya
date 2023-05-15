@@ -37,7 +37,13 @@ namespace Kursovaya.ViewModel.Product
         private string? _searchString;
         private List<ProductModel>? _searchProduct;
 
-        private string? _selectedProductType;
+        private IProduct_groupRepository _productGroupRepository = new Product_groupRepository();
+        private List<ProductsGroupModel> _productGroupList;
+        private ProductsGroupModel? _selectedProductGroup;
+
+        private IProduct_typeRepository _productTypeRepository = new Product_typeRepository();
+        private List<ProductTypeModel> _productTypeList;
+        private ProductTypeModel? _selectedProductType;
         private List<ProductModel>? _typeSortProduct;
         #endregion Fields
 
@@ -124,21 +130,42 @@ namespace Kursovaya.ViewModel.Product
             }
         }
 
-        public List<string> ProductTypeList
+        public List<ProductsGroupModel> ProductGroupList
         {
-            get
+            get => _productGroupList;
+            set
             {
-                return new List<string>() { "Физ. лицо", "Юр. Лицо" };
+                _productGroupList = value;
+                OnPropertyChanged(nameof(ProductGroupList));
             }
         }
-        public string SelectedProductType
+        public ProductsGroupModel SelectedProductGroup
+        {
+            get => _selectedProductGroup;
+            set
+            {
+                _selectedProductGroup = value;
+                OnPropertyChanged(nameof(SelectedProductGroup));
+                SelectSortProductGroup();
+            }
+        }
+        public List<ProductTypeModel> ProductTypeList
+        {
+            get => _productTypeList;
+            set
+            {
+                _productTypeList = value;
+                OnPropertyChanged(nameof(ProductTypeList));
+            }
+        }
+        public ProductTypeModel SelectedProductType
         {
             get => _selectedProductType;
             set
             {
                 _selectedProductType = value;
                 OnPropertyChanged(nameof(SelectedProductType));
-                FilterByFactory();
+                FilterByProductType();
             }
         }
         #endregion
@@ -211,6 +238,8 @@ namespace Kursovaya.ViewModel.Product
         }
         private void ExecuteClearSortCommand(object? obj)
         {
+            SelectedProductGroup = null;
+
             SelectedProductType = null;
             _typeSortProduct = null;
 
@@ -229,6 +258,8 @@ namespace Kursovaya.ViewModel.Product
             ClearSearchCommand = new ViewModelCommand(ExecuteClearSearchCommand);
             ClearSortCommand = new ViewModelCommand(ExecuteClearSortCommand);
 
+            ProductGroupList = _productGroupRepository.GetByAll(context);
+
             RefreshProductsList(null);
         }
 
@@ -245,7 +276,7 @@ namespace Kursovaya.ViewModel.Product
             OnPropertyChanged(nameof(SelectedProduct));
 
             Search();
-            FilterByFactory();
+            FilterByProductType();
         }
 
         private void Search()
@@ -257,18 +288,23 @@ namespace Kursovaya.ViewModel.Product
                 _searchProduct = null;
             Merger();
         }
-        private void FilterByFactory()
+        private void SelectSortProductGroup()
         {
-            //if (_selectedBuyerType != null)
-            //{
-            //    if (_selectedBuyerType == "Физ. лицо")
-            //        _typeSortProduct = _allProduct.Where(s => s.Individual != null).ToList();
-            //    else
-            //        _typeSortProduct = _allProduct.Where(s => s.LegalEntity != null).ToList();
-            //}
-            //else
-            //    _typeSortProduct = null;
-            //Merger();
+            if (SelectedProductGroup != null)
+            {
+                ProductTypeList = (_productTypeRepository.GetByAll(context)).Where(t => t.ProductsGroup.ProductsGroupId == SelectedProductGroup.ProductsGroupId).ToList();
+                OnPropertyChanged(nameof(ProductTypeList));
+            }
+            else
+                ProductTypeList = null;
+        }
+        private void FilterByProductType()
+        {
+            if (_selectedProductType != null)
+                _typeSortProduct = _allProduct.Where(p => p.ProductType.ProductTypeId == SelectedProductType.ProductTypeId).ToList();
+            else
+                _typeSortProduct = null;
+            Merger();
         }
         private void Merger()
         {

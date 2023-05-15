@@ -49,7 +49,7 @@
                              Style="{StaticResource SearchTextBox}"/>
 
                     <ComboBox ItemsSource="{Binding ProductGroupList}" SelectedItem="{Binding SelectedProductGroup, Mode=TwoWay}"
-                              Width="50" Margin="10 0 0 0">
+                              Width="auto" Margin="10 0 0 0">
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding Name}"/>
@@ -58,7 +58,7 @@
                     </ComboBox>
 
                     <ComboBox ItemsSource="{Binding ProductTypeList}" SelectedItem="{Binding SelectedProductType, Mode=TwoWay}"
-                              Width="50" Margin="10 0 0 0" IsEnabled="True">
+                              Width="auto" Margin="10 0 0 0" IsEnabled="True">
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding Title}"/>

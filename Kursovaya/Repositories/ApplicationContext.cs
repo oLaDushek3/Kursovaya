@@ -60,7 +60,7 @@ public partial class ApplicationContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlServer(@"Server=.\;Database=Kursovaya;Trusted_Connection=True;Encrypt=False");
+        optionsBuilder.UseSqlServer(@"Server=.\SQLEXPRESS;Database=Kursovaya;Trusted_Connection=True;Encrypt=False");
         optionsBuilder.EnableSensitiveDataLogging();
     }
 
