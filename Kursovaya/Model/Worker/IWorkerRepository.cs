@@ -8,7 +8,7 @@ namespace Kursovaya.Model.Worker
     {
         void Add(WorkerModel workerModel);
         void Edit(WorkerModel workerModel);
-        void Remove(int id);
+        void Remove(int id, ApplicationContext context);
         List<WorkerModel> GetByAll(ApplicationContext context);
         WorkerModel GetById(int id, ApplicationContext context);
     }

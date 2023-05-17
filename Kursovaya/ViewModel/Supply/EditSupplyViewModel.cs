@@ -22,7 +22,7 @@ namespace Kursovaya.ViewModel
         public SupplyViewModel currentSupplyViewModel;
 
         #region Fields
-        ApplicationContext context = new ApplicationContext();
+        private ApplicationContext context = new ApplicationContext();
 
         //Supply fields
         private ISupplyRepository _supplyRepository = new SupplyRepository();
@@ -141,12 +141,18 @@ namespace Kursovaya.ViewModel
                 deleteSupplyProducts = _editableSupply.SupplyProducts.Except(_editableSupplyProduct).ToList();
                 foreach (SupplyProductModel supplyProduct in deleteSupplyProducts)
                 {
+                    ProductModel product = supplyProduct.Product;
+                    product.Quantity -= supplyProduct.Quantity;
+
                     context.SupplyProducts.Remove(supplyProduct);
                 }
 
                 addSupplyProducts = _editableSupplyProduct.Except(_editableSupply.SupplyProducts).ToList();
                 foreach (SupplyProductModel supplyProduct in addSupplyProducts)
                 {
+                    ProductModel product = supplyProduct.Product;
+                    product.Quantity += supplyProduct.Quantity;
+
                     supplyProduct.Supply = _editableSupply;
                     context.SupplyProducts.Add(supplyProduct);
                 }

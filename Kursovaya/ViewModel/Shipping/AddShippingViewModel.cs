@@ -2,7 +2,9 @@
 using Kursovaya.DialogView.AddShippingProduct;
 using Kursovaya.Model.Buyer;
 using Kursovaya.Model.Factory;
+using Kursovaya.Model.Product;
 using Kursovaya.Model.Shipping;
+using Kursovaya.Model.Supply;
 using Kursovaya.Model.Worker;
 using Kursovaya.Repositories;
 using System;
@@ -144,6 +146,13 @@ namespace Kursovaya.ViewModel.Shipping
         {
             context.Shippings.Add(_createdShipping);
             CreatedShipping.ShippingProducts = _createdShippingProduct;
+
+            foreach (ShippingProductModel shippingProduct in _createdShippingProduct)
+            {
+                ProductModel product = shippingProduct.Product;
+                product.Quantity -= shippingProduct.Quantity;
+            }
+
             context.SaveChanges();
             CurrentShippingViewModel.AddNewShipping(CreatedShipping);
         }

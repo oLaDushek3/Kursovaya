@@ -20,17 +20,11 @@ namespace Kursovaya.Repositories
             throw new NotImplementedException();
         }
 
-        public List<WorkerModel> GetByAll(ApplicationContext context)
+        public void Remove(int id, ApplicationContext context)
         {
-            List<WorkerModel> workers = context.Workers.
-                Include(w => w.Post).
-                Include(w => w.Supplies).ToList();
-            return workers;
-        }
-
-        public void Remove(int id)
-        {
-            throw new NotImplementedException();
+            WorkerModel workerModel = context.Workers.Where(w => w.WorkerId == id).FirstOrDefault();
+            context.Workers.Remove(workerModel);
+            context.SaveChanges();
         }
         public WorkerModel GetById(int id, ApplicationContext context)
         {
@@ -39,5 +33,12 @@ namespace Kursovaya.Repositories
 
             return worker;
         }
-    }
+        public List<WorkerModel> GetByAll(ApplicationContext context)
+        {
+            List<WorkerModel> workers = context.Workers.
+                Include(w => w.Post).
+                Include(w => w.Supplies).ToList();
+            return workers;
+        }
+            }
 }

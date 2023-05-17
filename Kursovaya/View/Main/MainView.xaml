@@ -11,6 +11,9 @@
         xmlns:shippingViewModel="clr-namespace:Kursovaya.ViewModel.Shipping" 
         xmlns:buyerViewModel="clr-namespace:Kursovaya.ViewModel.Buyer" 
         xmlns:productViewModel="clr-namespace:Kursovaya.ViewModel.Product" 
+        xmlns:workerViewModel="clr-namespace:Kursovaya.ViewModel.Worker" 
+        xmlns:userViewModel="clr-namespace:Kursovaya.ViewModel.User" 
+        xmlns:statisticsViewModel="clr-namespace:Kursovaya.ViewModel.Statistics" 
         mc:Ignorable="d"
         Title="AI Technology (warehouse)" Height="700" Width="1300"
         WindowStartupLocation="CenterScreen"
@@ -21,7 +24,6 @@
     <Window.DataContext>
         <viewmodel:MainViewModel/>
     </Window.DataContext>
-
 
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
@@ -44,6 +46,18 @@
 
         <DataTemplate DataType="{x:Type productViewModel:ProductViewModel}">
             <view:ProductView/>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type workerViewModel:WorkerViewModel}">
+            <view:WorkerView/>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type userViewModel:UserViewModel}">
+            <view:UserView/>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type statisticsViewModel:StatisticsViewModel}">
+            <view:StatisticsView/>
         </DataTemplate>
     </Window.Resources>
 
@@ -163,25 +177,36 @@
                         </StackPanel>
 
                     </RadioButton>
-
+                    
                     <RadioButton Style="{StaticResource menuButton}"
                                  Tag="{StaticResource color5}"
-                                 Command="{Binding ShowProductViewCommand}">
+                                 Command="{Binding ShowWorkerViewCommand}">
 
                         <StackPanel Orientation="Horizontal">
                             <fa:IconImage Icon="UserTie" Style="{StaticResource menuButtonIcon}"/>
-                            <TextBlock Text="Работники" Style="{StaticResource menuButtonText}"/>
+                            <TextBlock Text="Сотрудники" Style="{StaticResource menuButtonText}"/>
+                        </StackPanel>
+
+                    </RadioButton>
+
+                    <RadioButton Style="{StaticResource menuButton}"
+                                 Tag="{StaticResource color4}"
+                                 Command="{Binding ShowUserViewCommand}">
+
+                        <StackPanel Orientation="Horizontal">
+                            <fa:IconImage Icon="UserTie" Style="{StaticResource menuButtonIcon}"/>
+                            <TextBlock Text="Пользователи" Style="{StaticResource menuButtonText}"/>
                         </StackPanel>
 
                     </RadioButton>
 
                     <RadioButton Style="{StaticResource menuButton}"
                                  Tag="{StaticResource color9}"
-                                 Command="{Binding ShowProductViewCommand}">
+                                 Command="{Binding ShowStatisticsViewCommand}">
 
                         <StackPanel Orientation="Horizontal">
                             <fa:IconImage Icon="ChartLine" Style="{StaticResource menuButtonIcon}"/>
-                            <TextBlock Text="Работники" Style="{StaticResource menuButtonText}"/>
+                            <TextBlock Text="Статистика" Style="{StaticResource menuButtonText}"/>
                         </StackPanel>
 
                     </RadioButton>
@@ -284,7 +309,6 @@
 
                             <Button Margin="10 0 0 0" Style="{StaticResource iconButton}"
                                     Tag="{StaticResource color1}" Cursor="Hand"
-                                    Visibility="{Binding CurrentChildView.Visibility}"
                                     Command="{Binding CurrentChildView.EditCommand}">
                                 <Button.Content>
                                     <fa:IconImage Icon="Pencil"
@@ -293,8 +317,6 @@
                             </Button>
 
                             <Button Style="{StaticResource iconButton}"
-                                    Tag="{StaticResource color9}" Cursor="Hand"
-                                    Visibility="{Binding CurrentChildView.Visibility}"
                                     Command="{Binding CurrentChildView.AddCommand}">
                                 <Button.Content>
                                     <fa:IconImage Icon="plus"

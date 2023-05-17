@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Kursovaya.Repositories;
+using System.Collections.Generic;
 using System.Net;
 
 namespace Kursovaya.Model.User
@@ -8,8 +9,9 @@ namespace Kursovaya.Model.User
         bool AuthenticateUser(NetworkCredential credential);
         void Add(UserModel userModel);
         void Edit(UserModel userModel);
-        void Remove(int id);
-        IEnumerable<UserModel> GetByAll();
-        public UserModel GetByUsername(string username);
+        void Remove(int id, ApplicationContext context);
+        List<UserModel> GetByAll(ApplicationContext context);
+        public UserModel GetByUsername(string username, ApplicationContext context);
+        public UserModel GetById(int id, ApplicationContext context);
     }
 }

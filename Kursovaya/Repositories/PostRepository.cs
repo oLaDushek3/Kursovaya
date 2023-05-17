@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace Kursovaya.Repositories
 {
@@ -17,14 +18,23 @@ namespace Kursovaya.Repositories
             throw new NotImplementedException();
         }
 
-        public List<PostModel> GetByAll()
+        public void Remove(int id, ApplicationContext context)
         {
             throw new NotImplementedException();
         }
 
-        public void Remove(int id)
+        public PostModel? GetById(int id, ApplicationContext context)
         {
-            throw new NotImplementedException();
+            PostModel? postModel = context.Posts.Where(p => p.PostId == id).FirstOrDefault();
+
+            return postModel;
+        }
+
+        public List<PostModel> GetByAll(ApplicationContext context)
+        {
+            List<PostModel> postModels = context.Posts.ToList();
+
+            return postModels;
         }
     }
 }

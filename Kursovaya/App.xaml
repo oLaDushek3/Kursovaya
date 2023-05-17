@@ -7,10 +7,10 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Styles/ScrollViewerStyle.xaml"/>
                 <ResourceDictionary Source="/Styles/UIColors.xaml"/>
                 <ResourceDictionary Source="/Styles/ButtonStyles.xaml"/>
                 <ResourceDictionary Source="/Styles/DataGridStyles.xaml"/>
-                <ResourceDictionary Source="/Styles/ScrollViewerStyle.xaml"/>
                 <ResourceDictionary Source="/Styles/DatePickerStyle.xaml"/>
                 <ResourceDictionary Source="/Styles/TextBoxStyles.xaml"/>
                 <ResourceDictionary Source="/Styles/ComboBoxStyle.xaml"/>

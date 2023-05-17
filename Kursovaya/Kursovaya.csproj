@@ -45,6 +45,9 @@
     <Compile Update="View\Product\ProductView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="View\Worker\WorkerView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
 
 </Project>

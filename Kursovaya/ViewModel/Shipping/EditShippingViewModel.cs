@@ -2,6 +2,7 @@
 using Kursovaya.DialogView.AddShippingProduct;
 using Kursovaya.Model.Buyer;
 using Kursovaya.Model.Factory;
+using Kursovaya.Model.Product;
 using Kursovaya.Model.Shipping;
 using Kursovaya.Model.Worker;
 using Kursovaya.Repositories;
@@ -157,12 +158,18 @@ namespace Kursovaya.ViewModel.Shipping
                 deleteShippingProducts = _editableShipping.ShippingProducts.Except(_editableShippingProduct).ToList();
                 foreach (ShippingProductModel shippingProduct in deleteShippingProducts)
                 {
+                    ProductModel product = shippingProduct.Product;
+                    product.Quantity += shippingProduct.Quantity;
+
                     context.ShippingProducts.Remove(shippingProduct);
                 }
 
                 addShippingProducts = _editableShippingProduct.Except(_editableShipping.ShippingProducts).ToList();
                 foreach (ShippingProductModel shippingProduct in addShippingProducts)
                 {
+                    ProductModel product = shippingProduct.Product;
+                    product.Quantity -= shippingProduct.Quantity;
+
                     shippingProduct.Shipping = _editableShipping;
                     context.ShippingProducts.Add(shippingProduct);
                 }

@@ -4,6 +4,9 @@ using Kursovaya.Repositories;
 using Kursovaya.ViewModel.Buyer;
 using Kursovaya.ViewModel.Product;
 using Kursovaya.ViewModel.Shipping;
+using Kursovaya.ViewModel.Statistics;
+using Kursovaya.ViewModel.User;
+using Kursovaya.ViewModel.Worker;
 using System;
 using System.Threading.Tasks;
 using System.Windows;
@@ -13,6 +16,7 @@ namespace Kursovaya.ViewModel
 {
     public class MainViewModel : ViewModelBase
     {
+        ApplicationContext context = new ApplicationContext();
         //Fields
         private UserModel _user;
         private IUserRepository _userRepository;
@@ -135,6 +139,9 @@ namespace Kursovaya.ViewModel
         public ICommand ShowShippingViewCommand { get; }
         public ICommand ShowBuyerViewCommand { get; }
         public ICommand ShowProductViewCommand { get; }
+        public ICommand ShowWorkerViewCommand { get; }
+        public ICommand ShowUserViewCommand { get; }
+        public ICommand ShowStatisticsViewCommand { get; }
 
         //Commands execution
         private void ExecuteLogoutCommand(object? obj)
@@ -174,6 +181,30 @@ namespace Kursovaya.ViewModel
             Caption = "Продукция";
             Icon = "Boxes";
         }
+        private void ExecuteShowWorkerViewCommand(object? obj)
+        {
+            _currentMainView = new WorkerViewModel(this);
+            CurrentChildView = _currentMainView;
+
+            Caption = "Сотрудники";
+            Icon = "UserTie";
+        }
+        private void ExecuteShowUserViewCommand(object? obj)
+        {
+            _currentMainView = new UserViewModel(this);
+            CurrentChildView = _currentMainView;
+
+            Caption = "Пользователи";
+            Icon = "UserTie";
+        }
+        private void ExecuteShowStatisticsViewCommand(object? obj)
+        {
+            _currentMainView = new StatisticsViewModel();
+            CurrentChildView = _currentMainView;
+
+            Caption = "Статистика";
+            Icon = "ChartLine";
+        }
 
         //Constructor
         public MainViewModel()
@@ -187,19 +218,24 @@ namespace Kursovaya.ViewModel
             ShowShippingViewCommand = new ViewModelCommand(ExecuteShowShippingViewCommand);
             ShowBuyerViewCommand = new ViewModelCommand(ExecuteShowBuyerViewCommand);
             ShowProductViewCommand = new ViewModelCommand(ExecuteShowProductViewCommand);
+            ShowWorkerViewCommand = new ViewModelCommand(ExecuteShowWorkerViewCommand);
+            ShowUserViewCommand = new ViewModelCommand(ExecuteShowUserViewCommand);
+            ShowStatisticsViewCommand = new ViewModelCommand(ExecuteShowStatisticsViewCommand);
 
             LoadCurrentUserdata();
 
             MainEnable = true;
             BlurEffectRadius = 0;
             DimmingEffectEnable = Visibility.Collapsed;
+
+            ShowSupplyViewCommand.Execute(null);
         }
 
         #region Methods
         private void LoadCurrentUserdata()
         {
             //User = _userRepository.GetByUsername(Thread.CurrentPrincipal.Identity.Name);
-            UserModel user = _userRepository.GetByUsername("admin");
+            UserModel user = _userRepository.GetByUsername("admin", context);
             if (user != null)
             {
                 User.Login = user.Login;

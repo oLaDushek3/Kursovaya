@@ -10,6 +10,7 @@ public partial class WorkerModel
     public int WorkerId { get; set; }
 
     public string FullName { get; set; } = null!;
+    public byte[]? Photo { get; set; } = null;
 
     public string TypeOfContract { get; set; } = null!;
 

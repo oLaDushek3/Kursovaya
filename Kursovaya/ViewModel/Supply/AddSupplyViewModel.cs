@@ -130,6 +130,13 @@ namespace Kursovaya.ViewModel.Supply
         {
             context.Supplies.Add(_createdSupply);
             CreatedSupply.SupplyProducts = _createdSupplyProduct;
+
+            foreach(SupplyProductModel supplyProduct in _createdSupplyProduct)
+            {
+                ProductModel product = supplyProduct.Product;
+                product.Quantity += supplyProduct.Quantity;
+            }
+
             context.SaveChanges();
             currentSupplyViewModel.AddNewSupply(CreatedSupply);
         }

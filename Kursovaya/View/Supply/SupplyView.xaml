@@ -10,7 +10,7 @@
              xmlns:Converters="clr-namespace:Kursovaya.Converters"
              mc:Ignorable="d" x:Name="supplyView"
              d:DesignHeight="600" d:DesignWidth="1000"
-             d:DataContext="{d:DesignInstance Type=viewmodel:SupplyViewModel, IsDesignTimeCreatable=False}" >
+             d:DataContext="{d:DesignInstance Type=viewmodel:SupplyViewModel, IsDesignTimeCreatable=False}">
 
     <UserControl.Resources>
         <DataTemplate DataType="{x:Type viewmodel:EditSupplyViewModel}">

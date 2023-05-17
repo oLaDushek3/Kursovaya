@@ -60,7 +60,7 @@ public partial class ApplicationContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlServer(@"Server=.\SQLEXPRESS;Database=Kursovaya;Trusted_Connection=True;Encrypt=False");
+        optionsBuilder.UseSqlServer(@"Server=.\;Database=Kursovaya;Trusted_Connection=True;Encrypt=False");
         optionsBuilder.EnableSensitiveDataLogging();
     }
 
@@ -448,6 +448,10 @@ public partial class ApplicationContext : DbContext
 
             entity.HasIndex(e => e.Login, "UQ__User__5E55825B332C6172").IsUnique();
 
+            entity.Property(e => e.Role)
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .UseCollation("SQL_Latin1_General_CP1_CS_AS");
             entity.Property(e => e.Login)
                 .HasMaxLength(30)
                 .IsUnicode(false)
@@ -475,7 +479,9 @@ public partial class ApplicationContext : DbContext
             entity.Property(e => e.FullName)
                 .HasMaxLength(80)
                 .IsUnicode(false)
-                .HasColumnName("Full_name");
+                .HasColumnName("Full_name"); 
+            entity.Property(e => e.Photo)
+                .HasColumnName("Photo");
             entity.Property(e => e.PostId).HasColumnName("Post_id");
             entity.Property(e => e.TypeOfContract)
                 .HasMaxLength(30)
