@@ -75,6 +75,7 @@ namespace Kursovaya.ViewModel.User
             {
                 if(NewUserPassword != null)
                     _editableUser.Password = NewUserPassword;
+                _editableUser.Login = "gg";
                 _context.SaveChanges();
                 _currentUserViewModel.SaveAndCloseCUView(_editableUser);
             }

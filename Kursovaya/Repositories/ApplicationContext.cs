@@ -440,9 +440,9 @@ public partial class ApplicationContext : DbContext
 
         modelBuilder.Entity<UserModel>(entity =>
         {
-            entity
-                .HasNoKey()
-                .ToTable("User");
+            entity.HasKey(e => e.UserId).HasName("PK__User__206A9DF84D6239C1");
+            
+            entity.ToTable("User");
 
             entity.HasIndex(e => e.UserId, "UQ__User__206A9DF933D24164").IsUnique();
 
@@ -450,8 +450,7 @@ public partial class ApplicationContext : DbContext
 
             entity.Property(e => e.Role)
                 .HasMaxLength(50)
-                .IsUnicode(false)
-                .UseCollation("SQL_Latin1_General_CP1_CS_AS");
+                .IsUnicode(false);
             entity.Property(e => e.Login)
                 .HasMaxLength(30)
                 .IsUnicode(false)
