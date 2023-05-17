@@ -15,9 +15,9 @@
         <DataTemplate DataType="{x:Type viewmodelUser:EditUserViewModel}">
             <viewUser:EditUserView/>
         </DataTemplate>
-        <!--<DataTemplate DataType="{x:Type viewmodelUser:AddWorkerViewModel}">
-            <viewUser:AddWorkerView/>
-        </DataTemplate>-->
+        <DataTemplate DataType="{x:Type viewmodelUser:AddUserViewModel}">
+            <viewUser:AddUserView/>
+        </DataTemplate>
         <Converters:TextLengthConverter x:Key="TextLengthConverter"/>
         <Converters:FullNameConverter x:Key="FullNameConverter"/>
     </UserControl.Resources>

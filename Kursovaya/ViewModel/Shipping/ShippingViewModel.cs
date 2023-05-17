@@ -1,6 +1,7 @@
 ﻿using Kursovaya.DialogView;
 using Kursovaya.Model.Shipping;
 using Kursovaya.Model.Worker;
+using Kursovaya.Print;
 using Kursovaya.Repositories;
 using System;
 using System.Collections.Generic;
@@ -197,6 +198,7 @@ namespace Kursovaya.ViewModel.Shipping
         public ICommand ClearSortCommand { get; }
         public ICommand SortByDateCommande { get; }
         public ICommand ClearSortByDateCommande { get; }
+        public ICommand PrintCommand { get; }
 
         //Commands execution
         private void ExecuteAddCommand(object? obj)
@@ -280,6 +282,10 @@ namespace Kursovaya.ViewModel.Shipping
             _dateSortShippings = null;
             Merger();
         }
+        private void ExecutePrintCommand(object? obj)
+        {
+            PrintPage printPage = new PrintPage(SelectedShipping);
+        }
 
         //Constructor
         public ShippingViewModel(MainViewModel mainViewModel)
@@ -294,6 +300,7 @@ namespace Kursovaya.ViewModel.Shipping
             ClearSortCommand = new ViewModelCommand(ExecuteClearSortCommand);
             SortByDateCommande = new ViewModelCommand(ExecuteSortByDateCommande);
             ClearSortByDateCommande = new ViewModelCommand(ExecuteClearSortByDateCommande, CanExecuteClearSortByDateCommande);
+            PrintCommand = new ViewModelCommand(ExecutePrintCommand);
 
             RefreshSupplyList(null);
         }

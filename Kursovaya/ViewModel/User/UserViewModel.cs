@@ -158,7 +158,7 @@ namespace Kursovaya.ViewModel.User
         //Commands execution
         private void ExecuteAddCommand(object? obj)
         {
-            //CurrentChildView = new AddBuyerViewModel(this);
+            CurrentChildView = new AddUserViewModel(this);
             IsEnabled = false;
             BackVisibility = Visibility.Visible;
             ReverseAnimationAction = false;

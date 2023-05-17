@@ -20,7 +20,7 @@ using System.Windows.Input;
 
 namespace Kursovaya.ViewModel.User
 {
-    public class EditUserViewModel : ViewModelBase
+    public class AddUserViewModel : ViewModelBase
     {
         #region Fields
         private UserViewModel _currentUserViewModel;
@@ -28,19 +28,18 @@ namespace Kursovaya.ViewModel.User
         private ApplicationContext _context = new ApplicationContext();
 
         private IUserRepository _userRepository = new UserRepository();
-        private UserModel _selectedUser;
-        private UserModel _editableUser = new();
+        private UserModel _createdUser = new();
         private string _newUserPassword;
         #endregion Fields
 
         #region Properties
-        public UserModel EditableUser
+        public UserModel CreatedUser
         {
-            get => _editableUser;
+            get => _createdUser;
             set
             {
-                _editableUser = value;
-                OnPropertyChanged(nameof(EditableUser));
+                _createdUser = value;
+                OnPropertyChanged(nameof(CreatedUser));
             }
         }
 
@@ -49,15 +48,6 @@ namespace Kursovaya.ViewModel.User
             get
             {
                 return new List<string>() { "Admin", "User" };
-            }
-        }
-        public string NewUserPassword
-        {
-            get => _newUserPassword;
-            set
-            {
-                _newUserPassword = value;
-                OnPropertyChanged(nameof(NewUserPassword));
             }
         }
         #endregion Properties
@@ -73,19 +63,16 @@ namespace Kursovaya.ViewModel.User
 
             if (result)
             {
-                if(NewUserPassword != null)
-                    _editableUser.Password = NewUserPassword;
+                _context.Users.Add(_createdUser);
                 _context.SaveChanges();
-                _currentUserViewModel.SaveAndCloseCUView(_editableUser);
+                _currentUserViewModel.SaveAndCloseCUView(_createdUser);
             }
         }
 
         //Constructor
-        public EditUserViewModel(UserModel selectedUser, UserViewModel currentUserViewModel)
+        public AddUserViewModel(UserViewModel currentUserViewModel)
         {
             _currentUserViewModel = currentUserViewModel;
-            _selectedUser = selectedUser;
-            _editableUser = _userRepository.GetById(selectedUser.UserId, _context);
 
             SaveCommand = new ViewModelCommand(ExecuteSaveCommand);
         }

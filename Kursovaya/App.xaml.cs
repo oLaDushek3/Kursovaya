@@ -12,25 +12,25 @@ namespace Kursovaya
     {
         protected void ApplicationStart(object sender, StartupEventArgs e)
         {
-            //var loginView = new LoginView();
-            //loginView.Show();
-            //loginView.IsVisibleChanged += (s, ev) =>
-            //{
-            //    if (loginView.IsVisible == false && loginView.IsLoaded)
-            //    {
-                    var mainView = new MainView();
-                    mainView.Show();
-            //      loginView.Close();
-                    mainView.IsVisibleChanged += (s, ev) =>
-                    {
-                        if (mainView.IsVisible == false && mainView.IsLoaded)
-                        {
-                            System.Windows.Forms.Application.Restart();
-                            Application.Current.Shutdown();
-                        }
-                    };
-            //    }
-            //};
+            var loginView = new LoginView();
+            loginView.Show();
+            loginView.IsVisibleChanged += (s, ev) =>
+            {
+                if (loginView.IsVisible == false && loginView.IsLoaded)
+                {
+                  var mainView = new MainView();
+                  mainView.Show();
+                  loginView.Close();
+                  mainView.IsVisibleChanged += (s, ev) =>
+                  {
+                      if (mainView.IsVisible == false && mainView.IsLoaded)
+                      {
+                          System.Windows.Forms.Application.Restart();
+                          Application.Current.Shutdown();
+                      }
+                  };
+                }
+            };
            
         }
     }

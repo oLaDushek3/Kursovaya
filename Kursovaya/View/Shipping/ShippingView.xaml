@@ -87,7 +87,7 @@
                                           Style="{StaticResource iconButtonIcon}"/>
                         </Button.Content>
                     </Button>
-                    
+
                     <Button Margin="0 0 10 0" Style="{StaticResource iconButton}"
                             Tag="{StaticResource color4}" Cursor="Hand"
                             Command="{Binding ClearSortByDateCommande}"
@@ -162,6 +162,24 @@
                                             HorizontalAlignment="Right">
                                         <Button.Content>
                                             <fa:IconImage Icon="Trash"
+                                                          Style="{StaticResource iconButtonIcon}"/>
+                                        </Button.Content>
+                                    </Button>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+
+                        <DataGridTemplateColumn>
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button Style="{StaticResource iconButton}"
+                                            Tag="{StaticResource color4}" Cursor="Hand"
+                                            Visibility="{Binding Visibility}" 
+                                            Command="{Binding ElementName=shippingView, Path=DataContext.PrintCommand}"
+                                            CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=DataContext}"
+                                            HorizontalAlignment="Right">
+                                        <Button.Content>
+                                            <fa:IconImage Icon="Print"
                                                           Style="{StaticResource iconButtonIcon}"/>
                                         </Button.Content>
                                     </Button>
